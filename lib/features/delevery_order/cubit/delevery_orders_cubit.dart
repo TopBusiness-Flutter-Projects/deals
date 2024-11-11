@@ -48,7 +48,8 @@ class DeleveryOrdersCubit extends Cubit<DeleveryOrdersState> {
           // Completed orders contain only fully invoiced and fully delivered orders
           if (element.state.toString() == 'sale' &&
               element.invoiceStatus.toString() == 'invoiced' &&
-              element.deliveryStatus.toString() == 'full') {
+             ( element.deliveryStatus.toString() == 'full' ||
+         element.deliveryStatus.toString() == 'done'  ) ) {
             completeOrders.add(element);
           }
           // Canceled orders contain only canceled orders
@@ -66,13 +67,19 @@ class DeleveryOrdersCubit extends Cubit<DeleveryOrdersState> {
             // New orders (to be invoiced, pending delivery)
             else if (element.state.toString() == 'sale' &&
                 element.invoiceStatus.toString() == 'to invoice' &&
-                element.deliveryStatus.toString() == 'pending') {
+               ( element.deliveryStatus.toString() == 'pending' ||
+element.deliveryStatus.toString() == 'assigned')
+                
+                ) {
               newOrders.add(element);
             }
             // Delivered orders (to be invoiced, fully delivered)
             else if (element.state.toString() == 'sale' &&
                 element.invoiceStatus.toString() == 'to invoice' &&
-                element.deliveryStatus.toString() == 'full') {
+             (   element.deliveryStatus.toString() == 'full' ||
+             element.deliveryStatus.toString() == 'done'  
+            )
+                ) {
               deliveredOrders.add(element);
             }
           }
