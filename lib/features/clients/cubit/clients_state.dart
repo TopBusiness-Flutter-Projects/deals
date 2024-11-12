@@ -7,8 +7,9 @@ class ClientsInitial extends ClientsState {}
 class ErrorGetPartnersState extends ClientsState {}
 
 class LoadingGetPartnersState extends ClientsState {}
-class LoadingMorePartnersState extends ClientsState {}
 
+class LoadingMorePartnersState extends ClientsState {}
+class UpdateClientType extends ClientsState {}
 class SucessGetPartnersState extends ClientsState {
   GetAllPartnersModel? allPartnersModel;
   SucessGetPartnersState({required this.allPartnersModel});
