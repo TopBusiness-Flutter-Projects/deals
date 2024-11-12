@@ -48,9 +48,11 @@ class CustomTotalPriceDue extends StatelessWidget {
     super.key,
     required this.price,
     required this.currency,
+    required this.state,
   });
   String price;
   String currency;
+  String state;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,16 +67,33 @@ class CustomTotalPriceDue extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            Text(
-              "المستحقات".tr(),
-              style: getBoldStyle(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "المستحقات".tr(),
+                  style: getBoldStyle(),
+                ),
+                Text(
+                  "$price $currency",
+                  style: getBoldStyle(),
+                ),
+              ],
             ),
-            Text(
-              "$price $currency",
-              style: getBoldStyle(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "حالة الدفع".tr(),
+                  style: getBoldStyle(),
+                ),
+                Text(
+                  state,
+                  style: getBoldStyle(),
+                ),
+              ],
             ),
           ],
         ));

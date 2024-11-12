@@ -236,14 +236,8 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                 //     cubit.getDetailsOrdersModel?.orderLines ??
                                 //         [])
                               ),
-                              if (cubit.getDetailsOrdersModel!.invoices!
-                                      .isNotEmpty
-                                  //      &&
-                                  // cubit
-                                  //     .getDetailsOrdersModel!
-                                  //     .payments!
-                                  //     .isEmpty
-                                  )
+                              if (cubit
+                                  .getDetailsOrdersModel!.invoices!.isNotEmpty)
                                 CustomTotalPriceDue(
                                   currency:
                                       widget.orderModel.currencyId?.name ?? '',
@@ -251,9 +245,10 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                           .first.amountDue
                                           .toString() ??
                                       '',
-                                  //  calculateTotalDiscountedPrice(
-                                  //     cubit.getDetailsOrdersModel?.orderLines ??
-                                  //         [])
+                                  state: cubit.getDetailsOrdersModel?.invoices!
+                                          .first.paymentState
+                                          .toString() ??
+                                      '',
                                 ),
 
                               // SizedBox(
