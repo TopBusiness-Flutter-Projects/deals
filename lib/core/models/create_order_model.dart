@@ -31,24 +31,27 @@ class Result {
   dynamic message;
   
   dynamic paymentId;
+  dynamic pickingId;
   dynamic orderId;
  
 
   Result({
     this.message,
     this.paymentId,
-    this.orderId,
+    this.orderId,this.pickingId
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         message: json["message"],
         paymentId: json["payment_id"],
+        pickingId: json["picking_id"],
         orderId: json["order_id"],
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
         "payment_id": paymentId,
+        "picking_id": pickingId,
         "order_id": orderId,
       };
 }

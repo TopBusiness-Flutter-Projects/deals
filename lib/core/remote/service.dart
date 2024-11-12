@@ -27,6 +27,7 @@ import 'package:top_sale/core/models/get_contract_model.dart';
 import 'package:top_sale/core/models/get_employee_data_model.dart';
 import 'package:top_sale/core/models/get_last_attendance_model.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
+import 'package:top_sale/core/models/get_pickings_model.dart';
 import 'package:top_sale/core/models/get_user_data_model.dart';
 import 'package:top_sale/core/models/login_model.dart';
 import 'package:top_sale/core/models/order_details_model.dart';
@@ -377,6 +378,7 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+
 //getAllProducts
   Future<Either<Failure, AllProductsModel>> getAllProducts(int page) async {
     try {
@@ -391,7 +393,8 @@ class ServiceApi {
         // '?filter=[["detailed_type","=","product"],["virtual_available","!=",0.0]]&query={id,name,image_1920,categ_id,list_price,currency_id,taxes_id,uom_name,uom_id,description_sale,virtual_available,image_1920}&page_size=10&limit=10&page=$page',
         body: {
           "params": {
-            "warehouse_id":wareHouseId?? authModel.result?.propertyWarehouseId ?? 1,
+            "warehouse_id":
+                wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
             "limit": 20,
             "page": page,
             "category_id": null,
@@ -412,8 +415,8 @@ class ServiceApi {
       {required int categoryId}) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
-           int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
- AuthModel? authModel = await Preferences.instance.getUserModel();
+      int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
+      AuthModel? authModel = await Preferences.instance.getUserModel();
       String odooUrl =
           await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.post(
@@ -422,7 +425,8 @@ class ServiceApi {
         // '?filter=[["detailed_type","=","product"],["virtual_available","!=",0.0]]&query={id,name,image_1920,categ_id,list_price,currency_id,taxes_id,uom_name,uom_id,description_sale,virtual_available,image_1920}&page_size=10&limit=10&page=$page',
         body: {
           "params": {
-            "warehouse_id":wareHouseId?? authModel.result?.propertyWarehouseId ?? 1,
+            "warehouse_id":
+                wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
             "limit": 20,
             "page": page,
             "category_id": categoryId,
@@ -445,8 +449,8 @@ class ServiceApi {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       AuthModel? authModel = await Preferences.instance.getUserModel();
-           int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
- String odooUrl =
+      int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
+      String odooUrl =
           await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.post(
         odooUrl + EndPoints.productSearch,
@@ -455,7 +459,8 @@ class ServiceApi {
         body: {
           "params": {
             "data": {
-            "warehouse_id":wareHouseId?? authModel.result?.propertyWarehouseId ?? 1,
+              "warehouse_id":
+                  wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
               "name": isBarcode
                   ? null
                   : name, // Optional: Product name or part of the name
@@ -601,17 +606,16 @@ class ServiceApi {
     String? sessionId = await Preferences.instance.getSessionId();
     String userId = await Preferences.instance.getUserId() ?? "1";
 
-    String? employeeId = await Preferences.instance.getEmployeeId()  ;
+    String? employeeId = await Preferences.instance.getEmployeeId();
     try {
       final response = await dio.get(
-         employeeId == null?
-            odooUrl +
-            EndPoints.saleOrder +           
-            '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId]]'
-            :
-        odooUrl +
-            EndPoints.saleOrder +           
-            '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId],["employee_id", "=", $employeeId]]',
+        employeeId == null
+            ? odooUrl +
+                EndPoints.saleOrder +
+                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId]]'
+            : odooUrl +
+                EndPoints.saleOrder +
+                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId],["employee_id", "=", $employeeId]]',
         options: Options(
           headers: {"Cookie": "session_id=$sessionId"},
         ),
@@ -621,6 +625,7 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+
   Future<Either<Failure, GetOrdersModel>> getOrderFromId(int id) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -735,8 +740,8 @@ class ServiceApi {
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId();
     String userId = await Preferences.instance.getUserId() ?? "1";
-         int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
- AuthModel? authModel = await Preferences.instance.getUserModel();
+    int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
+    AuthModel? authModel = await Preferences.instance.getUserModel();
     try {
       // Map the ProductModelData list to order_line format
       List<Map<String, dynamic>> orderLine = products
@@ -756,7 +761,8 @@ class ServiceApi {
             "params": {
               "data": {
                 "partner_id": partnerId,
-            "warehouse_id":wareHouseId?? authModel.result?.propertyWarehouseId ?? 1,
+                "warehouse_id":
+                    wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
                 "user_id": int.parse(userId),
                 if (employeeId != null) "employee_id": employeeId,
                 "order_line": orderLine
@@ -829,14 +835,12 @@ class ServiceApi {
       return Left(ServerFailure(message: e.toString()));
     }
   }
-  
-  
+
   Future<Either<Failure, DefaultModel>> updatePartenerLocation({
-    required int id,  
-    required double partnerLattitude, 
-    required String street,  
+    required int id,
+    required double partnerLattitude,
+    required String street,
     required double partnerLangitude,
-    
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
     String odooUrl =
@@ -848,33 +852,28 @@ class ServiceApi {
             headers: {"Cookie": "session_id=$sessionId"},
           ),
           body: {
-    "params": {
-        "filter": [
-            [
-                "id",
-                "=",
-                id
-            ]
-        ],
-        "data": {
-            
-            "street": street,
-            "partner_latitude": partnerLattitude,
-            "partner_longitude":partnerLangitude,
-        }
-    }
-});
+            "params": {
+              "filter": [
+                ["id", "=", id]
+              ],
+              "data": {
+                "street": street,
+                "partner_latitude": partnerLattitude,
+                "partner_longitude": partnerLangitude,
+              }
+            }
+          });
       return Right(DefaultModel.fromJson(response));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
-Future<Either<Failure, DefaultModel>> updatePartenerDetails({
-    required int id,  
-    required String image1920, 
-    required String name,  
+
+  Future<Either<Failure, DefaultModel>> updatePartenerDetails({
+    required int id,
+    required String image1920,
+    required String name,
     required String phone,
-    
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
     String odooUrl =
@@ -886,22 +885,17 @@ Future<Either<Failure, DefaultModel>> updatePartenerDetails({
             headers: {"Cookie": "session_id=$sessionId"},
           ),
           body: {
-    "params": {
-        "filter": [
-            [
-                "id",
-                "=",
-                id
-            ]
-        ],
-        "data": {
-            
-            "name": name,
-            "phone": phone,
-            "image_1920":image1920,
-        }
-    }
-});
+            "params": {
+              "filter": [
+                ["id", "=", id]
+              ],
+              "data": {
+                "name": name,
+                "phone": phone,
+                "image_1920": image1920,
+              }
+            }
+          });
       return Right(DefaultModel.fromJson(response));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.toString()));
@@ -1572,4 +1566,83 @@ Future<Either<Failure, DefaultModel>> updatePartenerDetails({
       return Left(ServerFailure());
     }
   }
+
+  Future<Either<Failure, CreateOrderModel>> pickingRequest(
+      {required int partnerId,
+      required String warehouseId,
+      required List<ProductModelData> products}) async {
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String? employeeId = await Preferences.instance.getEmployeeId();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+    int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
+    AuthModel? authModel = await Preferences.instance.getUserModel();
+    try {
+      // Map the ProductModelData list to order_line format
+      List<Map<String, dynamic>> orderLine = products
+          .map((product) => {
+                "product_id": product.id,
+                "quantity": product.userOrderedQuantity,
+                // "product_uom_qty": product.userOrderedQuantity,
+                // "price_unit": product.listPrice,
+                // "discount": product.discount
+              })
+          .toList();
+
+      final response = await dio.post(odooUrl + EndPoints.createQuotation,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
+          body: {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+            //  "data": {
+                "source_warehouse_id": partnerId,
+                "destination_warehouse_id":
+                    wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
+                "user_id": int.parse(userId),
+                if (employeeId != null) "employee_id": employeeId,
+                "products": orderLine
+           //   }
+            }
+          });
+      return Right(CreateOrderModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+  Future<Either<Failure, GetPickingsModel>> getPicking(
+      ) async {
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String? employeeId = await Preferences.instance.getEmployeeId();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+  
+    try {
+     
+
+      final response = await dio.post(odooUrl + EndPoints.getPicking,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},          ),
+          body: {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+          
+               
+                "user_id": int.parse(userId),
+                if (employeeId != null) "employee_id": employeeId,
+                
+          
+            }
+          });
+      return Right(GetPickingsModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
 }

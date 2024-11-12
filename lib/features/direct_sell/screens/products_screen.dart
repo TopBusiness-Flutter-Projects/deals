@@ -15,6 +15,7 @@ import '../../../core/utils/assets_manager.dart';
 import '../../clients/cubit/clients_cubit.dart';
 import '../cubit/direct_sell_cubit.dart';
 import 'widgets/custom_product_widget.dart';
+
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen(
       {super.key, required this.categoryName, required this.catId});
@@ -23,6 +24,7 @@ class ProductsScreen extends StatefulWidget {
   @override
   State<ProductsScreen> createState() => _ProductsScreenState();
 }
+
 class _ProductsScreenState extends State<ProductsScreen> {
   late final ScrollController scrollController = ScrollController();
   @override
@@ -30,10 +32,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
     super.initState();
     //! listen pangination
     scrollController.addListener(_scrollListener);
+
     ///!
     context.read<DirectSellCubit>().currentIndex = -1;
-    // TODO: implement initState
-    if (widget.catId != '-1') {
+
+    /// if catId not -1 or 0 get products by cat id
+    if (widget.catId != '-1' && widget.catId != '0') {
       context
           .read<DirectSellCubit>()
           .getAllProductsByCatogrey(id: int.parse(widget.catId));
@@ -60,6 +64,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       print('dddddddddtop');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     // String testImage =
@@ -74,8 +79,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
             actions: [
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.clientsRoute,
-                      arguments: ClientsRouteEnum.cart);
+                  // catId == 0 go to despense basket else go to client page
+                  widget.catId == '0'
+                      ? Navigator.pushNamed(
+                          context, Routes.dispensingBasketScreenRoute)
+                      : Navigator.pushNamed(context, Routes.clientsRoute,
+                          arguments: ClientsRouteEnum.cart);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -132,56 +141,60 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               height: 15.h,
                             ),
                             if (widget.categoryName == "products".tr())
-                              cubit
-                                            .catogriesModel == null ?
-                                            
-                                            SizedBox(height: 2,)
-                                            :
-                              SizedBox(
-                                height: 50.h,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        cubit.changeIndex(-1, 0);
-                                      },
-                                      child: CustomCategoryText(
-                                          text: "all".tr(),
-                                          isSelected: cubit.currentIndex == -1),
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Flexible(
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: cubit
-                                            .catogriesModel!.result!.length,
-                                        separatorBuilder: (context, index) =>
-                                            SizedBox(
-                                          width: 10.w,
-                                        ),
-                                        itemBuilder: (context, index) =>
-                                            GestureDetector(
-                                          onTap: () {
-                                            cubit.changeIndex(
-                                                index,
-                                                cubit.catogriesModel
-                                                    ?.result?[index].id);
-                                          },
-                                          child: CustomCategoryText(
-                                              text: cubit.catogriesModel
-                                                      ?.result?[index].name ??
-                                                  "",
-                                              isSelected:
-                                                  cubit.currentIndex == index),
-                                        ),
-                                      ),
+                              cubit.catogriesModel == null
+                                  ? SizedBox(
+                                      height: 2,
                                     )
-                                  ],
-                                ),
-                              ),
+                                  : SizedBox(
+                                      height: 50.h,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              cubit.changeIndex(-1, 0);
+                                            },
+                                            child: CustomCategoryText(
+                                                text: "all".tr(),
+                                                isSelected:
+                                                    cubit.currentIndex == -1),
+                                          ),
+                                          SizedBox(
+                                            width: 10.w,
+                                          ),
+                                          Flexible(
+                                            child: ListView.separated(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: cubit.catogriesModel!
+                                                  .result!.length,
+                                              separatorBuilder:
+                                                  (context, index) => SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              itemBuilder: (context, index) =>
+                                                  GestureDetector(
+                                                onTap: () {
+                                                  cubit.changeIndex(
+                                                      index,
+                                                      cubit.catogriesModel
+                                                          ?.result?[index].id);
+                                                },
+                                                child: CustomCategoryText(
+                                                    text: cubit
+                                                            .catogriesModel
+                                                            ?.result?[index]
+                                                            .name ??
+                                                        "",
+                                                    isSelected:
+                                                        cubit.currentIndex ==
+                                                            index),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
                             if (cubit.allProductsModel.result == [] ||
                                 cubit.allProductsModel == AllProductsModel())
                               Center(
