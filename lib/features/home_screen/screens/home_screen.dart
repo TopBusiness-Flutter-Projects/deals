@@ -121,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       CardHome(
                           text: "exchange_permission".tr(),
                           image: ImageAssets.sarfIcon,
+                          
                           onPressed: () {
                             Navigator.pushNamed(
                                 context, Routes.exchangePermissionRoute);
