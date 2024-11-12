@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
         return SafeArea(
           child: Scaffold(
             backgroundColor: AppColors.white,
-            
             body: SingleChildScrollView(
                 child: Padding(
               padding: EdgeInsets.only(
@@ -52,10 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   GridView(
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 20,
-                        crossAxisSpacing: 20,
-                        crossAxisCount: 2),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 20,
+                            crossAxisCount: 2),
                     shrinkWrap: true,
                     children: [
                       CardHome(
@@ -67,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           image: ImageAssets.deleveryOrder),
                       CardHome(
                           onPressed: () {
-                            Navigator.pushNamed(context, Routes.directSellRoute);
+                            Navigator.pushNamed(
+                                context, Routes.directSellRoute);
                           },
                           text: "direct_sales".tr(),
                           image: ImageAssets.directSale),
@@ -82,7 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     null) {
                                   context
                                       .read<ClientsCubit>()
-                                      .checkAndRequestLocationPermission(context);
+                                      .checkAndRequestLocationPermission(
+                                          context);
                                 } else {
                                   Navigator.pushNamed(
                                       context, Routes.itineraryRoute);
@@ -118,9 +120,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                       CardHome(
                           text: "exchange_permission".tr(),
-                          image: ImageAssets.cartIcon,
+                          image: ImageAssets.sarfIcon,
                           onPressed: () {
-                            Navigator.pushNamed(context, Routes.exchangePermissionRoute);
+                            Navigator.pushNamed(
+                                context, Routes.exchangePermissionRoute);
                           }),
                     ],
                   ),
