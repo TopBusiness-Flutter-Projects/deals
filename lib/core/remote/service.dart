@@ -1613,7 +1613,7 @@ class ServiceApi {
             "method": "call",
             "params": {
               "user_id": int.parse(userId),
-              if (employeeId != null) "employee_id": employeeId,
+              if (employeeId != null) "employee_id": int.parse(employeeId)
             }
           });
       return Right(GetPickingsModel.fromJson(response));

@@ -440,9 +440,10 @@ class DirectSellCubit extends Cubit<DirectSellState> {
         basket = [];
         debugPrint("Success Create Pick");
         Navigator.pushReplacementNamed(context, Routes.mainRoute);
+        Navigator.pushNamed(context, Routes.exchangePermissionRoute);
       } else {
         errorGetBar("error".tr());
-      }  
+      }
 
       emit(LoadedCreatePicking());
     });
