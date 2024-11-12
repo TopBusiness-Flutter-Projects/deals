@@ -197,6 +197,7 @@ class _CreateReceiptCoucherScreenState
         ),
       ),
       appBar: AppBar(
+
         backgroundColor: AppColors.white,
         centerTitle: false,
         title: Text(
