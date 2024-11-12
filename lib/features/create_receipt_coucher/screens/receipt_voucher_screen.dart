@@ -115,7 +115,7 @@ class _ReceiptVoucherScreenState extends State<ReceiptVoucherScreen> {
               Expanded(
                 child: cubit.allPaymentsModel.result == null ||
                         state is GetPaymentsLoading
-                    ? Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : ListView.builder(
                         itemCount:
                             cubit.allPaymentsModel.result!.payments!.length,

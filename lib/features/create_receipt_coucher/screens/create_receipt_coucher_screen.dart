@@ -33,70 +33,70 @@ class _CreateReceiptCoucherScreenState
         child: Column(children: [
           Padding(
             padding:
-                EdgeInsets.only(left: 12.0.sp, right: 12.0.sp, top: 10.0.sp),
+            EdgeInsets.only(left: 12.0.sp, right: 12.0.sp, top: 10.0.sp),
             child: BlocBuilder<CreateReceiptCoucherCubit,
                 CreateReceiptCoucherState>(builder: (context, state) {
               return (cubit.getAllJournalsModel == null)
                   ? CircularProgressIndicator(
-                      color: AppColors.primaryColor,
-                    )
+                color: AppColors.primaryColor,
+              )
                   : Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "date".tr(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.0.sp,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                            );
-                            setState(() {
-                              cubit.selectedDate = pickedDate;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0.sp),
-                              border: Border.all(color: Colors.grey),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12.0.sp, vertical: 12.0.sp),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  cubit.selectedDate == null
-                                      ? 'chose_date'.tr()
-                                      : "${cubit.selectedDate?.day}/${cubit.selectedDate?.month}/${cubit.selectedDate?.year}",
-                                  style: const TextStyle(color: Colors.grey),
-                                ),
-                                const Icon(Icons.calendar_today,
-                                    color: Colors.grey),
-                              ],
-                            ),
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "date".tr(),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.0.sp,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
+                      );
+                      setState(() {
+                        cubit.selectedDate = pickedDate;
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0.sp),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.0.sp, vertical: 12.0.sp),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            cubit.selectedDate == null
+                                ? "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}"
+                                : "${cubit.selectedDate?.day}/${cubit.selectedDate?.month}/${cubit.selectedDate?.year}",
+                            style: const TextStyle(color: Colors.grey),
                           ),
-                        ),
-                      ],
-                    );
+                          const Icon(Icons.calendar_today, color: Colors.grey),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                ],
+              );
             }),
           ),
           Padding(
             padding:
-                EdgeInsets.only(left: 12.0.sp, right: 12.0.sp, top: 10.0.sp),
+            EdgeInsets.only(left: 12.0.sp, right: 12.0.sp, top: 10.0.sp),
             child: Column(
               children: [
                 Row(
@@ -123,7 +123,7 @@ class _CreateReceiptCoucherScreenState
                         style: const TextStyle(color: Colors.grey),
                       ),
                       icon:
-                          const Icon(Icons.arrow_drop_down, color: Colors.grey),
+                      const Icon(Icons.arrow_drop_down, color: Colors.grey),
                       isExpanded: true,
                       onChanged: (int? newValue) {
                         setState(() {
@@ -132,13 +132,13 @@ class _CreateReceiptCoucherScreenState
                         });
                       },
                       items: cubit.getAllJournalsModel?.result
-                              ?.map<DropdownMenuItem<int>>((resultItem) {
-                            return DropdownMenuItem<int>(
-                              value: resultItem.id,
-                              child: Text(resultItem.displayName ??
-                                  ''), // Display the name
-                            );
-                          }).toList() ??
+                          ?.map<DropdownMenuItem<int>>((resultItem) {
+                        return DropdownMenuItem<int>(
+                          value: resultItem.id,
+                          child: Text(resultItem.displayName ??
+                              ''), // Display the name
+                        );
+                      }).toList() ??
                           [],
                     ),
                   ),

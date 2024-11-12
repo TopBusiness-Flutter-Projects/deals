@@ -7,7 +7,7 @@ import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/features/returns/cubit/returns_cubit.dart';
 import 'package:top_sale/features/returns/cubit/returns_state.dart';
-import 'package:top_sale/features/home_screen/cubit/cubit.dart';
+import '../cubit/exchange_permission_cubit.dart';
 
 class ExchangePermissionScreen extends StatefulWidget {
   const ExchangePermissionScreen({super.key});
@@ -19,13 +19,13 @@ class ExchangePermissionScreen extends StatefulWidget {
 class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
   @override
   void initState() {
-    context.read<ReturnsCubit>().getReturned();
+    context.read<ExchangePermissionCubit>().getExchangePermission();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var cubit = context.read<ReturnsCubit>();
+    var cubit = context.read<ExchangePermissionCubit>();
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -45,8 +45,7 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
         child: FloatingActionButton(
           backgroundColor: AppColors.primaryColor,
           onPressed: () {
-            // write here page
-
+            // Write here the page navigation or functionality
           },
           child: Icon(
             Icons.add,
@@ -60,109 +59,108 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
           child: Column(
             children: [
               SizedBox(height: 20.h),
-              cubit.returnOrderModel == null ||
-                      cubit.returnOrderModel!.result == null
+              cubit.getPickingsModel == null ||
+                  cubit.getPickingsModel!.result == null
                   ? const Center(child: CircularProgressIndicator())
-                  : cubit.returnOrderModel!.result!.data!.isEmpty
-                      ? Center(child: Text("no_data".tr()))
-                      : Expanded(
-                          child: ListView.builder(
-                              itemCount: cubit.returnOrderModel?.result
-                                      ?.data?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0.sp),
-                                      child: Container(
-                                          padding: EdgeInsets.only(
-                                            left: 8.0.sp,
-                                            right: 8.0.sp,
-                                            top: 10.0.sp,
-                                            bottom: 10.0.sp,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurStyle: BlurStyle.outer,
-                                                color: Colors.black.withOpacity(0.1),
-                                                spreadRadius: 1,
-                                                blurRadius: 4,
-                                                offset: const Offset(0,
-                                                    1),
-                                              ),
-                                            ],
-                                            color: AppColors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10.sp),
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.person, color: AppColors.gray2, size: 20.sp,),
-                                                      SizedBox(width: 5.sp,),
-                                                      AutoSizeText(
-                                                        cubit.returnOrderModel?.result?.data?.elementAt(index).employeeName ?? "",
-                                                        style: getBoldStyle(
-                                                            color: AppColors.black,
-                                                            fontSize: 14.sp),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
-                                                    child: AutoSizeText(
-                                                        cubit.returnOrderModel?.result?.data?.elementAt(index).date.toString().substring(0,10) ?? "",
-                                                        style: getBoldStyle(
-                                                            color:
-                                                            AppColors.black,
-                                                            fontSize: 14.sp)),
-                                                  ),
-
-                                                ],
-                                              ),
-                                              SizedBox(height: 10.sp,),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  AutoSizeText(
-                                                    cubit.returnOrderModel?.result?.data?.elementAt(index).name ?? "",
-                                                    style: getBoldStyle(
-                                                        color: AppColors.black,
-                                                        fontSize: 14.sp),
-                                                  ),
-                                                  AutoSizeText(
-                                                      cubit.returnOrderModel?.result?.data?.elementAt(index).amountTotal?.toStringAsFixed(0) +"  ${context.read<HomeCubit>().currencyName}",
-                                                    style: getBoldStyle(
-                                                        color: AppColors.blue,
-                                                        fontSize: 14.sp),
-                                                  ),
-
-                                                ],
-                                              ),
-                                              SizedBox(height: 10.sp,),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween ,
-                                                children: [
-                                                  Text(cubit.returnOrderModel?.result?.data?.elementAt(index).status!.toString() == "false" ? "":cubit.returnOrderModel?.result?.data?.elementAt(index).status,style:getMediumStyle()),
-                                                ],
-                                              )
-                                            ],
-                                          )),
-                                    )
+                  : cubit.getPickingsModel!.result!.data!.isEmpty
+                  ? Center(child: Text("no_data".tr()))
+                  : Expanded(
+                child: ListView.builder(
+                    itemCount: cubit.getPickingsModel?.result
+                        ?.data?.length ??
+                        0,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8.0.sp),
+                            child: Container(
+                                padding: EdgeInsets.only(
+                                  left: 8.0.sp,
+                                  right: 8.0.sp,
+                                  top: 10.0.sp,
+                                  bottom: 10.0.sp,
+                                ),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurStyle: BlurStyle.outer,
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 1),
+                                    ),
                                   ],
-                                );
-                              }),
-                        ),
+                                  color: AppColors.white,
+                                  borderRadius:
+                                  BorderRadius.circular(10.sp),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        AutoSizeText(
+                                          cubit.getPickingsModel?.result?.data?.elementAt(index).scheduledDate.toString().substring(0,10) ?? "",
+                                          style: getBoldStyle(
+                                              color: AppColors.orange,
+                                              fontSize: 14.sp),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.orange.withOpacity(0.5),
+                                            borderRadius: BorderRadius.circular(16.sp),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
+                                            child: AutoSizeText(
+                                              (cubit.getPickingsModel?.result?.data?.elementAt(index).status ?? ""),
+                                              style: getBoldStyle(
+                                                  color: AppColors.orange,
+                                                  fontSize: 14.sp),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.sp),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        AutoSizeText(
+                                          cubit.getPickingsModel?.result?.data?.elementAt(index).transferName ?? "",
+                                          style: getBoldStyle(
+                                              color: AppColors.black,
+                                              fontSize: 14.sp),
+                                        ),
+                                        AutoSizeText(
+                                          "",
+                                          style: getBoldStyle(
+                                              color: AppColors.blue,
+                                              fontSize: 14.sp),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.sp),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          cubit.getPickingsModel?.result?.data?.elementAt(index).sourceLocation?.locationName ?? "",
+                                          style: getMediumStyle(),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                          )
+                        ],
+                      );
+                    }),
+              ),
             ],
           ),
         );

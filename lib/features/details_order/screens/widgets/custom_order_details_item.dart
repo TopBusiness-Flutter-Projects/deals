@@ -301,6 +301,12 @@ void customShowBottomSheet(
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomTextFieldWithTitle(
+                validator:  ( value) {
+                  if (value!.isEmpty) {
+                    return "enter_the_percentage".tr();
+                  }
+                  return null;
+                },
                 title: "discount_rate".tr(),
                 controller: controllerPercent,
                 hint: "enter_the_percentage".tr(),
@@ -345,6 +351,12 @@ void customPriceShowBottomSheet(
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomTextFieldWithTitle(
+                validator:  ( value) {
+                  if (value!.isEmpty) {
+                    return "price".tr();
+                  }
+                  return null;
+                },
                 title: "price".tr(),
                 controller: controller,
                 hint: "price".tr(),

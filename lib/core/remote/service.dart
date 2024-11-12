@@ -1631,11 +1631,11 @@ class ServiceApi {
             "jsonrpc": "2.0",
             "method": "call",
             "params": {
-          
+              "employee_id": 10,
                
-                "user_id": int.parse(userId),
-                if (employeeId != null) "employee_id": employeeId,
-                
+                // "user_id": int.parse(userId),
+                // if (employeeId != null) "employee_id": employeeId,
+                //
           
             }
           });
