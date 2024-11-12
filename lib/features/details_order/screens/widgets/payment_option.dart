@@ -88,7 +88,12 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
     ),
     builder: (context) {
       return Padding(
-        padding: EdgeInsets.all(getSize(context) / 20),
+       padding: EdgeInsets.only(
+          left: getSize(context) / 20,
+          right: getSize(context) / 20,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          top: getSize(context) / 20,
+        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -114,17 +119,19 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
                   backgroundColor: AppColors.primaryColor,
                   text: 'confirm'.tr(),
                   onPressed: () {
-                    isReturn?
-                    cubit.registerPaymentReturn(context, journalId: int.parse(value!),)
-                    :
-                    cubit.registerPayment(
-                      context,
-                      orderId: cubit.getDetailsOrdersModel?.id ?? -1,
-                      journalId: int.parse(value!),
-                      invoiceId: cubit.getDetailsOrdersModel?.invoices?.first
-                              .invoiceId ??
-                          -1,
-                    );
+                    isReturn
+                        ? cubit.registerPaymentReturn(
+                            context,
+                            journalId: int.parse(value!),
+                          )
+                        : cubit.registerPayment(
+                            context,
+                            orderId: cubit.getDetailsOrdersModel?.id ?? -1,
+                            journalId: int.parse(value!),
+                            invoiceId: cubit.getDetailsOrdersModel?.invoices
+                                    ?.first.invoiceId ??
+                                -1,
+                          );
 
                     print(
                         "///////////////////////// ${cubit.getDetailsOrdersModel?.id}");
