@@ -106,9 +106,7 @@ class CustomPaymentContainer extends StatelessWidget {
                     Flexible(
                       flex: 3,
                       child: Text(
-                          paymentModel.amount.toString() +
-                              " " +
-                              paymentModel.currency.toString(),
+                          "${paymentModel.amount} ${paymentModel.currency}",
                           style: getMediumStyle(fontSize: 14.sp)),
                     ),
                     SizedBox(

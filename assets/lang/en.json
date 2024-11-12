@@ -168,6 +168,10 @@
   "tasks": "Tasks",
   "select_date": "choose date",
   "task": "task",
-  "add_your_task": "add your task"
+  "add_your_task": "add your task",
+  "exchange_permission":"Exchange Permission",
+  "exchange_permissions": "Exchange Permissions"
+
+
 
 }
