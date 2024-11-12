@@ -74,6 +74,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^24.2.9
   network_info_plus:
   google_maps_flutter: 
+  table_calendar: ^3.1.2
   # package_info_plus: ^8.0.3
   # share_plus: ^10.0.3
 

@@ -84,9 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.pushNamed(
                                     context, Routes.itineraryRoute);
                               }
-                            } else
+                            } else {
                               showEmployeeBottomSheet(
                                   context, context.read<HomeCubit>(), false);
+                            }
                           },
                           text: "serali_line".tr(),
                           image: ImageAssets.line);

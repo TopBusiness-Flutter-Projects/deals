@@ -91,6 +91,13 @@ class _MenuScreenWidgetState extends State<MenuScreenWidget> {
                       title: 'profile'.tr(),
                     ),
                     MenuListTileWidget(
+                      iconPath: ImageAssets.editIcon,
+                      onclick: () {
+                        Navigator.pushNamed(context, Routes.tasksRoute);
+                      },
+                      title: 'tasks'.tr(),
+                    ),
+                    MenuListTileWidget(
                       iconPath: ImageAssets.shareIcon,
                       onclick: () async {
                         PackageInfo packageInfo =

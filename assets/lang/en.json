@@ -164,5 +164,10 @@
   "salary": "Salary",
   "empty_car": "No cars found",
   "error" : " Some thing wrong ",
-  "leave": "Leave"
+  "leave": "Leave",
+  "tasks": "Tasks",
+  "select_date": "choose date",
+  "task": "task",
+  "add_your_task": "add your task"
+
 }
