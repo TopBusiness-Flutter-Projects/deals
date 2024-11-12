@@ -296,44 +296,45 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       //! Nav to
       // Navigator.pushReplacementNamed(context, Routes.deleveryOrderRoute);
 
-     getOrderFromId(context, createOrderModel!.result!.orderId!);
-     
+      getOrderFromId(context, createOrderModel!.result!.orderId!);
+
       basket = [];
       emit(LoadedCreateQuotation());
     });
   }
- GetOrdersModel getOrdersModel = GetOrdersModel();
-  Future<void> getOrderFromId(BuildContext context,int orderId) async {
+
+  GetOrdersModel getOrdersModel = GetOrdersModel();
+  Future<void> getOrderFromId(BuildContext context, int orderId) async {
     emit(OrdersLoadingState());
-   
+
     final result = await api.getOrderFromId(orderId);
     result.fold(
       (failure) {
         Navigator.pop(context);
         emit(OrdersErrorState());
       },
-      (r) async { 
+      (r) async {
         getOrdersModel = r;
         if (r.result != null) {
           if (r.result!.isNotEmpty) {
-                    Navigator.pop(context);
+            Navigator.pop(context);
 
-           Navigator.pushNamed(
-        context,
-        Routes.detailsOrderShowPrice,
-        arguments: {
-          'orderModel': r.result!.first,
-          'isClientOrder': false, // or false based on your logic
-        },
-      );
+            Navigator.pushNamed(
+              context,
+              Routes.detailsOrderShowPrice,
+              arguments: {
+                'orderModel': r.result!.first,
+                'isClientOrder': false, // or false based on your logic
+              },
+            );
           }
-          
         }
-       
+
         emit(OrdersLoadedState());
       },
     );
   }
+
   clearSearchText() {
     searchController.clear();
     emit(ClearSearchText());
@@ -414,6 +415,37 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     Navigator.pop(context);
     newAllDiscountController.clear();
     emit(OnChangeAllUnitPriceOfItem());
+  }
+
+  CreateOrderModel? creaPickingModel;
+  createPicking({
+    required int pickingId,
+    required BuildContext context,
+  }) async {
+    AppWidget.createProgressDialog(context, "جاري التحميل ..");
+    emit(LoadingCreatePicking());
+    final result = await api.createPicking(
+      sourceWarehouseId: pickingId,
+      products: basket,
+    );
+
+    result.fold((l) {
+      Navigator.pop(context);
+      emit(ErrorCreatePicking());
+    }, (r) {
+      Navigator.pop(context);
+      creaPickingModel = r;
+      if (creaPickingModel!.result!.message != null) {
+        successGetBar(creaPickingModel!.result!.message.toString());
+        basket = [];
+        debugPrint("Success Create Pick");
+        Navigator.pushReplacementNamed(context, Routes.mainRoute);
+      } else {
+        errorGetBar("error".tr());
+      }  
+
+      emit(LoadedCreatePicking());
+    });
   }
 }
 

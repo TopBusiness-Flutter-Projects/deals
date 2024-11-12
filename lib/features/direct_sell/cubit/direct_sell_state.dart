@@ -54,6 +54,11 @@ class LoadingCreateQuotation extends DirectSellState {}
 class LoadedCreateQuotation extends DirectSellState {}
 
 class ErrorCreateQuotation extends DirectSellState {}
+class LoadingCreatePicking extends DirectSellState {}
+
+class  LoadedCreatePicking extends DirectSellState {}
+
+class   ErrorCreatePicking extends DirectSellState {}
 
 class OnChangeCountOfProducts extends DirectSellState {}
 

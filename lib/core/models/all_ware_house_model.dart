@@ -9,14 +9,14 @@ AllWareHouseModel allWareHouseModelFromJson(String str) => AllWareHouseModel.fro
 String allWareHouseModelToJson(AllWareHouseModel data) => json.encode(data.toJson());
 
 class AllWareHouseModel {
-    List<Result>? result;
+    List<WareHouse>? result;
 
     AllWareHouseModel({
         this.result,
     });
 
     factory AllWareHouseModel.fromJson(Map<String, dynamic> json) => AllWareHouseModel(
-        result: json["result"] == null ? [] : List<Result>.from(json["result"]!.map((x) => Result.fromJson(x))),
+        result: json["result"] == null ? [] : List<WareHouse>.from(json["result"]!.map((x) => WareHouse.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -24,16 +24,16 @@ class AllWareHouseModel {
     };
 }
 
-class Result {
+class WareHouse {
     int? id;
     dynamic name;
 
-    Result({
+    WareHouse({
         this.id,
         this.name,
     });
 
-    factory Result.fromJson(Map<String, dynamic> json) => Result(
+    factory WareHouse.fromJson(Map<String, dynamic> json) => WareHouse(
         id: json["id"],
         name: json["name"],
     );
