@@ -166,6 +166,7 @@ class _CreateReceiptCoucherScreenState
           CustomButton(
             title: "confirm".tr(),
             onTap: () {
+
               cubit.partnerPaymentMethod(context, partnerId: widget.partnerId);
             },
           )
