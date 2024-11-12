@@ -309,13 +309,15 @@ class _DatePickerFieldState extends State<DatePickerField> {
             ),
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(Icons.calendar_today, color: Colors.grey),
-                SizedBox(width: 8.w),
+
+
                 Text(
                   _selectedDate,
                   style: TextStyle(fontSize: 16.sp),
                 ),
+                const Icon(Icons.calendar_today, color: Colors.grey),
               ],
             ),
           ),

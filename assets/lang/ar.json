@@ -166,5 +166,10 @@
  "returns_details" :"تفاصيل المرتجع",
   "confirm_return": "تأكيد المرتجع",
  "Bill_of_exchange" :"سند صرف",
-"return_invoice" : "فاتورة المرتجع"
+  "return_invoice" : "فاتورة المرتجع",
+  "tasks": "المهام",
+  "select_date": "حدد التاريخ",
+  "task": "المهمة",
+  "add_your_task": "اضف مهمتك"
+
 }

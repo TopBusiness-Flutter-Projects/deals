@@ -22,6 +22,7 @@ import 'package:top_sale/features/notification_screen/screens/notification_scree
 import 'package:top_sale/features/attendance_and_departure/screens/salaries_screen.dart';
 import 'package:top_sale/features/returns/screens/returns_screen.dart';
 import 'package:top_sale/features/splash/screens/splash_screen.dart';
+import 'package:top_sale/features/tasks/screens/tasks_screen.dart';
 import 'package:top_sale/features/update_profile/screens/update_profile_screen.dart';
 import '../../core/models/all_partners_for_reports_model.dart';
 import '../../core/models/get_orders_model.dart';
@@ -84,6 +85,7 @@ class Routes {
   static const String returnsRoute = '/returnsRoute';
   static const String itineraryRoute = '/itineraryRoute';
   static const String editProfileRoute = '/editProfileRoute';
+  static const String tasksRoute = '/tasksRoute';
 
 }
 
@@ -286,7 +288,10 @@ class AppRoutes {
         );
       case Routes.contractRoute:
         return MaterialPageRoute(
-          builder: (context) =>  ContractScreen(),
+          builder: (context) =>  const ContractScreen(),
+        ); case Routes.tasksRoute:
+        return MaterialPageRoute(
+          builder: (context) =>  TasksScreen(),
         );    case Routes.attendanceAndDepartureDetailsRoute:
         return MaterialPageRoute(
           builder: (context) =>   const AttendanceAndDepartureDetailsScreen(),
