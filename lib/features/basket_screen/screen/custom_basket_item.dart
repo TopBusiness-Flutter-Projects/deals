@@ -21,8 +21,9 @@ import '../../login/widget/textfield_with_text.dart';
 import '../cubit/cubit.dart';
 
 class CustomBasketItem extends StatefulWidget {
-  const CustomBasketItem({required this.item, super.key});
+  const CustomBasketItem({required this.item, super.key,  this.isEditable = true});
   final ProductModelData item;
+  final bool isEditable;
   @override
   State<CustomBasketItem> createState() => _CustomBasketItemState();
 }
@@ -77,7 +78,7 @@ class _CustomBasketItemState extends State<CustomBasketItem> {
                               ),
                             ),
                           ),
-
+if (widget.isEditable)
                           InkWell(
                             onTap: () {
                               cubit2.newDiscountController.text =
@@ -115,6 +116,7 @@ class _CustomBasketItemState extends State<CustomBasketItem> {
                               width: getSize(context) / 14,
                             ),
                           ),
+                          if (widget.isEditable)
                           Padding(
                             padding: const EdgeInsetsDirectional.symmetric(
                                 horizontal: 5.0),
@@ -281,7 +283,8 @@ void customShowBottomSheet(
                 backgroundColor: AppColors.primaryColor,
                 text: 'confirm'.tr(),
                 onPressed: onPressed,
-              ),SizedBox(height: getSize(context) / 30),
+              ),
+              SizedBox(height: getSize(context) / 30),
             ],
           ),
         ),

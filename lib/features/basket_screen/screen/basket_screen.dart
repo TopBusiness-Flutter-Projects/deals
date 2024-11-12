@@ -38,7 +38,6 @@ class _BasketScreenState extends State<BasketScreen> {
       builder: (context, state) {
         var cubit = context.read<BasketCubit>();
         var cubit2 = context.read<DirectSellCubit>();
-
         return Scaffold(
           backgroundColor: AppColors.white,
           appBar: AppBar(

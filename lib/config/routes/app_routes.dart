@@ -3,6 +3,7 @@ import 'package:top_sale/features/attendance_and_departure/screens/attendance_an
 import 'package:top_sale/features/attendance_and_departure/screens/holidays_screen.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/holidays_type_screen.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/money.dart';
+import 'package:top_sale/features/basket_screen/screen/dispensing_basket_screen.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import 'package:top_sale/features/clients/screens/edit_account.dart';
 import 'package:top_sale/features/contact_us/screens/contact_us_screen.dart';
@@ -66,6 +67,7 @@ class Routes {
   static const String contactUsRoute = '/contactUsRoute';
   static const String notificationRoute = '/notificationRoute';
   static const String basketScreenRoute = '/basketScreen';
+  static const String dispensingBasketScreenRoute = '/dispensingbasketScreen';
   static const String updateprofileRoute = '/updateprofile';
   static const String profileRoute = '/profileRoute';
   static const String profileClientRoute = '/profileClientRoute';
@@ -214,6 +216,10 @@ class AppRoutes {
         );
       case Routes.productsRoute:
         List<String> categoryName = settings.arguments as List<String>;
+        // if catId = -1 or 0 get all products
+        // else get products by cat id
+        // if catId = 0 the basket icon go to اذن الصرف screen , else go to client screen
+        // categoryName  => AppBar title
         return MaterialPageRoute(
           builder: (context) => ProductsScreen(
             categoryName: categoryName[0],
@@ -242,6 +248,12 @@ class AppRoutes {
             builder: (context) => BasketScreen(
                   partner: partner,
                   currency: 'EGP',
+                ));
+      case Routes.dispensingBasketScreenRoute:
+        return MaterialPageRoute(
+            builder: (context) => DispensingBasketScreen(
+                  // partner: partner,
+                  // currency: 'EGP',
                 ));
       case Routes.notificationRoute:
         return MaterialPageRoute(

@@ -28,6 +28,8 @@ class EndPoints {
   static String invoice = '/api/invoice/';
   static String returnedOrder = '/api/sale_orders/returned';
   static String createQuotation = '/api/quotation/';
+  static String createPicking = '/api/create_stock_picking';
+  static String getPicking = '/api/get_pickings_by_employee_or_user';
   static String updateQuotation = '/api/quotation/update/';
   static String getAllJournals =
       '/api/account.journal/?query={id, display_name}';
