@@ -428,7 +428,6 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       sourceWarehouseId: pickingId,
       products: basket,
     );
-
     result.fold((l) {
       Navigator.pop(context);
       emit(ErrorCreatePicking());

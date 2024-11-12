@@ -26,7 +26,7 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     context.read<DetailsOrdersCubit>().moneyController.text = context
             .read<DetailsOrdersCubit>()
             .getDetailsOrdersModel
-            ?.amountTotal
+            ?.invoices!.first.amountDue
             .toString() ??
         "";
     context.read<DetailsOrdersCubit>().getAllJournals();
@@ -101,7 +101,8 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                  "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.amountTotal ?? 0} ",
+                  "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.invoices?.first.amountDue ?? 0} ",
+                  // "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.amountTotal ?? 0} ",
                   style: TextStyle(fontSize: getSize(context) / 20)),
               CustomTextFieldWithTitle(
                 title: "Paid_in_full".tr(),
@@ -132,9 +133,8 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
                                     ?.first.invoiceId ??
                                 -1,
                           );
-
                     print(
-                        "///////////////////////// ${cubit.getDetailsOrdersModel?.id}");
+                        "////// ${cubit.getDetailsOrdersModel?.id}");
                   },
                 ),
               )

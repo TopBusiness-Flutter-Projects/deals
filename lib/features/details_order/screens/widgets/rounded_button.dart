@@ -10,33 +10,28 @@ class RoundedButton extends StatelessWidget {
   const RoundedButton({
     super.key,
     required this.text,
-    required this.onPressed, required this.backgroundColor,
+    required this.onPressed,
+    required this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
-
-    return SizedBox(
-      width:getSize(context)/1,  // Full width button
-      height: getSize(context)/8,              // Fixed height
-      child: ElevatedButton(
-        onPressed: onPressed,
-
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0), // Rounded edges
-          ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0), // Rounded edges
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: AppColors.white,
-            fontSize: getSize(context)/22,
-            fontWeight: FontWeight.bold,
-          ),
-          textDirection: TextDirection.rtl, // For Arabic text
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: AppColors.white,
+          fontSize: getSize(context) / 22,
+          fontWeight: FontWeight.bold,
         ),
+        textDirection: TextDirection.rtl, // For Arabic text
       ),
     );
   }

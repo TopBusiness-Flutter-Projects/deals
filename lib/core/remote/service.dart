@@ -1207,11 +1207,11 @@ class ServiceApi {
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     try {
       final response =
-      await dio.post(odooUrl + EndPoints.createPartner + 'create',
-          options: Options(
-            headers: {"Cookie": "session_id=$sessionId"},
-          ),
-          body: {
+          await dio.post(odooUrl + EndPoints.createPartner + 'create',
+              options: Options(
+                headers: {"Cookie": "session_id=$sessionId"},
+              ),
+              body: {
             "params": {
               "data": {
                 "name": name,
