@@ -364,6 +364,8 @@ class ClientsCubit extends Cubit<ClientsState> {
         mobile: phoneController.text,
         street: addressController.text,
         email: emailController.text,
+        isCompany: true,
+        vat: "",
         lat: double.parse(currentLocation?.latitude.toString() ?? ""),
         long: double.parse(currentLocation?.longitude.toString() ?? ""));
     result.fold((l) {

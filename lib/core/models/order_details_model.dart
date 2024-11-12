@@ -102,6 +102,8 @@ class Invoice {
   dynamic name;
   dynamic state;
   dynamic amountTotal;
+  dynamic amountDue;
+  dynamic paymentState;
   dynamic currency;
   dynamic invoiceDate;
   List<InvoiceLine>? invoiceLines;
@@ -113,7 +115,7 @@ class Invoice {
     this.amountTotal,
     this.currency,
     this.invoiceDate,
-    this.invoiceLines,
+    this.invoiceLines,this.amountDue,this.paymentState
   });
 
   factory Invoice.fromJson(Map<String, dynamic> json) => Invoice(
@@ -121,7 +123,9 @@ class Invoice {
         name: json["name"],
         state: json["state"],
         amountTotal: json["amount_total"]?.toDouble(),
+        amountDue: json["amount_due"]?.toDouble(),
         currency: json["currency"],
+        paymentState: json["payment_state"],
         invoiceDate: json["invoice_date"],
         invoiceLines: json["invoice_lines"] == null
             ? []

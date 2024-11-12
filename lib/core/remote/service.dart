@@ -1196,6 +1196,8 @@ class ServiceApi {
     required String mobile,
     required String email,
     required String street,
+    required bool isCompany,
+    String? vat,     
     required double lat,
     required double long,
   }) async {
@@ -1213,6 +1215,9 @@ class ServiceApi {
               "data": {
                 "name": name,
                 "phone": mobile,
+                "is_company": isCompany,
+              if (isCompany)  "company_type": "company", // if isCompany = true
+               if(isCompany) "vat": vat, // if isCompany = true
                 if (email.isNotEmpty) "email": email,
                 "street": street,
                 "latitude": lat,

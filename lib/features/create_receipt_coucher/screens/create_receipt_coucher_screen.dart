@@ -158,6 +158,7 @@ class _CreateReceiptCoucherScreenState
                 return null;
               },
               controller: cubit.amountController,
+              keyboardType: TextInputType.number,
               title: "Paid_in_full".tr(),
               hint: "enter_paid".tr(),
             ),
