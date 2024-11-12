@@ -37,15 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return SafeArea(
           child: Scaffold(
             backgroundColor: AppColors.white,
-            floatingActionButton: FloatingActionButton.extended(
-              backgroundColor: AppColors.primary,
-              onPressed: () {
-                Navigator.pushNamed(context, Routes.productsRoute,
-                    arguments: ["انشاء اذن الصرف", '0']);
-              },
-              label: const Text("اذن الصرف").tr(),
-              icon: const Icon(Icons.home),
-            ),
+            
             body: SingleChildScrollView(
                 child: Padding(
               padding: EdgeInsets.only(
