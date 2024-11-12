@@ -169,6 +169,9 @@ class _CreateReceiptCoucherScreenState
 
               cubit.partnerPaymentMethod(context, partnerId: widget.partnerId);
             },
+
+
+
           )
         ]),
       ),
