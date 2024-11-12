@@ -86,10 +86,8 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
                                             boxShadow: [
                                               BoxShadow(
                                                 blurStyle: BlurStyle.outer,
-                                                color: Colors.black.withOpacity(
-                                                    0.1),
-                                                spreadRadius:
-                                                    1,
+                                                color: Colors.black.withOpacity(0.1),
+                                                spreadRadius: 1,
                                                 blurRadius: 4,
                                                 offset: const Offset(0,
                                                     1),
@@ -100,15 +98,12 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
                                                 BorderRadius.circular(10.sp),
                                           ),
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
 
                                                   Row(
