@@ -6,13 +6,14 @@ import 'package:top_sale/core/utils/get_size.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/assets_manager.dart';
+import '../../../core/widgets/decode_image.dart';
 import '../../home_screen/cubit/cubit.dart';
 import '../../login/widget/textfield_with_text.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -25,9 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context.read<HomeCubit>().nameOfUser.toString() ?? "";
     context.read<ProfileCubit>().phoneController.text =
         context.read<HomeCubit>().phoneOfUser.toString() ?? "";
-    debugPrint("nonos" +
-        '${context.read<ProfileCubit>().phoneController.text.toString()}');
-    debugPrint("nonos" + '${context.read<HomeCubit>().phoneOfUser.toString()}');
+
     super.initState();
   }
 
@@ -50,9 +49,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Stack(
                     children: [
-                      CircleAvatar(
-                        radius: 50.sp,
-                        backgroundImage: const AssetImage(ImageAssets.user),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: CustomDecodedImage(
+                          base64String: context.read<HomeCubit>().imageOfUser,
+                          // context: context,
+                          height: 100.h,
+                          width: 100.h,
+                        ),
                       ),
                     ],
                   ),

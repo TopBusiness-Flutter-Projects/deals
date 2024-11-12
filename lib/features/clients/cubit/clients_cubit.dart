@@ -39,9 +39,15 @@ class ClientsCubit extends Cubit<ClientsState> {
   TextEditingController searchController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController vatController = TextEditingController();
 
   File? profileImage;
   String selectedBase64String = "";
+  String? selectedClientType ="Company";
+  changeClientType(String? value) {
+    selectedClientType = value;
+    emit(UpdateClientType());
+  }
   GetAllPartnersModel? allPartnersModel;
   Future<void> pickImage(ImageSource source) async {
     try {
@@ -360,12 +366,13 @@ class ClientsCubit extends Cubit<ClientsState> {
     AppWidget.createProgressDialog(context, "جاري التحميل");
     emit(CreateClientLoading());
     final result = await api.createPartner(
+      image: selectedBase64String,
         name: clientNameController.text,
         mobile: phoneController.text,
         street: addressController.text,
+        isCompany: selectedClientType== "Company" ? true:false,
+        vat: vatController.text,
         email: emailController.text,
-        isCompany: true,
-        vat: "",
         lat: double.parse(currentLocation?.latitude.toString() ?? ""),
         long: double.parse(currentLocation?.longitude.toString() ?? ""));
     result.fold((l) {
@@ -385,6 +392,9 @@ class ClientsCubit extends Cubit<ClientsState> {
           phoneController.clear();
           addressController.clear();
           emailController.clear();
+          vatController.clear();
+          selectedBase64String = "";
+          profileImage = null;
           emit(CreateClientLoaded());
           Navigator.pop(context);
         } else {

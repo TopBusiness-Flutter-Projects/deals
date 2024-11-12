@@ -60,7 +60,7 @@ class _EditAccountScreenState extends State<EditAccountScreen>
                         child: cubit.profileImage == null
                             ? CustomDecodedImage(
                                 base64String:
-                                    context.read<HomeCubit>().imageOfUser,
+                                    context.read<ClientsCubit>().selectedBase64String,
                                 // context: context,
                                 height: 100.h,
                                 width: 100.h,
