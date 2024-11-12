@@ -37,6 +37,7 @@ import '../../features/details_order/screens/details_order.dart';
 import '../../features/details_order/screens/details_order_show_price.dart';
 import '../../features/details_order/screens/widgets/payment.dart';
 import '../../features/delevery_order/screens/delevery_order_screen.dart';
+import '../../features/exchange_permission/screens/exchange_permission_screen.dart';
 import '../../features/login/screens/login_screen.dart';
 import '../../features/on_boarding/screen/onboarding_screen.dart';
 import '../../features/profile/screens/profile_screen.dart';
@@ -84,6 +85,7 @@ class Routes {
   static const String itineraryRoute = '/itineraryRoute';
   static const String editProfileRoute = '/editProfileRoute';
   static const String tasksRoute = '/tasksRoute';
+  static const String exchangePermissionRoute = '/exchangePermissionRoute';
 
 }
 
@@ -279,7 +281,11 @@ class AppRoutes {
           builder: (context) =>  const ContractScreen(),
         ); case Routes.tasksRoute:
         return MaterialPageRoute(
-          builder: (context) =>  TasksScreen(),
+          builder: (context) =>  const TasksScreen(),
+        );
+        case Routes.exchangePermissionRoute:
+        return MaterialPageRoute(
+          builder: (context) =>  const ExchangePermissionScreen(),
         );    case Routes.attendanceAndDepartureDetailsRoute:
         return MaterialPageRoute(
           builder: (context) =>   const AttendanceAndDepartureDetailsScreen(),

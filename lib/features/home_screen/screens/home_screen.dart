@@ -43,79 +43,88 @@ class _HomeScreenState extends State<HomeScreen> {
                   top: getSize(context) / 33,
                   left: getSize(context) / 33,
                   right: getSize(context) / 33),
-              child: Column(children: [
-                const AppbarHome(),
-                SizedBox(
-                  height: getSize(context) / 12,
-                ),
-                GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      crossAxisCount: 2),
-                  shrinkWrap: true,
-                  children: [
-                    CardHome(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, Routes.deleveryOrderRoute);
-                        },
-                        text: "delevey_order".tr(),
-                        image: ImageAssets.deleveryOrder),
-                    CardHome(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.directSellRoute);
-                        },
-                        text: "direct_sales".tr(),
-                        image: ImageAssets.directSale),
-                    BlocBuilder<ClientsCubit, ClientsState>(
-                        builder: (context, state) {
-                      return CardHome(
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  const AppbarHome(),
+                  SizedBox(
+                    height: getSize(context) / 12,
+                  ),
+                  GridView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 20,
+                        crossAxisCount: 2),
+                    shrinkWrap: true,
+                    children: [
+                      CardHome(
                           onPressed: () {
-                            if (context.read<HomeCubit>().isEmployeeAdded) {
-                              if (context
-                                      .read<ClientsCubit>()
-                                      .currentLocation ==
-                                  null) {
-                                context
-                                    .read<ClientsCubit>()
-                                    .checkAndRequestLocationPermission(context);
-                              } else {
-                                Navigator.pushNamed(
-                                    context, Routes.itineraryRoute);
-                              }
-                            } else {
-                              showEmployeeBottomSheet(
-                                  context, context.read<HomeCubit>(), false);
-                            }
+                            Navigator.pushNamed(
+                                context, Routes.deleveryOrderRoute);
                           },
-                          text: "serali_line".tr(),
-                          image: ImageAssets.line);
-                    }),
-                    CardHome(
-                        text: "clients".tr(),
-                        image: ImageAssets.clients,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.clientsRoute,
-                              arguments: ClientsRouteEnum.details);
-                        }),
-                    CardHome(
-                        text: "receipt_voucher".tr(),
-                        image: ImageAssets.receiptVoucherIcon,
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, Routes.receiptVoucherRoute,
-                              arguments: false);
-                        }),
-                    CardHome(
-                        text: "returns".tr(),
-                        image: ImageAssets.cartIcon,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.returnsRoute);
-                        }),
-                  ],
-                ),
-              ]),
+                          text: "delevey_order".tr(),
+                          image: ImageAssets.deleveryOrder),
+                      CardHome(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.directSellRoute);
+                          },
+                          text: "direct_sales".tr(),
+                          image: ImageAssets.directSale),
+                      BlocBuilder<ClientsCubit, ClientsState>(
+                          builder: (context, state) {
+                        return CardHome(
+                            onPressed: () {
+                              if (context.read<HomeCubit>().isEmployeeAdded) {
+                                if (context
+                                        .read<ClientsCubit>()
+                                        .currentLocation ==
+                                    null) {
+                                  context
+                                      .read<ClientsCubit>()
+                                      .checkAndRequestLocationPermission(context);
+                                } else {
+                                  Navigator.pushNamed(
+                                      context, Routes.itineraryRoute);
+                                }
+                              } else {
+                                showEmployeeBottomSheet(
+                                    context, context.read<HomeCubit>(), false);
+                              }
+                            },
+                            text: "serali_line".tr(),
+                            image: ImageAssets.line);
+                      }),
+                      CardHome(
+                          text: "clients".tr(),
+                          image: ImageAssets.clients,
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.clientsRoute,
+                                arguments: ClientsRouteEnum.details);
+                          }),
+                      CardHome(
+                          text: "receipt_voucher".tr(),
+                          image: ImageAssets.receiptVoucherIcon,
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, Routes.receiptVoucherRoute,
+                                arguments: false);
+                          }),
+                      CardHome(
+                          text: "returns".tr(),
+                          image: ImageAssets.cartIcon,
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.returnsRoute);
+                          }),
+                      CardHome(
+                          text: "exchange_permission".tr(),
+                          image: ImageAssets.cartIcon,
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.exchangePermissionRoute);
+                          }),
+                    ],
+                  ),
+                ]),
+              ),
             )),
           ),
         );
