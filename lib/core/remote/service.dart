@@ -1227,23 +1227,6 @@ class ServiceApi {
     }
   }
 
-  Future<Either<Failure, AllWareHouseModel>> getWareHouses() async {
-    String odooUrl =
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
-    String? sessionId = await Preferences.instance.getSessionId();
-    try {
-      final response = await dio.get(
-        odooUrl + EndPoints.wareHouse + '?query={id,name,}',
-        // '?query={id,partner_id,display_name,state,write_date,amount_total}&filter=[["user_id", "=",1]]',
-        options: Options(
-          headers: {"Cookie": "session_id=$sessionId"},
-        ),
-      );
-      return Right(AllWareHouseModel.fromJson(response));
-    } on ServerException {
-      return Left(ServerFailure());
-    }
-  }
   ////////////////////// HR //////////////
   /// Contract ///
 
@@ -1567,9 +1550,8 @@ class ServiceApi {
     }
   }
 
-  Future<Either<Failure, CreateOrderModel>> pickingRequest(
-      {required int partnerId,
-      required String warehouseId,
+  Future<Either<Failure, CreateOrderModel>> createPicking(
+      {required int sourceWarehouseId,
       required List<ProductModelData> products}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1590,7 +1572,7 @@ class ServiceApi {
               })
           .toList();
 
-      final response = await dio.post(odooUrl + EndPoints.createQuotation,
+      final response = await dio.post(odooUrl + EndPoints.createPicking,
           options: Options(
             headers: {"Cookie": "session_id=$sessionId"},
           ),
@@ -1598,14 +1580,14 @@ class ServiceApi {
             "jsonrpc": "2.0",
             "method": "call",
             "params": {
-            //  "data": {
-                "source_warehouse_id": partnerId,
-                "destination_warehouse_id":
-                    wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
-                "user_id": int.parse(userId),
-                if (employeeId != null) "employee_id": employeeId,
-                "products": orderLine
-           //   }
+              //  "data": {
+              "source_warehouse_id": sourceWarehouseId,
+              "destination_warehouse_id":
+                  wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
+              "user_id": int.parse(userId),
+              if (employeeId != null) "employee_id": employeeId,
+              "products": orderLine
+              //   }
             }
           });
       return Right(CreateOrderModel.fromJson(response));
@@ -1613,30 +1595,25 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
-  Future<Either<Failure, GetPickingsModel>> getPicking(
-      ) async {
+
+  Future<Either<Failure, GetPickingsModel>> getPicking() async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId();
     String userId = await Preferences.instance.getUserId() ?? "1";
-  
-    try {
-     
 
+    try {
       final response = await dio.post(odooUrl + EndPoints.getPicking,
           options: Options(
-            headers: {"Cookie": "session_id=$sessionId"},          ),
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
           body: {
             "jsonrpc": "2.0",
             "method": "call",
             "params": {
-          
-               
-                "user_id": int.parse(userId),
-                if (employeeId != null) "employee_id": employeeId,
-                
-          
+              "user_id": int.parse(userId),
+              if (employeeId != null) "employee_id": employeeId,
             }
           });
       return Right(GetPickingsModel.fromJson(response));
@@ -1645,4 +1622,42 @@ class ServiceApi {
     }
   }
 
+  Future<Either<Failure, AllWareHouseModel>> getWareHouses() async {
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    try {
+      final response = await dio.get(
+        odooUrl + EndPoints.wareHouse + '?query={id,name}',
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(AllWareHouseModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  Future<Either<Failure, WareHouse>> getWareHouseById() async {
+    AuthModel? authModel = await Preferences.instance.getUserModel();
+
+    int id = await Preferences.instance.getEmployeeWareHouse() ??
+        authModel.result?.propertyWarehouseId ??
+        1;
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    try {
+      final response = await dio.get(
+        odooUrl + EndPoints.wareHouse + '$id?query={id,name}',
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(WareHouse.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/core/utils/get_size.dart';
@@ -32,12 +33,18 @@ class DispensingBasketScreen extends StatefulWidget {
 
 class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
   @override
+  void initState() {
+    context.read<BasketCubit>().getWareHouses();
+    context.read<BasketCubit>().getMyWareHouse();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<DirectSellCubit, DirectSellState>(
       builder: (context, state) {
         var cubit = context.read<BasketCubit>();
         var cubit2 = context.read<DirectSellCubit>();
-
         return Scaffold(
           backgroundColor: AppColors.white,
           appBar: AppBar(
@@ -78,177 +85,119 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
           body: SingleChildScrollView(
             child: BlocBuilder<BasketCubit, BasketState>(
                 builder: (context, state) {
-              return Column(
-                children: [
-                  // //! Cusomer name
-                  // Container(
-                  //   padding: const EdgeInsets.symmetric(
-                  //       vertical: 18, horizontal: 14),
-                  //   margin: const EdgeInsets.all(8),
-                  //   decoration: BoxDecoration(
-                  //       color: AppColors.grey2Color,
-                  //       borderRadius: BorderRadius.circular(5)),
-                  //   child: Row(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Image.asset(
-                  //         ImageAssets.profileIconPng,
-                  //         width: getSize(context) / 8,
-                  //         height: getSize(context) / 8,
-                  //       ),
-                  //       // Flexible(
-                  //       //   fit: FlexFit.tight,
-                  //       //   child: Padding(
-                  //       //     padding:
-                  //       //         const EdgeInsetsDirectional.only(start: 5.0),
-                  //       //     child: Column(
-                  //       //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       //       children: [
-                  //       //         Padding(
-                  //       //           padding: const EdgeInsets.only(bottom: 5.0),
-                  //       //           child: Text(
-                  //       //             widget.partner?.name ?? '',
-                  //       //             maxLines: 1,
-                  //       //             style: TextStyle(
-                  //       //               fontWeight: FontWeight.w700,
-                  //       //               fontSize: 14.sp,
-                  //       //             ),
-                  //       //           ),
-                  //       //         ),
-                  //       //         widget.partner?.phone.toString() == 'false'
-                  //       //             ? Container()
-                  //       //             : InkWell(
-                  //       //                 onTap: () async {
-                  //       //                   await launchPhoneDialer(
-                  //       //                       widget.partner?.phone ?? '');
-                  //       //                 },
-                  //       //                 child: Text(
-                  //       //                   widget.partner?.phone.toString() ??
-                  //       //                       '_',
-                  //       //                   maxLines: 1,
-                  //       //                   style: TextStyle(
-                  //       //                     fontWeight: FontWeight.w400,
-                  //       //                     fontSize: 14.sp,
-                  //       //                   ),
-                  //       //                 ),
-                  //       //               ),
-                  //       //       ],
-                  //       //     ),
-                  //       //   ),
-                  //       // ),
-                  //       // InkWell(
-                  //       //   onTap: () {
-                  //       //     //!total discount add discount
-                  //       //     // customShowBottomSheet(context, cubit);
-                  //       //   },
-                  //       //   child: Image.asset(
-                  //       //     ImageAssets.discount,
-                  //       //     width: getSize(context) / 12,
-                  //       //   ),
-                  //       // ),
-                  //       Padding(
-                  //         padding: const EdgeInsetsDirectional.only(start: 5.0),
-                  //         child: Column(
-                  //           children: [
-                  //             Text(
-                  //               'total'.tr(),
-                  //               maxLines: 1,
-                  //               style: TextStyle(
-                  //                 fontWeight: FontWeight.w400,
-                  //                 fontSize: 14.sp,
-                  //               ),
-                  //             ),
-                  //             Text(
-                  //               '${calculateTotalDiscountedPrice(cubit2.basket)} ${cubit2.basket.isEmpty ? '' : context.read<HomeCubit>().currencyName}',
-                  //               // '${calculateTotalDiscountedPrice(cubit2.basket)} ${cubit2.basket.isEmpty ? '' : cubit2.basket.first.currencyId?.name ?? ''}',
-                  //               maxLines: 1,
-                  //               style: TextStyle(
-                  //                 fontWeight: FontWeight.w700,
-                  //                 fontSize: 14.sp,
-                  //               ),
-                  //             ),
-                  //             cubit2.basket.isEmpty
-                  //                 ? Container()
-                  //                 : InkWell(
-                  //                     onTap: () {
-                  //                       cubit2.newAllDiscountController.text =
-                  //                           '0.0'.toString();
-                  //                       customShowBottomSheet(context,
-                  //                           cubit2.newAllDiscountController,
-                  //                           onPressed: () {
-                  //                         if (double.parse(cubit2
-                  //                                 .newAllDiscountController.text
-                  //                                 .toString()) <
-                  //                             100) {
-                  //                           cubit2.onChnageAllDiscountOfUnit(
-                  //                               context);
-                  //                         } else {
-                  //                           errorGetBar(
-                  //                               'discount_validation'.tr());
-                  //                         }
-                  //                       });
-
-                  //                       //! add discount
-
-                  //                       // customShowBottomSheet(
-                  //                       //   context,
-                  //                       //   cubit.controllerPercent,
-                  //                       //   onPressed: () {
-                  //                       //     //! set dis count to model
-                  //                       //     //! cal the new value of price
-                  //                       //     //! case all discout remove discount of itms first then make all and loop on them
-                  //                       //     //! clear controller
-                  //                       //   },
-                  //                       // );
-                  //                     },
-                  //                     child: Image.asset(
-                  //                       ImageAssets.discount,
-                  //                       width: getSize(context) / 14,
-                  //                     ),
-                  //                   ),
-                  //           ],
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // )
-
-                  //! Cusomer name
-                  // ,
-                  SizedBox(
-                    height: getSize(context) / 16,
-                  ),
-                  cubit2.basket.isEmpty
-                      ? Center(child: Text("لا يوجد منتجات في السلة"))
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: cubit2.basket.length,
-                          itemBuilder: (context, index) {
-                            var item = cubit2.basket[index];
-                            return CustomBasketItem(
-                              item: item,
-                              isEditable: false,
-                            );
-                          },
+              return Padding(
+                padding: EdgeInsets.all(12.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                      child: Text(
+                        "من",
+                        style: getMediumStyle(),
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    if (cubit.getWareHousesModel != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: Colors.grey),
                         ),
-                  SizedBox(height: 32.h),
-                  (state is LoadingCreateQuotation)
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : cubit2.basket.isEmpty
-                          ? Container()
-                          : CustomButton(
-                              title: 'تأكيد اذن الصرف',
-                              onTap: () {
-                                // cubit2.createQuotation(
-                                //     warehouseId: '1',
-                                //     context: context,
-                                //     partnerId: widget.partner?.id ?? -1);
-                                //!
-                              })
-                ],
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            value: cubit
+                                .selectedWareHouseId, // This will store the ID (not the name)
+                            hint: Text(
+                              'Select Warehouse',
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                            icon: const Icon(Icons.arrow_drop_down,
+                                color: Colors.grey),
+                            isExpanded: true,
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                cubit.selectedWareHouseId =
+                                    newValue; // Store the ID in cubit
+                              });
+                            },
+                            items: cubit.getWareHousesModel?.result
+                                    ?.map<DropdownMenuItem<int>>((resultItem) {
+                                  return DropdownMenuItem<int>(
+                                    value: resultItem.id,
+                                    child: Text(resultItem.name ??
+                                        ''), // Display the name
+                                  );
+                                }).toList() ??
+                                [],
+                          ),
+                        ),
+                      ),
+                    SizedBox(height: 10.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                      child: Text(
+                        "الي",
+                        style: getMediumStyle(),
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    if (cubit.myWareHouse != null)
+                      Text(
+                        cubit.myWareHouse?.name ?? "",
+                        style: getBoldStyle(),
+                      ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    cubit2.basket.isEmpty
+                        ? Center(child: Text("لا يوجد منتجات في السلة"))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: cubit2.basket.length,
+                            itemBuilder: (context, index) {
+                              var item = cubit2.basket[index];
+                              return CustomBasketItem(
+                                item: item,
+                                isEditable: false,
+                              );
+                            },
+                          ),
+                    SizedBox(height: 32.h),
+                    (state is LoadingCreateQuotation)
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : cubit2.basket.isEmpty
+                            ? Container()
+                            : CustomButton(
+                                title: 'تأكيد اذن الصرف',
+                                onTap: () {
+                                  if (cubit.selectedWareHouseId == null ||
+                                      cubit.myWareHouse == null) {
+                                    errorGetBar(
+                                        'يرجى تحديد المستودع و المستودع الخاص بك');
+                                  } else if (cubit.selectedWareHouseId ==
+                                      cubit.myWareHouse?.id) {
+                                    errorGetBar(
+                                        'لا يمكنك اذن صرف من المستودع الخاص بك');
+                                  } else {
+                                    cubit2.createPicking(
+                                      context: context,
+                                      pickingId:
+                                          cubit.selectedWareHouseId ?? -1,
+                                    );
+                                  }
+                                  // cubit2.createQuotation(
+                                  //     warehouseId: '1',
+                                  //     context: context,
+                                  //     partnerId: widget.partner?.id ?? -1);
+                                  //!
+                                })
+                  ],
+                ),
               );
             }),
           ),
