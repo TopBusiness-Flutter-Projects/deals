@@ -59,8 +59,9 @@ class _EditAccountScreenState extends State<EditAccountScreen>
                         borderRadius: BorderRadius.circular(100),
                         child: cubit.profileImage == null
                             ? CustomDecodedImage(
-                                base64String:
-                                    context.read<ClientsCubit>().selectedBase64String,
+                                base64String: context
+                                    .read<ClientsCubit>()
+                                    .selectedBase64String,
                                 // context: context,
                                 height: 100.h,
                                 width: 100.h,
@@ -84,7 +85,8 @@ class _EditAccountScreenState extends State<EditAccountScreen>
                         right: 0,
                         child: InkWell(
                           onTap: () {
-                            cubit.pickImage(ImageSource.gallery);
+                            cubit.showImageSourceDialog(context);
+                            // cubit.pickImage(ImageSource.gallery);
                           },
                           child: Icon(
                             Icons.camera_alt,

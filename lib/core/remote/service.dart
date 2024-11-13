@@ -380,7 +380,7 @@ class ServiceApi {
   }
 
 //getAllProducts
-  Future<Either<Failure, AllProductsModel>> getAllProducts(int page) async {
+  Future<Either<Failure, AllProductsModel>> getAllProducts(int page , bool isStockOnly) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -398,7 +398,8 @@ class ServiceApi {
             "limit": 20,
             "page": page,
             "category_id": null,
-            "pricelist_id": null
+            "pricelist_id": null,
+            "in_stock_only": isStockOnly
           }
         },
         options: Options(
@@ -411,7 +412,7 @@ class ServiceApi {
     }
   }
 
-  Future<Either<Failure, AllProductsModel>> getAllProductsByCategory(int? page,
+  Future<Either<Failure, AllProductsModel>> getAllProductsByCategory(int? page,bool isStockOnly,
       {required int categoryId}) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
@@ -430,7 +431,8 @@ class ServiceApi {
             "limit": 20,
             "page": page,
             "category_id": categoryId,
-            "pricelist_id": null
+            "pricelist_id": null,
+            "in_stock_only": isStockOnly
           }
         },
         options: Options(

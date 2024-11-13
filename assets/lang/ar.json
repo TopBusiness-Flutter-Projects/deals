@@ -170,9 +170,12 @@
   "tasks": "المهام",
   "select_date": "حدد التاريخ",
   "task": "المهمة",
+  "select_image": "حدد صورة",
+  "camera": "كاميرا",
+  "gallery": "المعرض",
   "add_your_task": "اضف مهمتك",
-  "exchange_permission": "اذن الصرف",
-  "exchange_permissions": "اذونات الصرف"
+  "exchange_permission": "تحويلات مخزنية",
+  "exchange_permissions": "التحويلات المخزنية"
 
 
 }

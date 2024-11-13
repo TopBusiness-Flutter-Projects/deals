@@ -168,6 +168,9 @@
   "tasks": "Tasks",
   "select_date": "choose date",
   "task": "task",
+  "select_image": "Select image",
+  "camera": "Camera",
+  "gallery": "Gallery",
   "add_your_task": "add your task",
   "exchange_permission":"Exchange Permission",
   "exchange_permissions": "Exchange Permissions"

@@ -10,6 +10,7 @@ import 'package:top_sale/core/utils/appwidget.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/features/delevery_order/cubit/delevery_orders_cubit.dart';
 import 'package:top_sale/features/details_order/cubit/details_orders_state.dart';
+import 'package:top_sale/features/direct_sell/cubit/direct_sell_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/models/all_journals_model.dart';
 import '../../../core/models/create_order_model.dart';
@@ -104,6 +105,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
           emit(ConfirmDeliveryLoadedState());
 
           context.read<DeleveryOrdersCubit>().getOrders();
+          context.read<DirectSellCubit>().getAllProducts(isHome: true);
+          context.read<DirectSellCubit>().getAllProducts(isHome: false);
           getDetailsOrders(orderId: orderId);
         } else {
           emit(ConfirmDeliveryErrorState('Error loading  data: '));
@@ -504,7 +507,14 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     newPriceController.clear();
     emit(OnChangeUnitPriceOfItem());
   }
+  TextEditingController newQtyController = TextEditingController();
 
+  onChnageProductQuantity(OrderLine item, BuildContext context) {
+    item.productUomQty = int.parse(newQtyController.text.toString());
+    Navigator.pop(context);
+    newQtyController.clear();
+    emit(OnChangeUnitPriceOfItem());
+  }
   TextEditingController newDiscountController = TextEditingController();
 
   onChnageDiscountOfUnit(OrderLine item, BuildContext context) {

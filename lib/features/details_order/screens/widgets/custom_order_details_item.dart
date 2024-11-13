@@ -163,71 +163,85 @@ class _CustomOrderDetailsShowPriceItemState
                             children: [
                               Expanded(
                                 flex: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: AppColors.white,
-                                    border: Border.all(
-                                        color: AppColors.orangeThirdPrimary,
-                                        width: 1.8),
-                                    borderRadius: BorderRadius.circular(
-                                        getSize(context) / 22),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0, vertical: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            print(
-                                                "item is ${widget.item.productUomQty}");
-                                            cubit2.addAndRemoveToBasket(
-                                                isReturned: widget.isReturned,
-                                                isAdd: true,
-                                                product: widget.item);
-                                            if (widget.isReturned == true) {
-                                              if (widget.item.productUomQty ==
-                                                  1) {}
-                                            }
-                                            // cubit2.addAndRemoveToBasket(
-                                            //     product: widget.item,
-                                            //     isAdd: true);
-                                            // Navigator.pop(context);
-                                          },
-                                          child: Icon(
-                                            Icons.add,
-                                            color: AppColors.orangeThirdPrimary,
-                                            size: 30.w,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    cubit2.newQtyController.text =
+                                        widget.item.productUomQty.toString();
+
+                                    customQtyShowBottomSheet(
+                                        context, cubit2.newQtyController, () {
+                                      cubit2.onChnageProductQuantity(
+                                          widget.item, context);
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      border: Border.all(
+                                          color: AppColors.orangeThirdPrimary,
+                                          width: 1.8),
+                                      borderRadius: BorderRadius.circular(
+                                          getSize(context) / 22),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0, vertical: 4),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              print(
+                                                  "item is ${widget.item.productUomQty}");
+                                              cubit2.addAndRemoveToBasket(
+                                                  isReturned: widget.isReturned,
+                                                  isAdd: true,
+                                                  product: widget.item);
+                                              if (widget.isReturned == true) {
+                                                if (widget.item.productUomQty ==
+                                                    1) {}
+                                              }
+                                              // cubit2.addAndRemoveToBasket(
+                                              //     product: widget.item,
+                                              //     isAdd: true);
+                                              // Navigator.pop(context);
+                                            },
+                                            child: Icon(
+                                              Icons.add,
+                                              color:
+                                                  AppColors.orangeThirdPrimary,
+                                              size: 30.w,
+                                            ),
                                           ),
-                                        ),
-                                        //SizedBox(width: 8.w),
-                                        Text(
-                                            widget.item.productUomQty
-                                                    .toString() ??
-                                                '0',
-                                            style: getBoldStyle(
-                                                color: AppColors.primary,
-                                                fontHeight: 1.3)),
-                                        //SizedBox(width: 8.w),
-                                        GestureDetector(
-                                          onTap: () {
-                                            cubit2.addAndRemoveToBasket(
-                                                isAdd: false,
-                                                product: widget.item);
-                                            // cubit2.addAndRemoveToBasket(
-                                            //     product: widget.item,
-                                            //     isAdd: false);
-                                            // Navigator.pop(context);
-                                          },
-                                          child: Icon(
-                                            Icons.remove,
-                                            color: AppColors.orangeThirdPrimary,
-                                            size: 30.w,
+                                          //SizedBox(width: 8.w),
+                                          Text(
+                                              widget.item.productUomQty
+                                                      .toString() ??
+                                                  '0',
+                                              style: getBoldStyle(
+                                                  color: AppColors.primary,
+                                                  fontHeight: 1.3)),
+                                          //SizedBox(width: 8.w),
+                                          GestureDetector(
+                                            onTap: () {
+                                              cubit2.addAndRemoveToBasket(
+                                                  isAdd: false,
+                                                  product: widget.item);
+                                              // cubit2.addAndRemoveToBasket(
+                                              //     product: widget.item,
+                                              //     isAdd: false);
+                                              // Navigator.pop(context);
+                                            },
+                                            child: Icon(
+                                              Icons.remove,
+                                              color:
+                                                  AppColors.orangeThirdPrimary,
+                                              size: 30.w,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -277,6 +291,7 @@ String calculateDiscountedPrice(
       (priceUnit * productUomQty) * (1 - discountPercentage / 100);
   return totalPrice.toStringAsFixed(2);
 }
+
 void customShowBottomSheet(
   BuildContext context,
   TextEditingController controllerPercent, {
@@ -301,7 +316,7 @@ void customShowBottomSheet(
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomTextFieldWithTitle(
-                validator:  ( value) {
+                validator: (value) {
                   if (value!.isEmpty) {
                     return "enter_the_percentage".tr();
                   }
@@ -325,7 +340,6 @@ void customShowBottomSheet(
     },
   );
 }
-
 
 void customPriceShowBottomSheet(
   BuildContext context,
@@ -351,7 +365,7 @@ void customPriceShowBottomSheet(
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomTextFieldWithTitle(
-                validator:  ( value) {
+                validator: (value) {
                   if (value!.isEmpty) {
                     return "price".tr();
                   }
@@ -360,6 +374,55 @@ void customPriceShowBottomSheet(
                 title: "price".tr(),
                 controller: controller,
                 hint: "price".tr(),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(height: getSize(context) / 30),
+              RoundedButton(
+                backgroundColor: AppColors.primaryColor,
+                text: 'confirm'.tr(),
+                onPressed: onPressed,
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void customQtyShowBottomSheet(
+  BuildContext context,
+  TextEditingController controller,
+  void Function() onPressed,
+) {
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return Padding(
+        padding: EdgeInsets.only(
+          left: getSize(context) / 20,
+          right: getSize(context) / 20,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          top: getSize(context) / 20,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomTextFieldWithTitle(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "price".tr();
+                  }
+                  return null;
+                },
+                title: "العدد".tr(),
+                controller: controller,
+                hint: "ادخل العدد".tr(),
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: getSize(context) / 30),

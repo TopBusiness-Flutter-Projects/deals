@@ -139,15 +139,15 @@ class LoginCubit extends Cubit<LoginState> {
           if (r.result!.isNotEmpty) {
             await Preferences.instance
                 .setEmployeeId(r.result!.first.id.toString());
+            successGetBar("تم بنجاح");
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routes.mainRoute, (route) => false);
             print(
                 "ffffffffffffff ${r.result!.first.messagePartnerIds!.first.id.toString()}");
             if (r.result!.first.messagePartnerIds!.isNotEmpty) {
               await Preferences.instance.setEmployeePartnerId(
                   r.result!.first.messagePartnerIds!.first.id.toString());
             }
-            successGetBar("تم بنجاح");
-            Navigator.pushNamedAndRemoveUntil(
-                context, Routes.mainRoute, (route) => false);
           } else {
             errorGetBar("حدث خطأ ما");
           }

@@ -8,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,6 +17,8 @@ import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart' as perm;
 import 'package:top_sale/core/models/defaul_model.dart';
 import 'package:top_sale/core/preferences/preferences.dart';
+import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/appwidget.dart';
 import 'package:top_sale/features/Itinerary/cubit/cubit.dart';
 import 'package:top_sale/features/clients/cubit/clients_state.dart';
@@ -43,22 +46,61 @@ class ClientsCubit extends Cubit<ClientsState> {
 
   File? profileImage;
   String selectedBase64String = "";
-  String? selectedClientType ="Company";
+  String? selectedClientType = "Company";
   changeClientType(String? value) {
     selectedClientType = value;
     emit(UpdateClientType());
   }
-  GetAllPartnersModel? allPartnersModel;
-  Future<void> pickImage(ImageSource source) async {
-    try {
-      final pickedFile = await ImagePicker().pickImage(source: source);
-      if (pickedFile != null) {
-        profileImage = File(pickedFile.path);
-        selectedBase64String = await fileToBase64String(pickedFile.path);
-        emit(UpdateProfileImagePicked()); // Emit state for image picked
-      }
-    } catch (e) {
-      // Handle any errors
+
+  void showImageSourceDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'select_image'.tr(),
+            style: getMediumStyle(),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                pickImage(context, true);
+              },
+              child: Text(
+                'gallery'.tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                pickImage(context, false);
+              },
+              child: Text(
+                "camera".tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future pickImage(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: isGallery ? ImageSource.gallery : ImageSource.camera);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      selectedBase64String = await fileToBase64String(pickedFile.path);
+      Navigator.pop(context);
+
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+    } else {
       emit(UpdateProfileError());
     }
   }
@@ -88,6 +130,7 @@ class ClientsCubit extends Cubit<ClientsState> {
     "overdue_amounts"
   ];
 //get partner
+  GetAllPartnersModel? allPartnersModel;
   getAllPartnersForReport(
       {int page = 1,
       int pageSize = 20, //num of products at one page
@@ -231,7 +274,7 @@ class ClientsCubit extends Cubit<ClientsState> {
     updateLatLong(context, text: isStart ? "(start)" : "");
     await Preferences.instance.setIsInTrip(true);
     // Set up a timer to fetch location every 5 minutes
-    timer = Timer.periodic(const Duration(minutes: 30), (timer) {
+    timer = Timer.periodic(const Duration(minutes: 15), (timer) {
       print("10 seconds then");
       updateLatLong(context, text: "");
       debugPrint(" lat: ${currentLocation?.latitude}");
@@ -359,20 +402,21 @@ class ClientsCubit extends Cubit<ClientsState> {
     print(address);
     print(address2);
   }
-
 //create client
   CreateOrderModel? createOrderModel;
   void createClient(BuildContext context) async {
     AppWidget.createProgressDialog(context, "جاري التحميل");
     emit(CreateClientLoading());
     final result = await api.createPartner(
-      image: selectedBase64String,
+        image: selectedBase64String,
         name: clientNameController.text,
         mobile: phoneController.text,
-        street: addressController.text,
-        isCompany: selectedClientType== "Company" ? true:false,
+        street: addressController.text.isEmpty? context
+                                              .read<ClientsCubit>()
+                                              .address : addressController.text,
+        isCompany: selectedClientType == "Company" ? true : false,
         vat: vatController.text,
-        email: emailController.text,
+        email:  emailController.text,
         lat: double.parse(currentLocation?.latitude.toString() ?? ""),
         long: double.parse(currentLocation?.longitude.toString() ?? ""));
     result.fold((l) {
@@ -425,6 +469,7 @@ class ClientsCubit extends Cubit<ClientsState> {
       },
     );
   }
+
   DefaultModel? defaultModel;
   void updatePartenerLocation(
     BuildContext context, {

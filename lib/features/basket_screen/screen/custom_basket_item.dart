@@ -155,57 +155,69 @@ if (widget.isEditable)
                             children: [
                               Expanded(
                                 flex: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: AppColors.white,
-                                    border: Border.all(
-                                        color: AppColors.orangeThirdPrimary,
-                                        width: 1.8),
-                                    borderRadius: BorderRadius.circular(
-                                        getSize(context) / 22),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0, vertical: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            cubit2.addAndRemoveToBasket(
-                                                product: widget.item,
-                                                isAdd: true);
-                                            // Navigator.pop(context);
-                                          },
-                                          child: Icon(
-                                            Icons.add,
-                                            color: AppColors.orangeThirdPrimary,
-                                            size: 30.w,
+                                child: GestureDetector(
+                                  onTap: () {
+                                     cubit2.newQtyController.text =
+                                      widget.item.userOrderedQuantity.toString();
+
+                                  customQtyShowBottomSheet(
+                                      context, cubit2.newQtyController, () {
+                                    cubit2.onChnageProductQuantity(
+                                        widget.item, context);
+                                  });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      border: Border.all(
+                                          color: AppColors.orangeThirdPrimary,
+                                          width: 1.8),
+                                      borderRadius: BorderRadius.circular(
+                                          getSize(context) / 22),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0, vertical: 4),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              cubit2.addAndRemoveToBasket(
+                                                  product: widget.item,
+                                                  isAdd: true);
+                                              // Navigator.pop(context);
+                                            },
+                                            child: Icon(
+                                              Icons.add,
+                                              color: AppColors.orangeThirdPrimary,
+                                              size: 30.w,
+                                            ),
                                           ),
-                                        ),
-                                        //SizedBox(width: 8.w),
-                                        Text(
-                                            widget.item.userOrderedQuantity
-                                                .toString(),
-                                            style: getBoldStyle(
-                                                color: AppColors.primary,
-                                                fontHeight: 1.3)),
-                                        //SizedBox(width: 8.w),
-                                        GestureDetector(
-                                          onTap: () {
-                                            cubit2.addAndRemoveToBasket(
-                                                product: widget.item,
-                                                isAdd: false);
-                                            // Navigator.pop(context);
-                                          },
-                                          child: Icon(
-                                            Icons.remove,
-                                            color: AppColors.orangeThirdPrimary,
-                                            size: 30.w,
+                                          //SizedBox(width: 8.w),
+                                          Text(
+                                              widget.item.userOrderedQuantity
+                                                  .toString(),
+                                              style: getBoldStyle(
+                                                  color: AppColors.primary,
+                                                  fontHeight: 1.3)),
+                                          //SizedBox(width: 8.w),
+                                          GestureDetector(
+                                            onTap: () {
+                                              cubit2.addAndRemoveToBasket(
+                                                  product: widget.item,
+                                                  isAdd: false);
+                                              // Navigator.pop(context);
+                                            },
+                                            child: Icon(
+                                              Icons.remove,
+                                              color: AppColors.orangeThirdPrimary,
+                                              size: 30.w,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

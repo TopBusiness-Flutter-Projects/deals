@@ -22,6 +22,7 @@ class LoadingProduct extends DirectSellState {}
 class Loading2Product extends DirectSellState {}
 
 class ErrorProduct extends DirectSellState {}
+
 class OrdersErrorState extends DirectSellState {}
 
 class OrdersLoadedState extends DirectSellState {}
@@ -54,11 +55,14 @@ class LoadingCreateQuotation extends DirectSellState {}
 class LoadedCreateQuotation extends DirectSellState {}
 
 class ErrorCreateQuotation extends DirectSellState {}
+
 class LoadingCreatePicking extends DirectSellState {}
 
-class  LoadedCreatePicking extends DirectSellState {}
+class UpdateProductsStockState extends DirectSellState {}
 
-class   ErrorCreatePicking extends DirectSellState {}
+class LoadedCreatePicking extends DirectSellState {}
+
+class ErrorCreatePicking extends DirectSellState {}
 
 class OnChangeCountOfProducts extends DirectSellState {}
 

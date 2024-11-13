@@ -14,12 +14,14 @@ class CustomTextFieldWithTitle extends StatefulWidget {
     this.keyboardType,
     this.readonly,
     this.isModify,
+    this.textInputAction,
     this.isRequired = true,
     this.withPadding = true,
-     String? Function(dynamic value)? validator,
+    String? Function(dynamic value)? validator,
   });
 
   TextEditingController controller;
+  TextInputAction? textInputAction;
   String title;
   String hint;
   bool? readonly;
@@ -60,6 +62,8 @@ class _CustomTextFieldWithTitleState extends State<CustomTextFieldWithTitle> {
           TextFormField(
             maxLines: widget.maxLines ?? 1,
             validator: widget.validator,
+            // textDirection: TextDirection.ltr,
+            textInputAction: widget.textInputAction,
             readOnly: widget.readonly ?? false,
             keyboardType: widget.keyboardType,
             controller: widget.controller,

@@ -29,11 +29,16 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       print("catogrey id" + '$id');
       getAllProductsByCatogrey(id: id);
     }
+    
 
     allProductsModel.result?.products = [];
     print("sucess change 2");
   }
-
+String selectedProducsStockType = "stock";
+    changeProductsStockType(String value) {
+      selectedProducsStockType = value;
+      emit(UpdateProductsStockState());
+    }
   CategoriesModel? catogriesModel;
   Future<void> getCategries() async {
     emit(LoadingCatogries());
@@ -54,7 +59,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
   Future<void> getAllProducts(
       {bool isHome = false, bool isGetMore = false, int pageId = 1}) async {
     isGetMore ? emit(Loading2Product()) : emit(LoadingProduct());
-    final response = await api.getAllProducts(pageId);
+    final response = await api.getAllProducts(pageId,selectedProducsStockType == "stock");
     //
     response.fold((l) {
       emit(ErrorProduct());
@@ -244,7 +249,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
   Future<void> getAllProductsByCatogrey({required int? id}) async {
     print("sucess change 3");
     emit(LoadingProductByCatogrey());
-    final response = await api.getAllProductsByCategory(1, categoryId: id!);
+    final response = await api.getAllProductsByCategory(1,selectedProducsStockType == "stock", categoryId: id!);
     //
     response.fold((l) {
       emit(ErrorProductByCatogrey());
@@ -369,6 +374,14 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     item.listPrice = double.parse(newPriceController.text.toString());
     Navigator.pop(context);
     newPriceController.clear();
+    emit(OnChangeUnitPriceOfItem());
+  }
+  TextEditingController newQtyController = TextEditingController();
+
+  onChnageProductQuantity(ProductModelData item, BuildContext context) {
+    item.userOrderedQuantity = int.parse(newQtyController.text.toString());
+    Navigator.pop(context);
+    newQtyController.clear();
     emit(OnChangeUnitPriceOfItem());
   }
 
