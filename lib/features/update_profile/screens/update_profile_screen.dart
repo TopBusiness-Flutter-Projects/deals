@@ -84,7 +84,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         right: 0,
                         child: InkWell(
                           onTap: () {
-                            cubit.pickImage(ImageSource.gallery);
+                            cubit.showImageSourceDialog(context);
+                            //cubit.pickImage(ImageSource.gallery);
                           },
                           child: Icon(
                             Icons.camera_alt,

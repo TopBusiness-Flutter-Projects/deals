@@ -27,7 +27,6 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
   void initState() {
     super.initState();
 
-   
     context.read<DirectSellCubit>().getAllProducts(isHome: true);
   }
 
@@ -97,7 +96,49 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                               child: Column(
                                 children: [
                                   const CustomSearchWidget(),
-                                  SizedBox(height: 25.h),
+                                  // SizedBox(height: 25.h),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListTile(
+                                          title: Text('المخزون'.tr()),
+                                          leading: Radio<String>(
+                                            value: 'stock',
+                                            groupValue:
+                                                cubit.selectedProducsStockType,
+                                            onChanged: (value) {
+                                              // setState(() {
+                                              cubit.changeProductsStockType(
+                                                  value!);
+                                              context
+                                                  .read<DirectSellCubit>()
+                                                  .getAllProducts(isHome: true);
+                                              // });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: ListTile(
+                                          title: Text('الكل'.tr()),
+                                          leading: Radio<String>(
+                                            value: 'nonStock',
+                                            groupValue:
+                                                cubit.selectedProducsStockType,
+                                            onChanged: (value) {
+                                              // setState(() {
+                                              cubit.changeProductsStockType(
+                                                  value!);
+                                              context
+                                                  .read<DirectSellCubit>()
+                                                  .getAllProducts(isHome: true);
+                                              // });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   state == LoadingCatogries
                                       ? Center(
                                           child: CircularProgressIndicator(
@@ -108,8 +149,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                                   [],
                                         ),
                                   SizedBox(height: 25.h),
-                                  cubit.homeProductsModel
-                                                  .result == null
+                                  cubit.homeProductsModel.result == null
                                       ? const Center(
                                           child: CircularProgressIndicator())
                                       : CustomProductSection(

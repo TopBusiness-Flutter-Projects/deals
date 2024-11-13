@@ -212,137 +212,157 @@ class _ClientScreenState extends State<ClientScreen> {
               child: SingleChildScrollView(
                 child: Form(
                   key: cubit.formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: cubit.profileImage == null
-                                ? Image.asset(ImageAssets.user,height: 100.sp,width: 100.sp,)
-                                : Image.file(
-                              (File(cubit.profileImage!.path)),
-                              fit: BoxFit.cover,
-                              height: 100.h,
-                              width: 100.h,
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: InkWell(
-                              onTap: () {
-                                cubit.pickImage(ImageSource.gallery);
-                              },
-                              child: const Icon(
-                                Icons.camera_alt,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-
-                  SizedBox(
-                    height: getSize(context) / 30,
-                  ),
-                      CustomTextFieldWithTitle(
-                        title: "name".tr(),
-                        controller: cubit.clientNameController,
-                        hint: "enter_name".tr(),
-                        keyboardType: TextInputType.text,
-                      ),
-                      SizedBox(
-                        height: getSize(context) / 30,
-                      ),
-                      CustomTextFieldWithTitle(
-                        title: "phone".tr(),
-                        controller: cubit.phoneController,
-                        hint: "enter_phone".tr(),
-                        keyboardType: TextInputType.phone,
-                      ),
-                      SizedBox(
-                        height: getSize(context) / 30,
-                      ),
-                      CustomTextFieldWithTitle(
-                        title: "email".tr(),
-                        isRequired: false,
-                        controller: cubit.emailController,
-                        hint: "enter_email".tr(),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      SizedBox(
-                        height: getSize(context) / 30,
-                      ),
-                      CustomTextFieldWithTitle(
-                        title: "address".tr(),
-                        controller: cubit.addressController,
-                        hint: "enter_address".tr(),
-                        keyboardType: TextInputType.text,
-                      ),
-                      SizedBox(
-                        height: getSize(context) / 30,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ListTile(
-                              title: Text('Company'.tr()),
-                              leading: Radio<String>(
-                                value: 'Company',
-                                groupValue: cubit.selectedClientType,
-                                onChanged: (value) {
-                                  setState(() {
-                                    cubit.changeClientType(value);
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListTile(
-                              title: Text('Indivalal'.tr()),
-                              leading: Radio<String>(
-                                value: 'Indivalal',
-                                groupValue: cubit.selectedClientType,
-                                onChanged: (value) {
-                                  setState(() {
-                                    cubit.changeClientType(value);                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8.sp,),
-                      cubit.selectedClientType == 'Company'?
-                      CustomTextFieldWithTitle(
-                        title: "الرقم الضريبي".tr(),
-                        controller: cubit.vatController,
-                        hint: "الرقم الضريبي".tr(),
-                        keyboardType: TextInputType.text,
-                      ):const SizedBox(),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: getSize(context) / 20,
-                            right: getSize(context) / 20),
-                        child: RoundedButton(
-                          backgroundColor: AppColors.primaryColor,
-                          text: 'confirm'.tr(),
-                          onPressed: () {
-                            if (cubit.formKey.currentState!.validate()) {
-                              cubit.createClient(context);
-                            } else {
-                              // Handle validation failure
-                              print("Validation failed");
-                            }
-                          },
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: cubit.profileImage == null
+                              ? Image.asset(
+                                  ImageAssets.user,
+                                  height: 100.sp,
+                                  width: 100.sp,
+                                )
+                              : Image.file(
+                                  (File(cubit.profileImage!.path)),
+                                  fit: BoxFit.cover,
+                                  height: 100.h,
+                                  width: 100.h,
+                                ),
                         ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: InkWell(
+                            onTap: () {
+                              cubit.showImageSourceDialog(context);
+                              // cubit.pickImage(ImageSource.gallery);
+                            },
+                            child: const Icon(
+                              Icons.camera_alt,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            title: Text('Company'.tr()),
+                            leading: Radio<String>(
+                              value: 'Company',
+                              groupValue: cubit.selectedClientType,
+                              onChanged: (value) {
+                                setState(() {
+                                  cubit.changeClientType(value);
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            title: Text('Indivalal'.tr()),
+                            leading: Radio<String>(
+                              value: 'Indivalal',
+                              groupValue: cubit.selectedClientType,
+                              onChanged: (value) {
+                                setState(() {
+                                  cubit.changeClientType(value);
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
+                    CustomTextFieldWithTitle(
+                      title: "name".tr(),
+                      controller: cubit.clientNameController,
+                      hint: "enter_name".tr(),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "enter_name".tr();
+                        }
+                        return null;
+                      },
+                    ),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
+                    CustomTextFieldWithTitle(
+                      title: "phone".tr(),
+                      controller: cubit.phoneController,
+                      hint: "enter_phone".tr(),
+                      keyboardType: TextInputType.phone,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    // SizedBox(
+                    //   height: getSize(context) / 30,
+                    // ),
+                    CustomTextFieldWithTitle(
+                      title: "email".tr(),
+                      isRequired: false,
+                      controller: cubit.emailController,
+                      hint: "enter_email".tr(),
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    // SizedBox(
+                    //   height: getSize(context) / 30,
+                    // ),
+                    CustomTextFieldWithTitle(
+                      title: "address".tr(),
+                      controller: cubit.addressController,
+                      isRequired: false,
+                      hint: "enter_address".tr(),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
+                    cubit.selectedClientType == 'Company'
+                        ? CustomTextFieldWithTitle(
+                            title: "الرقم الضريبي".tr(),
+                            controller: cubit.vatController,
+                            hint: "الرقم الضريبي".tr(),
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                            validator: (value) =>
+                                value!.isEmpty ? "الرقم الضريبي".tr() : null,
+                          )
+                        : const SizedBox(),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: getSize(context) / 20,
+                          right: getSize(context) / 20),
+                      child: RoundedButton(
+                        backgroundColor: AppColors.primaryColor,
+                        text: 'confirm'.tr(),
+                        onPressed: () {
+                          if (cubit.formKey.currentState!.validate()) {
+                            cubit.createClient(context);
+                          } else {
+                            // Handle validation failure
+                            print("Validation failed");
+                          }
+                        },
                       ),
-
+                    ),
                   ]),
                 ),
-            ),);
+              ),
+            );
           },
         );
       },
