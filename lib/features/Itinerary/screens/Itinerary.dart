@@ -133,27 +133,31 @@ class _ToggleSwitchWithLabelState extends State<ToggleSwitchWithLabel> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomDecodedImage(
-                    base64String: cubit.carDetailsModel!.image128,
-                    // context: context,
-                    height: 50,
-                    width: 50,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    cubit.carDetailsModel!.name.toString(),
-                    style: TextStyle(
-                        color: AppColors.orangeThirdPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.sp),
-                  ),
-                ],
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomDecodedImage(
+                      base64String: cubit.carDetailsModel!.image128,
+                      // context: context,
+                      height: 50,
+                      width: 50,
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Flexible(
+                      child: Text(
+                        cubit.carDetailsModel!.name.toString(),
+                        style: TextStyle(
+                            color: AppColors.orangeThirdPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.sp),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(width: 10.h), // Space between text and switch
               Column(
