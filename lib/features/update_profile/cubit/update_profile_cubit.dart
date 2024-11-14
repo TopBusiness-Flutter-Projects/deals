@@ -104,8 +104,9 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     }, (r) {
       defaultModel = r;
       successGetBar("update_sucess".tr());
+       context.read<HomeCubit>().checkEmployeeOrUser();
       emit(UpdateProfileUserLoaded());
-      Navigator.popAndPushNamed(context, Routes.initialRoute);
+      Navigator.popAndPushNamed(context, Routes.mainRoute);
     }
         //!}
         );
@@ -126,8 +127,9 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     }, (r) {
       defaultModel = r;
       successGetBar("update_sucess".tr());
+       context.read<HomeCubit>().checkEmployeeOrUser();
       emit(UpdateProfileEmployeeLoaded());
-      Navigator.popAndPushNamed(context, Routes.initialRoute);
+      Navigator.popAndPushNamed(context, Routes.mainRoute);
     }
         //!}
         );

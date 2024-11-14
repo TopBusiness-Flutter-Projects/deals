@@ -915,6 +915,8 @@ class ServiceApi {
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId();
     String userId = await Preferences.instance.getUserId() ?? "1";
+    int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
+    AuthModel? authModel = await Preferences.instance.getUserModel();
     try {
       // Map the ProductModelData list to order_line format
       List<Map<String, dynamic>> orderLine = products
@@ -949,6 +951,8 @@ class ServiceApi {
                 "sale_order_id": int.parse(saleOrderId.toString()),
                 "partner_id": partnerId,
                 "sale_order_user_id": int.parse(userId),
+                     "warehouse_id":
+                    wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
                 if (employeeId != null)
                   "employee_id": int.parse(employeeId.toString()),
                 "order_line": [

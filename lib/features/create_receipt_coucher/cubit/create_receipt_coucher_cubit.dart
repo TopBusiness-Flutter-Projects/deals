@@ -14,7 +14,7 @@ import 'create_receipt_coucher_state.dart';
 class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
   CreateReceiptCoucherCubit(this.api) : super(CreateReceiptCoucherInitial());
   ServiceApi api;
-  DateTime? selectedDate;
+  DateTime selectedDate = DateTime.now();
   int? selectedPaymentMethod;
   TextEditingController amountController = TextEditingController();
   TextEditingController refController = TextEditingController();
@@ -27,6 +27,12 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
           emit(GetAllJournalsErrorState('Error loading  data: $failure')),
       (r) {
         getAllJournalsModel = r;
+        // if (r.result != null) {
+        //   if (r.result!.isNotEmpty) {
+        //     selectedPaymentMethod = r.result!.first.id;
+        //   }
+        // }
+
         emit(GetAllJournalsLoadedState());
       },
     );
@@ -36,7 +42,9 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
       {required int partnerId}) async {
     AppWidget.createProgressDialog(context, "جاري التحميل");
     emit(GetAllJournalsLoadingState());
-    String formattedDate = DateFormat('yyyy-MM-dd',).format(selectedDate!);
+    String formattedDate = DateFormat(
+      'yyyy-MM-dd',
+    ).format(selectedDate);
     final result = await api.partnerPayment(
       amount: amountController.text,
       journalId: selectedPaymentMethod!,
@@ -59,8 +67,8 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
           Navigator.pop(context);
           refController.clear();
           amountController.clear();
-          selectedPaymentMethod = null;
-          selectedDate = null;
+          // selectedPaymentMethod = null;
+          selectedDate = DateTime.now();
           if (r.result!.paymentId != null) {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {

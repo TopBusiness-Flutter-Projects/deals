@@ -103,20 +103,24 @@ class Datum {
 class DestinationLocation {
     int? locationDestId;
    dynamic locationDestName;
+   dynamic wareHouseName;
 
     DestinationLocation({
         this.locationDestId,
         this.locationDestName,
+        this.wareHouseName,
     });
 
     factory DestinationLocation.fromJson(Map<String, dynamic> json) => DestinationLocation(
         locationDestId: json["location_dest_id"],
         locationDestName: json["location_dest_name"],
+        wareHouseName: json["warehouse_name"],
     );
 
     Map<String, dynamic> toJson() => {
         "location_dest_id": locationDestId,
         "location_dest_name": locationDestName,
+        "warehouse_name": wareHouseName,
     };
 }
 class MoveLine {
@@ -168,20 +172,25 @@ class MoveLine {
 class SourceLocation {
     int? locationId;
     dynamic locationName;
+    dynamic wareHouseName;
+
 
     SourceLocation({
         this.locationId,
         this.locationName,
+        this.wareHouseName,
     });
 
     factory SourceLocation.fromJson(Map<String, dynamic> json) => SourceLocation(
         locationId: json["location_id"],
         locationName: json["location_name"],
+        wareHouseName: json["warehouse_name"],
     );
 
     Map<String, dynamic> toJson() => {
         "location_id": locationId,
         "location_name": locationName,
+        "warehouse_name": wareHouseName,
     };
 }
 

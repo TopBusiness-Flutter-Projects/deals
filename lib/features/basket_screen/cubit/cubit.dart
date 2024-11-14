@@ -7,7 +7,8 @@ import 'state.dart';
 class BasketCubit extends Cubit<BasketState> {
   BasketCubit(this.api) : super(InitBasketState());
   ServiceApi api;
-  int? selectedWareHouseId;
+  int? selectedFromWareHouseId;
+  int? selectedToWareHouseId;
   AllWareHouseModel? getWareHousesModel;
   Future<void> getWareHouses() async {
     emit(LoadingGetWareHouses());
@@ -16,9 +17,13 @@ class BasketCubit extends Cubit<BasketState> {
       emit(ErrorGetWareHouses());
     }, (right) async {
       getWareHousesModel = right;
+      if (right.result!.isNotEmpty) {
+        selectedFromWareHouseId = right.result!.first.id;
+      }
       emit(SuccessGetWareHouses());
     });
   }
+
   WareHouse? myWareHouse;
   Future<void> getMyWareHouse() async {
     emit(LoadingGetWareHouses());
@@ -27,6 +32,8 @@ class BasketCubit extends Cubit<BasketState> {
       emit(ErrorGetWareHouses());
     }, (right) async {
       myWareHouse = right;
+      selectedToWareHouseId = right.id;
+
       emit(SuccessGetWareHouses());
     });
   }

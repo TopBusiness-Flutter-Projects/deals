@@ -121,58 +121,63 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
               child: Column(children: [
                 const CustomSearchWidget(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ListTile(
-                        title: Text('المخزون'.tr()),
-                        leading: Radio<String>(
-                          value: 'stock',
-                          groupValue: cubit.selectedProducsStockType,
-                          onChanged: (value) {
-                            // setState(() {
-                            cubit.changeProductsStockType(value!);
-                            if (widget.catId != '-1' && widget.catId != '0') {
-                              context
-                                  .read<DirectSellCubit>()
-                                  .getAllProductsByCatogrey(
-                                      id: int.parse(widget.catId));
-                            } else {
-                              context.read<DirectSellCubit>().getAllProducts();
-                              context.read<DirectSellCubit>().currentIndex ==
-                                  -1;
-                            }
-                            // });
-                          },
+                if (widget.catId != '0')
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          title: Text('المخزون'.tr()),
+                          leading: Radio<String>(
+                            value: 'stock',
+                            groupValue: cubit.selectedProducsStockType,
+                            onChanged: (value) {
+                              // setState(() {
+                              cubit.changeProductsStockType(value!);
+                              if (widget.catId != '-1' && widget.catId != '0') {
+                                context
+                                    .read<DirectSellCubit>()
+                                    .getAllProductsByCatogrey(
+                                        id: int.parse(widget.catId));
+                              } else {
+                                context
+                                    .read<DirectSellCubit>()
+                                    .getAllProducts();
+                                context.read<DirectSellCubit>().currentIndex ==
+                                    -1;
+                              }
+                              // });
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: ListTile(
-                        title: Text('الكل'.tr()),
-                        leading: Radio<String>(
-                          value: 'nonStock',
-                          groupValue: cubit.selectedProducsStockType,
-                          onChanged: (value) {
-                            // setState(() {
-                            cubit.changeProductsStockType(value!);
-                            if (widget.catId != '-1' && widget.catId != '0') {
-                              context
-                                  .read<DirectSellCubit>()
-                                  .getAllProductsByCatogrey(
-                                      id: int.parse(widget.catId));
-                            } else {
-                              context.read<DirectSellCubit>().getAllProducts();
-                              context.read<DirectSellCubit>().currentIndex ==
-                                  -1;
-                            }
-                            // });
-                          },
+                      Expanded(
+                        child: ListTile(
+                          title: Text('الكل'.tr()),
+                          leading: Radio<String>(
+                            value: 'nonStock',
+                            groupValue: cubit.selectedProducsStockType,
+                            onChanged: (value) {
+                              // setState(() {
+                              cubit.changeProductsStockType(value!);
+                              if (widget.catId != '-1' && widget.catId != '0') {
+                                context
+                                    .read<DirectSellCubit>()
+                                    .getAllProductsByCatogrey(
+                                        id: int.parse(widget.catId));
+                              } else {
+                                context
+                                    .read<DirectSellCubit>()
+                                    .getAllProducts();
+                                context.read<DirectSellCubit>().currentIndex ==
+                                    -1;
+                              }
+                              // });
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 cubit.searchController.text.isNotEmpty
                     ? Expanded(
                         child: ListView(children: [
@@ -192,7 +197,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             SizedBox(
                               height: 15.h,
                             ),
-                            if (widget.categoryName == "products".tr())
+                            if (widget.categoryName == "products".tr() ||
+                                widget.categoryName == "انشاء اذن الصرف")
                               cubit.catogriesModel == null
                                   ? SizedBox(
                                       height: 2,

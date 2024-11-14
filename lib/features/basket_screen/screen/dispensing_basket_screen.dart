@@ -34,8 +34,8 @@ class DispensingBasketScreen extends StatefulWidget {
 class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
   @override
   void initState() {
-    context.read<BasketCubit>().getWareHouses();
-    context.read<BasketCubit>().getMyWareHouse();
+    context.read<BasketCubit>().getWareHouses().then((value) => context.read<BasketCubit>().getMyWareHouse());
+    
     super.initState();
   }
 
@@ -108,7 +108,7 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<int>(
                             value: cubit
-                                .selectedWareHouseId, // This will store the ID (not the name)
+                                .selectedFromWareHouseId, // This will store the ID (not the name)
                             hint: Text(
                               'Select Warehouse',
                               style: const TextStyle(color: Colors.grey),
@@ -118,7 +118,7 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                             isExpanded: true,
                             onChanged: (int? newValue) {
                               setState(() {
-                                cubit.selectedWareHouseId =
+                                cubit.selectedFromWareHouseId =
                                     newValue; // Store the ID in cubit
                               });
                             },
@@ -144,9 +144,41 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                     ),
                     SizedBox(height: 8.h),
                     if (cubit.myWareHouse != null)
-                      Text(
-                        cubit.myWareHouse?.name ?? "",
-                        style: getBoldStyle(),
+                      if (cubit.getWareHousesModel != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            value: cubit
+                                .selectedToWareHouseId, // This will store the ID (not the name)
+                            hint: Text(
+                              'Select Warehouse',
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                            icon: const Icon(Icons.arrow_drop_down,
+                                color: Colors.grey),
+                            isExpanded: true,
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                cubit.selectedToWareHouseId =
+                                    newValue; // Store the ID in cubit
+                              });
+                            },
+                            items: cubit.getWareHousesModel?.result
+                                    ?.map<DropdownMenuItem<int>>((resultItem) {
+                                  return DropdownMenuItem<int>(
+                                    value: resultItem.id,
+                                    child: Text(resultItem.name ??
+                                        ''), // Display the name
+                                  );
+                                }).toList() ??
+                                [],
+                          ),
+                        ),
                       ),
                     SizedBox(
                       height: 20.h,
@@ -175,19 +207,19 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                             : CustomButton(
                                 title: 'تأكيد اذن الصرف',
                                 onTap: () {
-                                  if (cubit.selectedWareHouseId == null ||
-                                      cubit.myWareHouse == null) {
+                                  if (cubit.selectedFromWareHouseId == null ||
+                                      cubit.selectedToWareHouseId == null) {
                                     errorGetBar(
                                         'يرجى تحديد المستودع و المستودع الخاص بك');
-                                  } else if (cubit.selectedWareHouseId ==
-                                      cubit.myWareHouse?.id) {
+                                  } else if (cubit.selectedFromWareHouseId ==
+                                      cubit.selectedToWareHouseId) {
                                     errorGetBar(
                                         'لا يمكنك اذن صرف من المستودع الخاص بك');
                                   } else {
                                     cubit2.createPicking(
                                       context: context,
                                       pickingId:
-                                          cubit.selectedWareHouseId ?? -1,
+                                          cubit.selectedFromWareHouseId ?? -1,
                                     );
                                   }
                                   // cubit2.createQuotation(

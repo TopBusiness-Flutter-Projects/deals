@@ -8,6 +8,7 @@ import 'package:top_sale/core/api/end_points.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/features/details_order/screens/pdf.dart';
+import 'package:top_sale/features/direct_sell/cubit/direct_sell_cubit.dart';
 import 'package:top_sale/features/exchange_permission/cubit/exchange_permission_state.dart';
 import 'package:top_sale/features/returns/cubit/returns_cubit.dart';
 import 'package:top_sale/features/returns/cubit/returns_state.dart';
@@ -50,6 +51,7 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
         child: FloatingActionButton(
           backgroundColor: AppColors.primaryColor,
           onPressed: () {
+            context.read<DirectSellCubit>().changeProductsStockType("nonStock");
             Navigator.pushNamed(context, Routes.productsRoute,
                 arguments: ["انشاء اذن الصرف", '0']);
           },
@@ -201,15 +203,45 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
                                                 SizedBox(height: 10.sp),
                                                 Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     Text(
                                                       cubit.getPickingsModel
                                                               ?.result?.data
                                                               ?.elementAt(index)
                                                               .sourceLocation
+                                                              ?.wareHouseName ??
+                                                          cubit.getPickingsModel
+                                                              ?.result?.data
+                                                              ?.elementAt(index)
+                                                              .sourceLocation
                                                               ?.locationName ??
+                                                          "",
+                                                      style: getMediumStyle(),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10.w),
+                                                      child: Icon(
+                                                        Icons
+                                                            .arrow_forward_rounded,
+                                                        color: AppColors
+                                                            .orangeThirdPrimary,
+                                                        size: 30.h,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      cubit.getPickingsModel
+                                                              ?.result?.data
+                                                              ?.elementAt(index)
+                                                              .destinationLocation
+                                                              ?.wareHouseName ??
+                                                          cubit.getPickingsModel
+                                                              ?.result?.data
+                                                              ?.elementAt(index)
+                                                              .destinationLocation
+                                                              ?.locationDestName ??
                                                           "",
                                                       style: getMediumStyle(),
                                                     ),

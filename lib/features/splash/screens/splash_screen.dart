@@ -358,8 +358,11 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    context.read<ItineraryCubit>().getInitialTrackingState();
-    context.read<ClientsCubit>().checkAndRequestLocationPermission(context);
+    context.read<ItineraryCubit>().getInitialTrackingState().then((value) =>
+        context
+            .read<ClientsCubit>()
+            .checkAndRequestLocationPermission(context));
+
     _startDelay();
   }
 
