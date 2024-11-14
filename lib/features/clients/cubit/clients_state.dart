@@ -38,6 +38,7 @@ class UpdateProfileUserError extends ClientsState {}
 class UpdateProfileUserLoading extends ClientsState {}
 class UpdateProfileError extends ClientsState {}
 class UpdateProfileImagePicked extends ClientsState {}
-class SuccessGetCarId extends ClientsState {}
+class DisposeMapState extends ClientsState {}
 class FailGetCarId extends ClientsState {}
+class SuccessGetCarId extends ClientsState {}
 

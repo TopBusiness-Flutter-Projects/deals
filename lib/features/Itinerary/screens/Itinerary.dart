@@ -27,6 +27,13 @@ class _ItineraryScreenState extends State<ItineraryScreen> {
     context.read<ItineraryCubit>().getEmployeeData();
     super.initState();
   }
+  @override
+  void dispose() {
+    // Dispose the controller if you have one
+    // context.read<ClientsCubit>().mapController?.dispose();
+    // context.read<ClientsCubit>().mapController = null;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +114,14 @@ class _ItineraryScreenState extends State<ItineraryScreen> {
         backgroundColor: Colors.white,
         title: Text("خط السير".tr()),
         centerTitle: false,
+        // leading:
+        // GestureDetector(
+        //   onTap: (){
+        //     Navigator.pop(context);
+        //     context.read<ClientsCubit>().mapController = null;
+        //   },
+        //
+        //     child: Icon(Icons.arrow_back)),
         titleTextStyle: getBoldStyle(fontSize: 20.sp),
       ),
     );

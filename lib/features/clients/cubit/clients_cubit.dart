@@ -346,6 +346,17 @@ class ClientsCubit extends Cubit<ClientsState> {
       );
     }
   }
+  disposeController(){
+    mapController?.dispose();
+emit(DisposeMapState());
+
+  }
+  // @override
+  // Future<void> close() {
+  //   mapController?.dispose();
+  //   return super.close();
+  // }
+
 
   // Future<void> sendLocation(BuildContext context) async {
   //   perm.PermissionStatus permissionStatus =
