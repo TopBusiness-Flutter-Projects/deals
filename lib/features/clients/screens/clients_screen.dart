@@ -343,6 +343,7 @@ class _ClientScreenState extends State<ClientScreen> {
                     // SizedBox(
                     //   height: getSize(context) / 30,
                     // ),
+                    
                     CustomTextFieldWithTitle(
                       title: "address".tr(),
                       controller: cubit.addressController,
