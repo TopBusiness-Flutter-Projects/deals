@@ -60,7 +60,7 @@ String selectedProducsStockType = "stock";
       {bool isHome = false, bool isGetMore = false, int pageId = 1}) async {
     isGetMore ? emit(Loading2Product()) : emit(LoadingProduct());
     final response = await api.getAllProducts(pageId,selectedProducsStockType == "stock");
-    //
+
     response.fold((l) {
       emit(ErrorProduct());
     }, (right) async {
