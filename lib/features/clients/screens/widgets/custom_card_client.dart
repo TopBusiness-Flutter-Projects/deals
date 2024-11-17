@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/widgets/decode_image.dart';
+import 'package:top_sale/features/contact_us/cubit/contact_us_cubit.dart';
 import '../../../../core/models/all_partners_for_reports_model.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
@@ -13,7 +16,7 @@ class CustomCardClient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         partner?.image.toString() != 'false'
             ? ClipRRect(
@@ -59,6 +62,20 @@ class CustomCardClient extends StatelessWidget {
             )
           ],
         ),
+        Spacer(),
+        if (partner?.phone.toString() != 'false')
+          GestureDetector(
+            onTap: () {
+              context.read<ContactUsCubit>().launchURL('tel:${partner?.phone}');
+            },
+            child: Center(
+              child: Icon(
+                Icons.phone,
+                color: AppColors.orangeThirdPrimary,
+                size: 36,
+              ),
+            ),
+          ),
       ],
     );
   }

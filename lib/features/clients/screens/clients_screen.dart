@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/clients/cubit/clients_state.dart';
 import 'package:top_sale/features/clients/screens/widgets/custom_card_client.dart';
+import 'package:top_sale/features/contact_us/cubit/contact_us_cubit.dart';
 import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/utils/app_colors.dart';
@@ -175,9 +177,42 @@ class _ClientScreenState extends State<ClientScreen> {
                                             );
                                           }
                                         },
-                                        child: CustomCardClient(
-                                          partner: cubit
-                                              .allPartnersModel!.result![index],
+                                        child: Dismissible(
+                                          key: Key(cubit.allPartnersModel!
+                                              .result![index].id
+                                              .toString()),
+                                          background: Container(
+                                            color: AppColors
+                                                .orangeThirdPrimary, // Background color when swiping
+                                            child: Icon(
+                                              Icons.phone,
+                                              color: Colors.white,
+                                              size: 36,
+                                            ),
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(right: 20),
+                                          ),
+                                          confirmDismiss: (direction) async {
+                                            // Trigger the phone call action without dismissing the widget
+                                            print(
+                                                "Calling: ${cubit.allPartnersModel!.result![index].phone}");
+                                            if (cubit.allPartnersModel!
+                                                    .result![index].phone
+                                                    .toString() !=
+                                                'false') {
+                                              context
+                                                  .read<ContactUsCubit>()
+                                                  .launchURL(
+                                                      'tel:${cubit.allPartnersModel!.result![index].phone}');
+                                            } else {
+                                              errorGetBar('الرقم خطأ');
+                                            }                                            
+                                            return false;
+                                          },
+                                          child: CustomCardClient(
+                                            partner: cubit.allPartnersModel!
+                                                .result![index],
+                                          ),
                                         ));
                                   },
                                 ),
@@ -355,7 +390,7 @@ class _ClientScreenState extends State<ClientScreen> {
                     // SizedBox(
                     //   height: 10.h,
                     // ),
-                    
+
                     cubit.selectedClientType == 'Company'
                         ? CustomTextFieldWithTitle(
                             title: "الرقم الضريبي".tr(),

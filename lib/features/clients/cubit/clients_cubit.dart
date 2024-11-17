@@ -343,17 +343,16 @@ class ClientsCubit extends Cubit<ClientsState> {
       );
     }
   }
-  disposeController(){
-    mapController?.dispose();
-emit(DisposeMapState());
 
+  disposeController() {
+    mapController?.dispose();
+    emit(DisposeMapState());
   }
   // @override
   // Future<void> close() {
   //   mapController?.dispose();
   //   return super.close();
   // }
-
 
   // Future<void> sendLocation(BuildContext context) async {
   //   perm.PermissionStatus permissionStatus =
@@ -536,6 +535,7 @@ emit(DisposeMapState());
     required int id,
   }) async {
     emit(ProfileClientLoading());
+    AppWidget.createProgressDialog(context, "جاري التحميل");
     final result = await api.updatePartenerDetails(
       image1920: selectedBase64String,
       name: nameController.text,
@@ -545,9 +545,11 @@ emit(DisposeMapState());
     result.fold(
       (failure) {
         Navigator.pop(context);
+        Navigator.pop(context);
         emit(ProfileClientError());
       },
       (r) {
+        Navigator.pop(context);
         Navigator.pop(context);
 
         if (r.result != null) {
