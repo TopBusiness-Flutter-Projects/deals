@@ -65,8 +65,8 @@ class _DetailsOrderState extends State<DetailsOrder> {
         actions: [
           (widget.orderModel.state == 'sale' &&
                   widget.orderModel.invoiceStatus == 'to invoice' &&
-                  widget.orderModel.deliveryStatus == 'assigned'
-              // widget.orderModel.deliveryStatus == 'pending'
+                 ( widget.orderModel.deliveryStatus == 'assigned'  ||
+              widget.orderModel.deliveryStatus == 'pending')
               )
               ? IconButton(
                   onPressed: () {

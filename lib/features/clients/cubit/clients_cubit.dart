@@ -160,7 +160,6 @@ class ClientsCubit extends Cubit<ClientsState> {
 
 //location section
   loc.LocationData? currentLocation;
-
   Future<void> checkAndRequestLocationPermission(BuildContext context) async {
     perm.PermissionStatus permissionStatus =
         await perm.Permission.location.status;
@@ -210,7 +209,6 @@ class ClientsCubit extends Cubit<ClientsState> {
         getCurrentLocation(context);
       }
     }
-
     loc.PermissionStatus permissionStatus =
         await loc.Location().hasPermission();
     if (permissionStatus == loc.PermissionStatus.granted) {
@@ -273,7 +271,7 @@ class ClientsCubit extends Cubit<ClientsState> {
     updateLatLong(context, text: isStart ? "(start)" : "");
     await Preferences.instance.setIsInTrip(true);
     // Set up a timer to fetch location every 5 minutes
-    timer = Timer.periodic(const Duration(minutes:15), (timer) {
+    timer = Timer.periodic(const Duration(minutes: 15), (timer) {
       print("10 seconds then");
       updateLatLong(context, text: "");
       debugPrint(" lat: ${currentLocation?.latitude}");
@@ -291,13 +289,13 @@ class ClientsCubit extends Cubit<ClientsState> {
       print("Timer cancelled");
     }
   }
- Future<int?> getCarId() async {
-   int? carId;
+
+  Future<int?> getCarId() async {
+    int? carId;
     final result = await api.getEmployeeCarId();
     result.fold(
       (failure) => emit(FailGetCarId()),
       (r) {
-    
         if (r.carIds!.isNotEmpty) {
           carId = r.carIds!.first.id;
         }
@@ -307,30 +305,29 @@ class ClientsCubit extends Cubit<ClientsState> {
     );
     return carId;
   }
+
   void updateLatLong(BuildContext context, {required String text}) async {
     emit(UpdateProfileUserLoading());
     print("updated");
     // if (context.read<ItineraryCubit>().getEmployeeDataModel != null) {
-      // if (context
-      //     .read<ItineraryCubit>()
-      //     .getEmployeeDataModel!
-      //     .carIds!
-      //     .isNotEmpty) {
-        await getAddressFromLatLng(currentLocation!.latitude ?? 0.0,
-            currentLocation!.longitude ?? 0.0);
-        final result = await api.tracking(
-            name: text + address,
-            carId:await getCarId()??1,
-            date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-            lat: currentLocation?.latitude ?? 0.0,
-            long: currentLocation?.longitude ?? 0.0);
-        result.fold((l) {
-          emit(UpdateProfileUserError());
-        }, (r) {
-          emit(UpdateProfileUserLoaded());
-        });
-     
-    
+    // if (context
+    //     .read<ItineraryCubit>()
+    //     .getEmployeeDataModel!
+    //     .carIds!
+    //     .isNotEmpty) {
+    await getAddressFromLatLng(
+        currentLocation!.latitude ?? 0.0, currentLocation!.longitude ?? 0.0);
+    final result = await api.tracking(
+        name: text + address,
+        carId: await getCarId() ?? 1,
+        date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        lat: currentLocation?.latitude ?? 0.0,
+        long: currentLocation?.longitude ?? 0.0);
+    result.fold((l) {
+      emit(UpdateProfileUserError());
+    }, (r) {
+      emit(UpdateProfileUserLoaded());
+    });
   }
 
   GoogleMapController? mapController;
@@ -415,7 +412,14 @@ class ClientsCubit extends Cubit<ClientsState> {
 
 //create client
   CreateOrderModel? createOrderModel;
-  void createClient(BuildContext context) async {
+  void createClient(
+    BuildContext context, {
+    String? name,
+    String? mobile,
+    String? email,
+    String? address,
+    String? vat,
+  }) async {
     AppWidget.createProgressDialog(context, "جاري التحميل");
     emit(CreateClientLoading());
     final result = await api.createPartner(

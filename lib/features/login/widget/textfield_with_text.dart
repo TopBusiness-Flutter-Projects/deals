@@ -17,20 +17,20 @@ class CustomTextFieldWithTitle extends StatefulWidget {
     this.textInputAction,
     this.isRequired = true,
     this.withPadding = true,
-    String? Function(dynamic value)? validator,
+    this.validator,
   });
 
-  TextEditingController controller;
-  TextInputAction? textInputAction;
-  String title;
-  String hint;
-  bool? readonly;
-  bool? isModify;
-  TextInputType? keyboardType;
-  int? maxLines;
-  bool isRequired;
-  bool withPadding;
-  String? Function(String?)? validator;
+ final TextEditingController controller;
+ final TextInputAction? textInputAction;
+ final String title;
+ final String hint;
+ final bool? readonly;
+ final bool? isModify;
+ final TextInputType? keyboardType;
+ final int? maxLines;
+ final bool isRequired;
+ final bool withPadding;
+ final String? Function(String?)? validator;
   @override
   _CustomTextFieldWithTitleState createState() =>
       _CustomTextFieldWithTitleState();

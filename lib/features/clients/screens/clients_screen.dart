@@ -290,8 +290,11 @@ class _ClientScreenState extends State<ClientScreen> {
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return "enter_name".tr();
+                        } else if (!RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
+                          // Adjust the regex as needed for language-specific characters
+                          return "ادخل اسم حقيقي";
                         }
                         return null;
                       },
@@ -305,6 +308,15 @@ class _ClientScreenState extends State<ClientScreen> {
                       hint: "enter_phone".tr(),
                       keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "enter_phone".tr();
+                        } else if (!RegExp(r'^\d{10,15}$').hasMatch(value)) {
+                          // Adjust the regex as needed for the desired phone format
+                          return "من فضلك ادخل رقم صالح";
+                        }
+                        return null;
+                      },
                     ),
                     // SizedBox(
                     //   height: getSize(context) / 30,
@@ -316,6 +328,17 @@ class _ClientScreenState extends State<ClientScreen> {
                       hint: "enter_email".tr(),
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return null;
+                          // return "Please enter your email.";
+                        } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                            .hasMatch(value)) {
+                          // Adjust the regex as needed for stricter validation
+                          return "من فضلك ادخل بريد صالح";
+                        }
+                        return null;
+                      },
                     ),
                     // SizedBox(
                     //   height: getSize(context) / 30,
@@ -336,10 +359,17 @@ class _ClientScreenState extends State<ClientScreen> {
                             title: "الرقم الضريبي".tr(),
                             controller: cubit.vatController,
                             hint: "الرقم الضريبي".tr(),
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                             textInputAction: TextInputAction.done,
-                            validator: (value) =>
-                                value!.isEmpty ? "الرقم الضريبي".tr() : null,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "ادخل الرقم الضريبي";
+                              } else if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                // Adjust this regex to enforce length or other specific rules if needed
+                                return "ادخل رقم صالح";
+                              }
+                              return null;
+                            },
                           )
                         : const SizedBox(),
                     Padding(
@@ -351,6 +381,7 @@ class _ClientScreenState extends State<ClientScreen> {
                         text: 'confirm'.tr(),
                         onPressed: () {
                           if (cubit.formKey.currentState!.validate()) {
+                            print("Validated");
                             cubit.createClient(context);
                           } else {
                             // Handle validation failure
