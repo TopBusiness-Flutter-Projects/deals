@@ -19,7 +19,7 @@ class SharedAppBarApp extends StatelessWidget {
           children: [
             Directionality.of(context) == TextDirection.RTL
                 ? Image.asset(ImageAssets.arrowAr)
-                : Icon(Icons.arrow_back, color: AppColors.primary),
+                : Icon(Icons.arrow_back, color: AppColors.primary,),
             SizedBox(width: getSize(context) / 50),
             Padding(
               padding: EdgeInsets.only(top: getSize(context) / 55),

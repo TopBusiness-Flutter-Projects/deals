@@ -1,13 +1,23 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/return_model.dart';
 import 'package:top_sale/core/models/rigister_payment_model.dart';
 import 'package:top_sale/core/remote/service.dart';
+import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/appwidget.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
+import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import 'package:top_sale/features/delevery_order/cubit/delevery_orders_cubit.dart';
 import 'package:top_sale/features/details_order/cubit/details_orders_state.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_cubit.dart';
@@ -120,6 +130,72 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     });
   }
 
+  File? profileImage;
+  String selectedBase64String = "";
+  removeImage() {
+    profileImage = null;
+    emit(FileRemovedSuccessfully());
+  }
+
+  void showImageSourceDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'select_image'.tr(),
+            style: getMediumStyle(),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                pickImage(context, true);
+              },
+              child: Text(
+                'gallery'.tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                pickImage(context, false);
+              },
+              child: Text(
+                "camera".tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future pickImage(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: isGallery ? ImageSource.gallery : ImageSource.camera);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      selectedBase64String = await fileToBase64String(pickedFile.path);
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+      Navigator.pop(context);
+    } else {
+      emit(UpdateProfileError());
+    }
+  }
+
+  //photo transfer
+  Future<String> fileToBase64String(String filePath) async {
+    File file = File(filePath);
+    Uint8List bytes = await file.readAsBytes();
+    String base64String = base64Encode(bytes);
+    return base64String;
+  }
   void registerPayment(BuildContext context,
       {required int journalId,
       required int invoiceId,
@@ -127,6 +203,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     emit(RegisterPaymentLoadingState());
     AppWidget.createProgressDialog(context, "جاري التحميل");
     final result = await api.registerPayment(
+        image: selectedBase64String,
         invoiceId: invoiceId,
         journalId: journalId,
         amount: moneyController.text);
@@ -145,6 +222,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
             successGetBar(r.result!.message);
             emit(RegisterPaymentLoadedState());
             Navigator.pop(context);
+            selectedBase64String = "";
+            profileImage = null;
             getDetailsOrders(orderId: orderId);
             context.read<DeleveryOrdersCubit>().getOrders();
           } else {
@@ -171,6 +250,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     emit(RegisterPaymentLoadingState());
     AppWidget.createProgressDialog(context, "جاري التحميل");
     final result = await api.registerPaymentReturn(
+        image: selectedBase64String,
         invoiceId: returnOrderModel!.result!.creditNoteId,
         journalId: journalId,
         amount: moneyController.text);
@@ -186,6 +266,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
         Navigator.pop(context);
         if (r.result != null) {
           if (r.result!.status != null) {
+            selectedBase64String = "";
+            profileImage = null;
             successGetBar(r.result!.status.toString());
             emit(RegisterPaymentLoadedState());
             Navigator.pushReplacementNamed(context, Routes.mainRoute);
@@ -374,6 +456,9 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
         partnerId: partnerId,
         saleOrderId: getDetailsOrdersModel!.id.toString(),
         products: getDetailsOrdersModel!.orderLines ?? [],
+        lat: context.read<ClientsCubit>().currentLocation?.latitude ?? 0.0,
+        long: context.read<ClientsCubit>().currentLocation?.longitude ?? 0.0,
+        address: context.read<ClientsCubit>().address,
         listOfremovedItems: listOfremovedItems);
     result.fold((l) {
       emit(ErrorUpdateQuotation());
@@ -507,6 +592,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     newPriceController.clear();
     emit(OnChangeUnitPriceOfItem());
   }
+
   TextEditingController newQtyController = TextEditingController();
 
   onChnageProductQuantity(OrderLine item, BuildContext context) {
@@ -515,6 +601,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     newQtyController.clear();
     emit(OnChangeUnitPriceOfItem());
   }
+
   TextEditingController newDiscountController = TextEditingController();
 
   onChnageDiscountOfUnit(OrderLine item, BuildContext context) {

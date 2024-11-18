@@ -13,3 +13,6 @@
  class GetPaymentsLoaded extends CreateReceiptCoucherState {}
  class GetPaymentsLoading extends CreateReceiptCoucherState {}
  class GetPaymentsError extends CreateReceiptCoucherState {}
+ class UpdateProfileError extends CreateReceiptCoucherState {}
+ class UpdateProfileImagePicked extends CreateReceiptCoucherState {}
+ class FileRemovedSuccessfully extends CreateReceiptCoucherState {}

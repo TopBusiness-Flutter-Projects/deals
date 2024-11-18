@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +49,61 @@ class _CreateReceiptCoucherScreenState
                       )
                     : Column(
                         children: [
+                          Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  cubit.showImageSourceDialog(context);
+                                }, // Use the passed camera function
+                                child: Container(
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: cubit.profileImage == null
+                                      ? Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.cloud_upload_outlined,
+                                                  size: 40,
+                                                  color: AppColors.primary),
+                                              SizedBox(height: 5.sp),
+                                              const Text(
+                                                'ارفع الصورة',
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.file(
+                                            // Display the image using Image.file
+                                            File(cubit.profileImage!.path),
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    cubit.removeImage();
+                                  },
+                                  icon: CircleAvatar(
+                                      backgroundColor: AppColors.secondPrimary,
+                                      child: Icon(
+                                        Icons.close_rounded,
+                                        color: Colors.white,
+                                        size: 30,
+                                      )))
+                            ],
+                          ),
                           Row(
                             children: [
                               Text(
@@ -226,6 +283,7 @@ class _CreateReceiptCoucherScreenState
                 if (_formKey.currentState!.validate() &&
                     cubit.refController.text.isNotEmpty &&
                     cubit.amountController.text.isNotEmpty &&
+                    cubit.selectedBase64String.isNotEmpty &&
                     cubit.selectedPaymentMethod != null) {
                   cubit.partnerPaymentMethod(context,
                       partnerId: widget.partnerId);

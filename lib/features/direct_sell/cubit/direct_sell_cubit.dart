@@ -6,6 +6,7 @@ import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
 import 'package:top_sale/core/utils/appwidget.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
+import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import '../../../core/models/all_products_model.dart';
 import '../../../core/models/category_model.dart';
 import '../../../core/models/create_order_model.dart';
@@ -288,7 +289,21 @@ String selectedProducsStockType = "stock";
     AppWidget.createProgressDialog(context, "جاري التحميل ..");
     emit(LoadingCreateQuotation());
     final result = await api.createQuotation(
-        partnerId: partnerId, products: basket, warehouseId: warehouseId);
+        partnerId: partnerId, products: basket, warehouseId: warehouseId,
+         lat:   context
+                                    .read<ClientsCubit>()
+                                    .currentLocation
+                                    ?.latitude ??
+                                0.0,
+                       long:     context
+                                    .read<ClientsCubit>()
+                                    .currentLocation
+                                    ?.longitude ??
+                                0.0,
+                                address: context
+                                    .read<ClientsCubit>()
+                                    .address
+        );
 
     result.fold((l) {
       Navigator.pop(context);

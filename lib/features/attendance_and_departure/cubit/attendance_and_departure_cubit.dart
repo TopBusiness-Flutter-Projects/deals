@@ -434,7 +434,7 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
       },
     );
   }
-
+  
   AddTimeOffModel? addTimeOffModel;
   Future<void> addTimeOff({
     required BuildContext context,

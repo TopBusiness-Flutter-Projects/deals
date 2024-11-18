@@ -1,9 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:top_sale/core/api/end_points.dart';
 import 'package:top_sale/core/models/all_payments_model.dart';
 import 'package:top_sale/core/remote/service.dart';
+import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/appwidget.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/features/details_order/screens/pdf.dart';
@@ -38,6 +46,73 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
     );
   }
 
+  File? profileImage;
+  String selectedBase64String = "";
+  removeImage() {
+    profileImage = null;
+    emit(FileRemovedSuccessfully());
+  }
+
+  void showImageSourceDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'select_image'.tr(),
+            style: getMediumStyle(),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                pickImage(context, true);
+              },
+              child: Text(
+                'gallery'.tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                pickImage(context, false);
+              },
+              child: Text(
+                "camera".tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future pickImage(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: isGallery ? ImageSource.gallery : ImageSource.camera);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      selectedBase64String = await fileToBase64String(pickedFile.path);
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+      Navigator.pop(context);
+    } else {
+      emit(UpdateProfileError());
+    }
+  }
+
+  //photo transfer
+  Future<String> fileToBase64String(String filePath) async {
+    File file = File(filePath);
+    Uint8List bytes = await file.readAsBytes();
+    String base64String = base64Encode(bytes);
+    return base64String;
+  }
+
   void partnerPaymentMethod(BuildContext context,
       {required int partnerId}) async {
     AppWidget.createProgressDialog(context, "جاري التحميل");
@@ -46,6 +121,8 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
       'yyyy-MM-dd',
     ).format(selectedDate);
     final result = await api.partnerPayment(
+      image: selectedBase64String,
+
       amount: amountController.text,
       journalId: selectedPaymentMethod!,
       ref: refController.text,
@@ -67,6 +144,8 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
           Navigator.pop(context);
           refController.clear();
           amountController.clear();
+          selectedBase64String = "";
+          profileImage = null;
           // selectedPaymentMethod = null;
           selectedDate = DateTime.now();
           if (r.result!.paymentId != null) {

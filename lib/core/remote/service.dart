@@ -736,7 +736,12 @@ class ServiceApi {
   Future<Either<Failure, CreateOrderModel>> createQuotation(
       {required int partnerId,
       required String warehouseId,
-      required List<ProductModelData> products}) async {
+      required List<ProductModelData> products,
+      required double lat,
+      required double long,
+      required String address,
+      
+      }) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
@@ -767,6 +772,9 @@ class ServiceApi {
                     wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
                 "user_id": int.parse(userId),
                 if (employeeId != null) "employee_id": employeeId,
+                "latitude": lat,
+                "longitude":long,
+                "address" :address,
                 "order_line": orderLine
               }
             }
@@ -904,11 +912,14 @@ class ServiceApi {
     }
   }
 
-// create quatation
+// update quatation
   Future<Either<Failure, CreateOrderModel>> updateQuotation(
       {required int partnerId,
       required String saleOrderId,
       required List<OrderLine> products,
+      required double lat,
+      required double long,
+      required String address,
       required List<dynamic> listOfremovedItems}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -950,6 +961,10 @@ class ServiceApi {
               "data": {
                 "sale_order_id": int.parse(saleOrderId.toString()),
                 "partner_id": partnerId,
+                 "latitude": lat,
+                 "longitude":long,
+                "address" :address,
+
                 "sale_order_user_id": int.parse(userId),
                      "warehouse_id":
                     wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
@@ -1021,7 +1036,8 @@ class ServiceApi {
   Future<Either<Failure, CreateOrderModel>> registerPayment({
     required int invoiceId,
     required int journalId,
-    required String amount,
+    required String amount,    required String image
+
   }) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1036,7 +1052,8 @@ class ServiceApi {
               body: {
             "params": {
               // "payment_date": "2024-10-10",
-              "journal_id": journalId,
+              "journal_id": journalId,                "attachment":image,
+
               "payment_method_id": 1, // ثابت
               "amount": amount
             }
@@ -1081,7 +1098,8 @@ class ServiceApi {
   Future<Either<Failure, RegisterPaymentModel>> registerPaymentReturn({
     required int invoiceId,
     required int journalId,
-    required String amount,
+    required String amount,    required String image
+
   }) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1099,7 +1117,8 @@ class ServiceApi {
         body: {
           if (employeeId != null) "employee_id": int.parse(employeeId),
           "user_id": int.parse(userId),
-          "journal_id": journalId,
+          "journal_id": journalId,                "attachment":image,
+
           "amount": double.parse(amount)
         },
       );
@@ -1120,6 +1139,7 @@ class ServiceApi {
     required String amount,
     required String ref,
     required String date,
+    required String image
   }) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1139,6 +1159,7 @@ class ServiceApi {
                 "journal_id": journalId,
                 "amount": amount,
                 "ref": ref,
+                "attachment":image,
                 "date": date //"2024-05-02"
               }
             }
