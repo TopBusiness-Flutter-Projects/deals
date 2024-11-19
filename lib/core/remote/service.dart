@@ -380,7 +380,8 @@ class ServiceApi {
   }
 
 //getAllProducts
-  Future<Either<Failure, AllProductsModel>> getAllProducts(int page , bool isStockOnly) async {
+  Future<Either<Failure, AllProductsModel>> getAllProducts(
+      int page, bool isStockOnly) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -412,7 +413,8 @@ class ServiceApi {
     }
   }
 
-  Future<Either<Failure, AllProductsModel>> getAllProductsByCategory(int? page,bool isStockOnly,
+  Future<Either<Failure, AllProductsModel>> getAllProductsByCategory(
+      int? page, bool isStockOnly,
       {required int categoryId}) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
@@ -693,6 +695,9 @@ class ServiceApi {
 // confirm quatation
   Future<Either<Failure, CreateOrderModel>> confirmQuotation({
     required int orderId,
+    required double lat,
+    required double long,
+    required String address,
   }) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -704,7 +709,17 @@ class ServiceApi {
               options: Options(
                 headers: {"Cookie": "session_id=$sessionId"},
               ),
-              body: {"jsonrpc": "2.0", "method": "call", "params": {}});
+              body: {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+              "data": {
+                "latitude": lat,
+                "longitude": long,
+                "address": address,
+              }
+            }
+          });
       return Right(CreateOrderModel.fromJson(response));
     } on ServerException {
       return Left(ServerFailure());
@@ -714,6 +729,12 @@ class ServiceApi {
   // cancel
   Future<Either<Failure, CreateOrderModel>> cancelOrder({
     required int orderId,
+    required String image,
+    String? note,
+    required String imagePath,
+      required double lat,
+      required double long,
+      required String address,
   }) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -725,7 +746,20 @@ class ServiceApi {
               options: Options(
                 headers: {"Cookie": "session_id=$sessionId"},
               ),
-              body: {"jsonrpc": "2.0", "method": "call", "params": {}});
+              body: {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+              "data": {
+                if (image.isNotEmpty) "attachment": image,
+                if (image.isNotEmpty) "filename": imagePath,
+                if (note != null) "note": note,
+                "latitude": lat,
+                "longitude": long,
+                "address": address,
+              }
+            }
+          });
       return Right(CreateOrderModel.fromJson(response));
     } on ServerException {
       return Left(ServerFailure());
@@ -740,8 +774,9 @@ class ServiceApi {
       required double lat,
       required double long,
       required String address,
-      
-      }) async {
+      required String image,
+      required String imagePath,
+      String? note}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
@@ -773,8 +808,11 @@ class ServiceApi {
                 "user_id": int.parse(userId),
                 if (employeeId != null) "employee_id": employeeId,
                 "latitude": lat,
-                "longitude":long,
-                "address" :address,
+                "longitude": long,
+                "address": address,
+                if (image.isNotEmpty) "attachment": image,
+                if (image.isNotEmpty) "filename": imagePath,
+                if (note != null) "note": note,
                 "order_line": orderLine
               }
             }
@@ -961,12 +999,11 @@ class ServiceApi {
               "data": {
                 "sale_order_id": int.parse(saleOrderId.toString()),
                 "partner_id": partnerId,
-                 "latitude": lat,
-                 "longitude":long,
-                "address" :address,
-
+                "latitude": lat,
+                "longitude": long,
+                "address": address,
                 "sale_order_user_id": int.parse(userId),
-                     "warehouse_id":
+                "warehouse_id":
                     wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
                 if (employeeId != null)
                   "employee_id": int.parse(employeeId.toString()),
@@ -1033,15 +1070,14 @@ class ServiceApi {
   }
 
   // الدفع
-  Future<Either<Failure, CreateOrderModel>> registerPayment({
-    required int invoiceId,
-    required int journalId,
-    required String amount,    required String image
-
-  }) async {
+  Future<Either<Failure, CreateOrderModel>> registerPayment(
+      {required int invoiceId,
+      required int journalId,
+      required String amount,
+      required String imagePath,
+      required String image}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
-
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio
@@ -1051,8 +1087,9 @@ class ServiceApi {
               ),
               body: {
             "params": {
-              // "payment_date": "2024-10-10",
-              "journal_id": journalId,                "attachment":image,
+              "journal_id": journalId,
+              if (image.isNotEmpty) "attachment": image,
+              if (image.isNotEmpty) "filename": imagePath,
 
               "payment_method_id": 1, // ثابت
               "amount": amount
@@ -1095,12 +1132,12 @@ class ServiceApi {
   }
 
   // registerPaymentreturn
-  Future<Either<Failure, RegisterPaymentModel>> registerPaymentReturn({
-    required int invoiceId,
-    required int journalId,
-    required String amount,    required String image
-
-  }) async {
+  Future<Either<Failure, RegisterPaymentModel>> registerPaymentReturn(
+      {required int invoiceId,
+      required int journalId,
+      required String amount,
+      required String imagePath,
+      required String image}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
@@ -1117,8 +1154,9 @@ class ServiceApi {
         body: {
           if (employeeId != null) "employee_id": int.parse(employeeId),
           "user_id": int.parse(userId),
-          "journal_id": journalId,                "attachment":image,
-
+          "journal_id": journalId,
+          if (image.isNotEmpty) "attachment": image,
+          if (image.isNotEmpty) "filename": imagePath,
           "amount": double.parse(amount)
         },
       );
@@ -1133,14 +1171,14 @@ class ServiceApi {
   }
 
   // الدفع
-  Future<Either<Failure, CreateOrderModel>> partnerPayment({
-    required int partnerId,
-    required int journalId,
-    required String amount,
-    required String ref,
-    required String date,
-    required String image
-  }) async {
+  Future<Either<Failure, CreateOrderModel>> partnerPayment(
+      {required int partnerId,
+      required int journalId,
+      required String amount,
+      required String ref,
+      required String date,
+      required String imagePath,
+      required String image}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
@@ -1159,7 +1197,8 @@ class ServiceApi {
                 "journal_id": journalId,
                 "amount": amount,
                 "ref": ref,
-                "attachment":image,
+                if (image.isNotEmpty) "attachment": image,
+                if (image.isNotEmpty) "filename": imagePath,
                 "date": date //"2024-05-02"
               }
             }
@@ -1244,13 +1283,13 @@ class ServiceApi {
                 "name": name,
                 "phone": mobile,
                 "is_company": isCompany,
-                if (isCompany)  "company_type": "company", // if isCompany = true
-                if(isCompany) "vat": vat, // if isCompany = true
+                if (isCompany) "company_type": "company", // if isCompany = true
+                if (isCompany) "vat": vat, // if isCompany = true
                 if (email.isNotEmpty) "email": email,
                 "street": street,
                 "latitude": lat,
                 "longitude": long,
-                "image":image
+                "image": image
                 // "user_id": authModel.result!.userContext!.uid
               }
             }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/models/all_journals_model.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
+import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/features/details_order/cubit/details_orders_state.dart';
 import 'package:top_sale/features/details_order/screens/widgets/rounded_button.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -93,97 +94,108 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
     ),
     builder: (context) {
       return BlocBuilder<DetailsOrdersCubit, DetailsOrdersState>(
-      builder: (context, state) {
-          return Padding(
-            padding: EdgeInsets.only(
-              left: getSize(context) / 20,
-              right: getSize(context) / 20,
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-              top: getSize(context) / 20,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                      "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.invoices?.first.amountDue ?? 0} ",
-                      // "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.amountTotal ?? 0} ",
-                      style: TextStyle(fontSize: getSize(context) / 20)),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          cubit.showImageSourceDialog(context);
-                        }, // Use the passed camera function
-                        child: Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: cubit.profileImage == null
-                              ? Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.cloud_upload_outlined,
-                                          size: 40, color: AppColors.primary),
-                                      SizedBox(height: 5.sp),
-                                      const Text(
-                                        'ارفع الصورة',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.file(
-                                    // Display the image using Image.file
-                                    File(cubit.profileImage!.path),
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                  ),
-                                ),
+          builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: getSize(context) / 20,
+            right: getSize(context) / 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            top: getSize(context) / 20,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                    "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.invoices?.first.amountDue ?? 0} ",
+                    // "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.amountTotal ?? 0} ",
+                    style: TextStyle(fontSize: getSize(context) / 20)),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        cubit.showImageSourceDialog(context);
+                      }, // Use the passed camera function
+                      child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        child: cubit.profileImage == null
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.cloud_upload_outlined,
+                                        size: 40, color: AppColors.primary),
+                                    SizedBox(height: 5.sp),
+                                    const Text(
+                                      '  ارفع الصورة أو الملف',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.file(
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Image.asset(
+                                        ImageAssets.pdfImage,
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                  ),
+                                  // Display the image using Image.file
+                                  File(cubit.profileImage!.path),
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              ),
                       ),
-                      IconButton(
-                          onPressed: () {
-                            cubit.removeImage();
-                          },
-                          icon: CircleAvatar(
-                              backgroundColor: AppColors.secondPrimary,
-                              child: Icon(
-                                Icons.close_rounded,
-                                color: Colors.white,
-                                size: 30,
-                              )))
-                    ],
-                  ),
-                  CustomTextFieldWithTitle(
-                    title: "Paid_in_full".tr(),
-                    controller: cubit.moneyController,
-                    hint: "Enter_the_amount".tr(),
-                    keyboardType: TextInputType.text,
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: getSize(context) / 20, right: getSize(context) / 20),
-                    child: RoundedButton(
-                      backgroundColor: AppColors.primaryColor,
-                      text: 'confirm'.tr(),
-                      onPressed: () {
-                              if (
-                    cubit.selectedBase64String.isNotEmpty &&
-                    cubit.moneyController.text.isNotEmpty) {
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          cubit.removeImage();
+                        },
+                        icon: CircleAvatar(
+                            backgroundColor: AppColors.secondPrimary,
+                            child: Icon(
+                              Icons.close_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            )))
+                  ],
+                ),
+                CustomTextFieldWithTitle(
+                  title: "Paid_in_full".tr(),
+                  controller: cubit.moneyController,
+                  hint: "Enter_the_amount".tr(),
+                  keyboardType: TextInputType.text,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: getSize(context) / 20,
+                      right: getSize(context) / 20),
+                  child: RoundedButton(
+                    backgroundColor: AppColors.primaryColor,
+                    text: 'confirm'.tr(),
+                    onPressed: () {
+                      if (
+                          // cubit.selectedBase64String.isNotEmpty &&
+                          cubit.moneyController.text.isNotEmpty) {
                         isReturn
                             ? cubit.registerPaymentReturn(
                                 context,
@@ -197,23 +209,22 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
                                         ?.first.invoiceId ??
                                     -1,
                               );
-                         } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('يرجى ملء جميع الحقول المطلوبة'.tr()),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-                      },
-                    ),
-                  )
-                ],
-              ),
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('يرجى ملء جميع الحقول المطلوبة'.tr()),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                )
+              ],
             ),
-          );
-        }
-      );
+          ),
+        );
+      });
     },
   );
 }

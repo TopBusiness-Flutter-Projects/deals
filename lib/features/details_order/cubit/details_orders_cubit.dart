@@ -151,7 +151,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                pickImage(context, true);
+                pickFile(context, true);
               },
               child: Text(
                 'gallery'.tr(),
@@ -189,6 +189,19 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     }
   }
 
+  Future pickFile(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickMedia();
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      selectedBase64String = await fileToBase64String(pickedFile.path);
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+      Navigator.pop(context);
+    } else {
+      emit(UpdateProfileError());
+    }
+  }
+
   //photo transfer
   Future<String> fileToBase64String(String filePath) async {
     File file = File(filePath);
@@ -196,6 +209,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     String base64String = base64Encode(bytes);
     return base64String;
   }
+
   void registerPayment(BuildContext context,
       {required int journalId,
       required int invoiceId,
@@ -204,6 +218,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     AppWidget.createProgressDialog(context, "جاري التحميل");
     final result = await api.registerPayment(
         image: selectedBase64String,
+        imagePath:
+            profileImage == null ? "" : profileImage!.path.split('/').last,
         invoiceId: invoiceId,
         journalId: journalId,
         amount: moneyController.text);
@@ -251,6 +267,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     AppWidget.createProgressDialog(context, "جاري التحميل");
     final result = await api.registerPaymentReturn(
         image: selectedBase64String,
+        imagePath:
+            profileImage == null ? "" : profileImage!.path.split('/').last,
         invoiceId: returnOrderModel!.result!.creditNoteId,
         journalId: journalId,
         amount: moneyController.text);
@@ -472,6 +490,9 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
       confirmQuotation(
         orderId: getDetailsOrdersModel!.id!,
         context: context,
+        lat: context.read<ClientsCubit>().currentLocation?.latitude ?? 0.0,
+        long: context.read<ClientsCubit>().currentLocation?.longitude ?? 0.0,
+        address: context.read<ClientsCubit>().address,
         orderModel: OrderModel(
             amountTotal: orderModel.amountTotal,
             deliveryStatus: 'pending',
@@ -542,9 +563,13 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     required int orderId,
     required OrderModel orderModel,
     required BuildContext context,
+    required double lat,
+    required double long,
+    required String address,
   }) async {
     emit(LoadingConfirmQuotation());
-    final result = await api.confirmQuotation(orderId: orderId);
+    final result = await api.confirmQuotation(
+        lat: lat, long: long, address: address, orderId: orderId);
     result.fold((l) {
       emit(ErrorConfirmQuotation());
     }, (r) {
@@ -562,20 +587,36 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     });
   }
 
-  cancelOrder({
-    required int orderId,
-    required OrderModel orderModel,
-    required BuildContext context,
-  }) async {
+//profileImage!.path.split('/').last
+  cancelOrder(
+      {required int orderId,
+      required OrderModel orderModel,
+      required BuildContext context,
+      String? note}) async {
+    AppWidget.createProgressDialog(context, "جاري التحميل");
     emit(LoadingCancel());
-    final result = await api.cancelOrder(orderId: orderId);
+    final result = await api.cancelOrder(
+        imagePath:
+            profileImage == null ? "" : profileImage!.path.split('/').last,
+        orderId: orderId,
+        note: note,
+         lat: context.read<ClientsCubit>().currentLocation?.latitude ?? 0.0,
+        long: context.read<ClientsCubit>().currentLocation?.longitude ?? 0.0,
+        address: context.read<ClientsCubit>().address,
+        image: selectedBase64String);
     result.fold((l) {
+      Navigator.pop(context);
       emit(ErrorCancel());
     }, (r) {
+      Navigator.pop(context);
+      Navigator.pop(context);
       if (r.result!.message!.contains("successfully")) {
+        Navigator.pop(context);
         context.read<DeleveryOrdersCubit>().getOrders();
         //! Make confirm quotation
         successGetBar(r.result!.message!);
+        profileImage = null;
+        selectedBase64String = '';
         Navigator.pop(context);
         emit(LoadedCancel());
       } else {

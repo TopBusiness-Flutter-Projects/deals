@@ -39,6 +39,7 @@ class ImageAssets {
   static const String receiptVoucherIcon = '$imagePath/receipt_voucher.png';
   static const String cartIcon = '$imagePath/cart-arrow.png';
   static const String sarfIcon = '$imagePath/sarf.png';
+  static const String pdfImage = '$imagePath/pdf17.png';
   // icons
   static const String phoneIcon = '$iconsPath/phone.svg';
   static const String numberOfBills = '$iconsPath/number_bill.svg';

@@ -1,9 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
+import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/appwidget.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
@@ -30,16 +38,17 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       print("catogrey id" + '$id');
       getAllProductsByCatogrey(id: id);
     }
-    
 
     allProductsModel.result?.products = [];
     print("sucess change 2");
   }
-String selectedProducsStockType = "stock";
-    changeProductsStockType(String value) {
-      selectedProducsStockType = value;
-      emit(UpdateProductsStockState());
-    }
+
+  String selectedProducsStockType = "stock";
+  changeProductsStockType(String value) {
+    selectedProducsStockType = value;
+    emit(UpdateProductsStockState());
+  }
+
   CategoriesModel? catogriesModel;
   Future<void> getCategries() async {
     emit(LoadingCatogries());
@@ -60,7 +69,8 @@ String selectedProducsStockType = "stock";
   Future<void> getAllProducts(
       {bool isHome = false, bool isGetMore = false, int pageId = 1}) async {
     isGetMore ? emit(Loading2Product()) : emit(LoadingProduct());
-    final response = await api.getAllProducts(pageId,selectedProducsStockType == "stock");
+    final response =
+        await api.getAllProducts(pageId, selectedProducsStockType == "stock");
 
     response.fold((l) {
       emit(ErrorProduct());
@@ -250,7 +260,9 @@ String selectedProducsStockType = "stock";
   Future<void> getAllProductsByCatogrey({required int? id}) async {
     print("sucess change 3");
     emit(LoadingProductByCatogrey());
-    final response = await api.getAllProductsByCategory(1,selectedProducsStockType == "stock", categoryId: id!);
+    final response = await api.getAllProductsByCategory(
+        1, selectedProducsStockType == "stock",
+        categoryId: id!);
     //
     response.fold((l) {
       emit(ErrorProductByCatogrey());
@@ -280,39 +292,115 @@ String selectedProducsStockType = "stock";
     }
   }
 
+  File? profileImage;
+  String selectedBase64String = "";
+  removeImage() {
+    profileImage = null;
+    emit(FileRemovedSuccessfully());
+  }
+
+  void showImageSourceDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'select_image'.tr(),
+            style: getMediumStyle(),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                pickFile(context, true);
+              },
+              child: Text(
+                'gallery'.tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                pickImage(context, false);
+              },
+              child: Text(
+                "camera".tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future pickImage(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: isGallery ? ImageSource.gallery : ImageSource.camera);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      selectedBase64String = await fileToBase64String(pickedFile.path);
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+      Navigator.pop(context);
+    } else {
+      emit(UpdateProfileError());
+    }
+  }
+
+  Future pickFile(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickMedia();
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      selectedBase64String = await fileToBase64String(pickedFile.path);
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+      Navigator.pop(context);
+    } else {
+      emit(UpdateProfileError());
+    }
+  }
+
+  //photo transfer
+  Future<String> fileToBase64String(String filePath) async {
+    File file = File(filePath);
+    Uint8List bytes = await file.readAsBytes();
+    String base64String = base64Encode(bytes);
+    return base64String;
+  }
+
   CreateOrderModel? createOrderModel;
-  createQuotation({
-    required int partnerId,
-    required BuildContext context,
-    required String warehouseId,
-  }) async {
+  createQuotation(
+      {required int partnerId,
+      required BuildContext context,
+      required String warehouseId,
+      String? note}) async {
     AppWidget.createProgressDialog(context, "جاري التحميل ..");
     emit(LoadingCreateQuotation());
     final result = await api.createQuotation(
-        partnerId: partnerId, products: basket, warehouseId: warehouseId,
-         lat:   context
-                                    .read<ClientsCubit>()
-                                    .currentLocation
-                                    ?.latitude ??
-                                0.0,
-                       long:     context
-                                    .read<ClientsCubit>()
-                                    .currentLocation
-                                    ?.longitude ??
-                                0.0,
-                                address: context
-                                    .read<ClientsCubit>()
-                                    .address
-        );
+        note: note,
+        image: selectedBase64String,
+        imagePath: profileImage == null ? "" : profileImage!.path.split('/').last,
+        partnerId: partnerId,
+        products: basket,
+        warehouseId: warehouseId,
+        lat: context.read<ClientsCubit>().currentLocation?.latitude ?? 0.0,
+        long: context.read<ClientsCubit>().currentLocation?.longitude ?? 0.0,
+        address: context.read<ClientsCubit>().address);
 
     result.fold((l) {
       Navigator.pop(context);
       emit(ErrorCreateQuotation());
     }, (r) {
+      //Navigator.pop(context);
       createOrderModel = r;
       successGetBar('Success Create Quotation');
       debugPrint("Success Create Quotation");
-
+      profileImage = null;
+      selectedBase64String = '';
       //! Nav to
       // Navigator.pushReplacementNamed(context, Routes.deleveryOrderRoute);
 
@@ -391,6 +479,7 @@ String selectedProducsStockType = "stock";
     newPriceController.clear();
     emit(OnChangeUnitPriceOfItem());
   }
+
   TextEditingController newQtyController = TextEditingController();
 
   onChnageProductQuantity(ProductModelData item, BuildContext context) {

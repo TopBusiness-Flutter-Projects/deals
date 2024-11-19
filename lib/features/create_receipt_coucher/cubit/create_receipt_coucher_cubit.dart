@@ -122,7 +122,7 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
     ).format(selectedDate);
     final result = await api.partnerPayment(
       image: selectedBase64String,
-
+ imagePath: profileImage == null ? "" : profileImage!.path.split('/').last,
       amount: amountController.text,
       journalId: selectedPaymentMethod!,
       ref: refController.text,

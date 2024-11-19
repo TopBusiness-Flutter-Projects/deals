@@ -73,3 +73,6 @@ class OnDeleteItemFromBasket extends DirectSellState {}
 class OnChangeAllUnitPriceOfItem extends DirectSellState {}
 
 class ClearSearchText extends DirectSellState {}
+class UpdateProfileError extends DirectSellState {}
+class UpdateProfileImagePicked extends DirectSellState {}
+class FileRemovedSuccessfully extends DirectSellState {}

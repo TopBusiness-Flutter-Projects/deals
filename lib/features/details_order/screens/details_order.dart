@@ -10,6 +10,7 @@ import 'package:top_sale/features/details_order/cubit/details_orders_state.dart'
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
 import 'package:top_sale/features/details_order/screens/widgets/custom_total_price.dart';
+import 'package:top_sale/features/details_order/screens/widgets/order_attachments_bottomshet.dart';
 import 'package:top_sale/features/details_order/screens/widgets/product_card.dart';
 import 'package:top_sale/features/details_order/screens/widgets/rounded_button.dart';
 import '../../../config/routes/app_routes.dart';
@@ -65,15 +66,17 @@ class _DetailsOrderState extends State<DetailsOrder> {
         actions: [
           (widget.orderModel.state == 'sale' &&
                   widget.orderModel.invoiceStatus == 'to invoice' &&
-                 ( widget.orderModel.deliveryStatus == 'assigned'  ||
-              widget.orderModel.deliveryStatus == 'pending')
-              )
+                  (widget.orderModel.deliveryStatus == 'assigned' ||
+                      widget.orderModel.deliveryStatus == 'pending'))
               ? IconButton(
                   onPressed: () {
-                    cubit.cancelOrder(
-                        orderId: cubit.getDetailsOrdersModel?.id ?? -1,
-                        orderModel: widget.orderModel,
-                        context: context);
+                    cubit.profileImage = null;
+                    cubit.selectedBase64String = '';
+
+                    showCancelAttachmentBottomSheet(
+                        cubit.getDetailsOrdersModel?.id ?? -1,
+                        widget.orderModel,
+                        context);
                   },
                   icon: Text("cancel".tr(),
                       style: TextStyle(

@@ -8,6 +8,7 @@ import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/basket_screen/cubit/cubit.dart';
+import 'package:top_sale/features/details_order/screens/widgets/order_attachments_bottomshet.dart';
 import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import 'package:top_sale/features/login/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -239,10 +240,13 @@ class _BasketScreenState extends State<BasketScreen> {
                           : CustomButton(
                               title: 'show_price'.tr(),
                               onTap: () {
-                                cubit2.createQuotation(
-                                    warehouseId: '1',
-                                    context: context,
-                                    partnerId: widget.partner?.id ?? -1);
+                                
+                                showCreateAttachmentBottomSheet(
+                                    widget.partner?.id ?? -1, context);
+                                // cubit2.createQuotation(
+                                //     warehouseId: '1',
+                                //     context: context,
+                                //     partnerId: widget.partner?.id ?? -1);
                                 //!
                               })
                 ],

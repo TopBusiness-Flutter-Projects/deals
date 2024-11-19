@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/assets_manager.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../login/widget/custom_button.dart';
 import '../../login/widget/textfield_with_text.dart';
@@ -72,7 +73,7 @@ class _CreateReceiptCoucherScreenState
                                                   color: AppColors.primary),
                                               SizedBox(height: 5.sp),
                                               const Text(
-                                                'ارفع الصورة',
+                                                '  ارفع الصورة أو الملف',
                                                 style: TextStyle(
                                                     color: Colors.grey),
                                               ),
@@ -85,6 +86,18 @@ class _CreateReceiptCoucherScreenState
                                           child: Image.file(
                                             // Display the image using Image.file
                                             File(cubit.profileImage!.path),
+                                            errorBuilder:
+                                                (context, error, stackTrace) =>
+                                                    Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: Image.asset(
+                                                  ImageAssets.pdfImage,
+                                                  color: AppColors.primary,
+                                                ),
+                                              ),
+                                            ),
                                             fit: BoxFit.cover,
                                             width: double.infinity,
                                           ),
@@ -263,12 +276,12 @@ class _CreateReceiptCoucherScreenState
               hint: "enter_paid".tr(),
             ),
             CustomTextFieldWithTitle(
-              // validator: (value) {
-              //   if (value!.isEmpty) {
-              //     return "ادخل البيان ".tr();
-              //   }
-              //   return null;
-              // },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "ادخل البيان ".tr();
+                }
+                return null;
+              },
               controller: cubit.refController,
               title: "statement".tr(),
               maxLines: 5,
@@ -283,7 +296,7 @@ class _CreateReceiptCoucherScreenState
                 if (_formKey.currentState!.validate() &&
                     cubit.refController.text.isNotEmpty &&
                     cubit.amountController.text.isNotEmpty &&
-                    cubit.selectedBase64String.isNotEmpty &&
+                    // cubit.selectedBase64String.isNotEmpty &&
                     cubit.selectedPaymentMethod != null) {
                   cubit.partnerPaymentMethod(context,
                       partnerId: widget.partnerId);

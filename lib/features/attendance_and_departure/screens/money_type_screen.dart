@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_state.dart';
 import 'package:top_sale/features/login/widget/textfield_with_text.dart';
@@ -167,7 +168,8 @@ void _showBottomSheet(
                                           size: 40, color: AppColors.primary),
                                       SizedBox(height: 5.sp),
                                       const Text(
-                                        'ارفع الصورة',
+                                                                                '  ارفع الصورة أو الملف',
+
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ],
@@ -177,7 +179,16 @@ void _showBottomSheet(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.file(
                                     // Display the image using Image.file
-                                    File(cubit.profileImage!.path),
+                                    File(cubit.profileImage!.path),errorBuilder:
+                                        (context, error, stackTrace) => Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Image.asset(
+                                          ImageAssets.pdfImage,
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                    ),
                                     fit: BoxFit.cover,
                                     width: double.infinity,
                                   ),

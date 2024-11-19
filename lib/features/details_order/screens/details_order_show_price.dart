@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stepindicator/flutter_stepindicator.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
+import 'package:top_sale/features/details_order/screens/widgets/order_attachments_bottomshet.dart';
 import 'package:top_sale/features/details_order/screens/widgets/product_card.dart';
 import 'package:top_sale/features/login/widget/custom_button.dart';
 import '../../../config/routes/app_routes.dart';
@@ -49,10 +50,12 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
               (widget.orderModel.state == 'draft' && !widget.isClientOrder)
                   ? IconButton(
                       onPressed: () {
-                        cubit.cancelOrder(
-                            orderId: cubit.getDetailsOrdersModel!.id ?? -1,
-                            orderModel: widget.orderModel,
-                            context: context);
+                          cubit.profileImage = null;
+                    cubit.selectedBase64String = '';
+                        showCancelAttachmentBottomSheet(
+                            cubit.getDetailsOrdersModel!.id ?? -1,
+                            widget.orderModel,
+                            context);
                       },
                       icon: Text("cancel".tr(),
                           style: TextStyle(
@@ -81,7 +84,7 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
             ],
             leading: IconButton(
                 onPressed: () {
-                   cubit.onClickBack(context);
+                  cubit.onClickBack(context);
                 },
                 icon: const Icon(Icons.arrow_back)),
             backgroundColor: AppColors.white,
@@ -164,7 +167,7 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                                               '',
                                         )
                                       : CustomOrderDetailsShowPriceItem(
-                                        isReturned: false,
+                                          isReturned: false,
                                           onPressed: () {
                                             //! on delete add item tp list to send it kat reqiesu of update
                                             setState(() {
