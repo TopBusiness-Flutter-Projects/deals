@@ -10,10 +10,10 @@ class CustomLoadingIndicator extends StatelessWidget {
   const CustomLoadingIndicator({super.key, this.color, this.backgroundColor});
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Platform.isIOS
-          ? const CupertinoActivityIndicator(animating: true, radius: 15)
-          : CircularProgressIndicator(color:color?? AppColors.primary,backgroundColor:backgroundColor),
-    );
+    return Platform.isIOS
+        ? const CupertinoActivityIndicator(animating: true, radius: 15)
+        : CircularProgressIndicator(
+            color: color ?? AppColors.primary,
+            backgroundColor: backgroundColor);
   }
 }
