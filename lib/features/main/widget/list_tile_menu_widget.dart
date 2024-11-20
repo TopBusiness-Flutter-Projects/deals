@@ -6,11 +6,11 @@ import '../../../core/widgets/my_svg_widget.dart';
 
 class MenuListTileWidget extends StatelessWidget {
   const MenuListTileWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.iconPath,
     required this.onclick,
-  }) : super(key: key);
+  });
 
   final String title;
   final String iconPath;
