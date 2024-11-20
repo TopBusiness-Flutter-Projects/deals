@@ -6,7 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../home_screen/cubit/cubit.dart';
-import '../cubit/attendance_and_departure_cubit.dart';
+import '../cubit/attendance_and_departure_cubit.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../cubit/attendance_and_departure_state.dart';
 
 class ContractScreen extends StatefulWidget {
@@ -51,61 +52,64 @@ class _ContractScreenState extends State<ContractScreen> {
               builder: (context, state) {
         return (cubit.contractDetails == null)
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CustomLoadingIndicator(),
               )
-            :
-            cubit.contractDetails!.contractDetails == null ?
-          Text("لا يوجد معلومات")
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 20.h),
-                  Text(
-                    "رقم العقد/ ${cubit.contractDetails?.contractDetails?.displayName}",
-                    style: getBoldStyle(color: AppColors.primary),
-                  ),
-                  SizedBox(height: 20.h),
-                  ListView.builder(
-                    itemBuilder: (context, index) => customRowContract(
-                      title: titles[index],
-                      description: (index == 0)
-                          ? (cubit.contractDetails?.contractDetails?.dateStart
-                                  ?.toString() ??
-                              "")
-                          : (index == 1)
-                              ? (cubit.contractDetails?.contractDetails?.dateEnd
+            : cubit.contractDetails!.contractDetails == null
+                ? Text("لا يوجد معلومات")
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 20.h),
+                      Text(
+                        "رقم العقد/ ${cubit.contractDetails?.contractDetails?.displayName}",
+                        style: getBoldStyle(color: AppColors.primary),
+                      ),
+                      SizedBox(height: 20.h),
+                      ListView.builder(
+                        itemBuilder: (context, index) => customRowContract(
+                          title: titles[index],
+                          description: (index == 0)
+                              ? (cubit.contractDetails?.contractDetails
+                                      ?.dateStart
                                       ?.toString() ??
                                   "")
-                              : (index == 2)
+                              : (index == 1)
                                   ? (cubit.contractDetails?.contractDetails
-                                          ?.workingHours
+                                          ?.dateEnd
                                           ?.toString() ??
                                       "")
-                                  : (index == 3)
+                                  : (index == 2)
                                       ? (cubit.contractDetails?.contractDetails
-                                              ?.department
+                                              ?.workingHours
                                               ?.toString() ??
                                           "")
-                                      : (index == 4)
-                                          ? ((cubit
+                                      : (index == 3)
+                                          ? (cubit.contractDetails
+                                                  ?.contractDetails?.department
+                                                  ?.toString() ??
+                                              "")
+                                          : (index == 4)
+                                              ? ((cubit
+                                                          .contractDetails
+                                                          ?.contractDetails
+                                                          ?.jobTitle !=
+                                                      false)
+                                                  ? cubit
                                                       .contractDetails
                                                       ?.contractDetails
-                                                      ?.jobTitle !=
-                                                  false)
-                                              ? cubit.contractDetails
-                                                  ?.contractDetails?.jobTitle
-                                              : "")
-                                          : (index == 5)
-                                              ? ("${context.read<HomeCubit>().currencyName} ${cubit.contractDetails?.contractDetails?.wage.toString()} " ??
-                                                  "")
-                                              : "",
-                    ),
-                    itemCount: titles.length,
-                    shrinkWrap: true,
-                  ),
-                ],
-              );
+                                                      ?.jobTitle
+                                                  : "")
+                                              : (index == 5)
+                                                  ? ("${context.read<HomeCubit>().currencyName} ${cubit.contractDetails?.contractDetails?.wage.toString()} " ??
+                                                      "")
+                                                  : "",
+                        ),
+                        itemCount: titles.length,
+                        shrinkWrap: true,
+                      ),
+                    ],
+                  );
       }),
     );
   }

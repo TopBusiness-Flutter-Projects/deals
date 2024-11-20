@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/get_size.dart';
-import 'package:top_sale/features/delevery_order/screens/widgets/drop_down_widget.dart';
+import 'package:top_sale/features/delevery_order/screens/widgets/drop_down_widget.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/delevery_order/screens/widgets/shipment_card_widget.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
@@ -74,7 +75,7 @@ class _DeleveryOrderScreenState extends State<DeleveryOrderScreen> {
             Flexible(
               child: cubit.getOrdersModel.result == null ||
                       state is OrdersLoadingState
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(child: CustomLoadingIndicator())
                   : RefreshIndicator(
                       onRefresh: () async {
                         await cubit.getOrders();

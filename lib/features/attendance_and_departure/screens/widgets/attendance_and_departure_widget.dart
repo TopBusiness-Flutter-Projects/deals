@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_state.dart';
-import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
+import 'package:top_sale/features/clients/cubit/clients_cubit.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/clients/cubit/clients_state.dart';
 import '../../../../core/utils/app_colors.dart';
 
@@ -29,7 +30,7 @@ class _ContainerTimesFromUserInHomeScreenState
           ? const Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
+                child: CustomLoadingIndicator(),
               ),
             )
           : cubit.getLastAttendanceModel!.lastAttendance == null // لا يوجد ظهور

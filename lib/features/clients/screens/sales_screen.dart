@@ -5,7 +5,8 @@ import 'package:top_sale/features/clients/cubit/clients_state.dart';
 import 'package:top_sale/features/clients/screens/widgets/widgets_sales/custom_sales_card.dart';
 import '../../../core/utils/assets_manager.dart';
 import '../../../core/utils/get_size.dart';
-import '../cubit/clients_cubit.dart';
+import '../cubit/clients_cubit.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({super.key});
@@ -33,7 +34,7 @@ class _SalesScreenState extends State<SalesScreen> {
       child:   state is ProfileClientLoading?
         const Center(
         child:
-        CircularProgressIndicator(),
+        CustomLoadingIndicator(),
       ):Scaffold(
         body: SingleChildScrollView(
           child: Column(

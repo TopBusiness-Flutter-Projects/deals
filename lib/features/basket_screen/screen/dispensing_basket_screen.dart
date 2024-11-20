@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
-import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/app_colors.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
@@ -200,7 +201,7 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                     SizedBox(height: 32.h),
                     (state is LoadingCreateQuotation)
                         ? const Center(
-                            child: CircularProgressIndicator(),
+                            child: CustomLoadingIndicator(),
                           )
                         : cubit2.basket.isEmpty
                             ? Container()

@@ -11,7 +11,8 @@ import 'package:top_sale/features/basket_screen/cubit/cubit.dart';
 import 'package:top_sale/features/details_order/screens/widgets/order_attachments_bottomshet.dart';
 import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import 'package:top_sale/features/login/widget/custom_button.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../../../core/models/all_partners_for_reports_model.dart';
 import '../../../core/models/all_products_model.dart';
 import '../../direct_sell/cubit/direct_sell_cubit.dart';
@@ -232,15 +233,12 @@ class _BasketScreenState extends State<BasketScreen> {
                         ),
                   SizedBox(height: 32.h),
                   (state is LoadingCreateQuotation)
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
+                      ? const Center(child: CustomLoadingIndicator())
                       : cubit2.basket.isEmpty
                           ? Container()
                           : CustomButton(
                               title: 'show_price'.tr(),
                               onTap: () {
-                                
                                 showCreateAttachmentBottomSheet(
                                     widget.partner?.id ?? -1, context);
                                 // cubit2.createQuotation(

@@ -8,7 +8,8 @@ import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_state.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/custom_product_section.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/scanner.dart';
-import '../../../config/routes/app_routes.dart';
+import '../../../config/routes/app_routes.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../../../core/models/all_products_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/assets_manager.dart';
@@ -271,7 +272,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             else
                               state is LoadingProduct
                                   ? const Center(
-                                      child: CircularProgressIndicator())
+                                      child: CustomLoadingIndicator())
                                   : Expanded(
                                       child: SingleChildScrollView(
                                         controller: scrollController,

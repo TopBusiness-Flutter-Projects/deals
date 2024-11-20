@@ -6,7 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
-import 'package:top_sale/core/preferences/preferences.dart';
+import 'package:top_sale/core/preferences/preferences.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/core/utils/app_strings.dart';
 import 'package:share_plus/share_plus.dart'; // استيراد مكتبة المشاركة
 import 'package:path_provider/path_provider.dart'; // للتعامل مع الملفات المؤقتة
@@ -30,34 +31,36 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
   }
 
   Future<void> fetchPdfWithSession() async {
-  String? sessionId = await Preferences.instance.getSessionId();
-  String odooUrl = await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
-  String cookie = 'session_id=$sessionId';
+    String? sessionId = await Preferences.instance.getSessionId();
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String cookie = 'session_id=$sessionId';
 
-  try {
-    final dio = Dio();
-    final response = await dio.get(
-      odooUrl + widget.baseUrl,
-      options: Options(
-        headers: {
-          'Cookie': cookie, // Pass the session cookie
-        },
-        responseType: ResponseType.bytes, // Ensure response is in bytes for PDF
-      ),
-    );
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        odooUrl + widget.baseUrl,
+        options: Options(
+          headers: {
+            'Cookie': cookie, // Pass the session cookie
+          },
+          responseType:
+              ResponseType.bytes, // Ensure response is in bytes for PDF
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      setState(() {
-        pdfBytes = response.data;
-        isLoading = false;
-      });
-    } else {
-      print('Failed to load PDF');
+      if (response.statusCode == 200) {
+        setState(() {
+          pdfBytes = response.data;
+          isLoading = false;
+        });
+      } else {
+        print('Failed to load PDF');
+      }
+    } catch (e) {
+      print('Error fetching PDF: $e');
     }
-  } catch (e) {
-    print('Error fetching PDF: $e');
   }
-}
 
   // وظيفة المشاركة
   void sharePdf() async {
@@ -96,7 +99,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CustomLoadingIndicator())
           : SfPdfViewer.memory(pdfBytes),
     );
   }

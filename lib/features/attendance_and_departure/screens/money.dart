@@ -6,6 +6,7 @@ import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_state.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import '../../../config/routes/app_routes.dart';
 
@@ -56,7 +57,7 @@ class _MoneyScreenState extends State<MoneyScreen> {
             ),
           ),
           body: cubit.getMyExpensesModel.expenses == null
-              ? Center(child: CircularProgressIndicator())
+              ? Center(child: CustomLoadingIndicator())
               : cubit.getMyExpensesModel.expenses!.isEmpty
                   ? Text("no_data".tr())
                   : ListView.builder(

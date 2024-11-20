@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stepindicator/flutter_stepindicator.dart';
 import 'package:top_sale/core/utils/get_size.dart';
-import 'package:top_sale/features/details_order/cubit/details_orders_cubit.dart';
+import 'package:top_sale/features/details_order/cubit/details_orders_cubit.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/details_order/cubit/details_orders_state.dart';
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
@@ -106,12 +107,12 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
         }
         if (state is CreateAndValidateInvoiceLoadingState) {
           setState(() {
-            const CircularProgressIndicator();
+            const CustomLoadingIndicator();
           });
         }
         if (state is ConfirmDeliveryLoadingState) {
           setState(() {
-            const CircularProgressIndicator();
+            const CustomLoadingIndicator();
           });
         }
       }, builder: (context, state) {
@@ -130,7 +131,7 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
                         right: getSize(context) / 30),
                     child: (cubit.getDetailsOrdersModel == null)
                         ? const Center(
-                            child: CircularProgressIndicator(),
+                            child: CustomLoadingIndicator(),
                           )
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,20 +185,21 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
                               ),
 
                               CustomTotalPrice(
-                                  currency:
-                                      widget.orderModel.currencyId?.name ?? '',
-                                  price:cubit.getDetailsOrdersModel?.amountTotal.toString() ?? '',
-                                  //  calculateTotalDiscountedPrice(
-                                  //     cubit.getDetailsOrdersModel?.orderLines ??
-                                  //         [])
-                                          ),
+                                currency:
+                                    widget.orderModel.currencyId?.name ?? '',
+                                price: cubit.getDetailsOrdersModel?.amountTotal
+                                        .toString() ??
+                                    '',
+                                //  calculateTotalDiscountedPrice(
+                                //     cubit.getDetailsOrdersModel?.orderLines ??
+                                //         [])
+                              ),
                               // SizedBox(
                               //   height: getSize(context) / 12,
                               // ),
                               //     تم التسليييييييييييييم
-                             true
-                                  ? 
-                                  Row(
+                              true
+                                  ? Row(
                                       children: [
                                         // widget.isClientOrder == true
                                         //     ? const Expanded(
@@ -290,8 +292,8 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
                                                   builder: (context) {
                                                     return PdfViewerPage(
                                                       baseUrl:
-                                                       '${EndPoints.printInvoice}${cubit.returnOrderModel?.result?.creditNoteId ?? 0}',
-                                                       //   '$EndPoints.printInvoice/${cubit.returnOrderModel?.result?.creditNoteId ?? 0}',
+                                                          '${EndPoints.printInvoice}${cubit.returnOrderModel?.result?.creditNoteId ?? 0}',
+                                                      //   '$EndPoints.printInvoice/${cubit.returnOrderModel?.result?.creditNoteId ?? 0}',
                                                     );
                                                     // return PaymentWebViewScreen(url: "",);
                                                   },
@@ -301,31 +303,23 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
                                           ),
                                         ),
                                         Expanded(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      10.0),
-                                                              child:
-                                                                  RoundedButton(
-                                                                text: 'payment'
-                                                                    .tr(),
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    Navigator.pushNamed(
-                                                                        context,
-                                                                        Routes
-                                                                            .paymentRoute,arguments: true);
-                                                                    // cubit.createAndValidateInvoice(
-                                                                    //     orderId: widget.orderModel.id ?? -1);
-                                                                  });
-                                                                },
-                                                                backgroundColor:
-                                                                    AppColors
-                                                                        .blue,
-                                                              ),
-                                                            ),
-                                                          )
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: RoundedButton(
+                                              text: 'payment'.tr(),
+                                              onPressed: () {
+                                                setState(() {
+                                                  Navigator.pushNamed(context,
+                                                      Routes.paymentRoute,
+                                                      arguments: true);
+                                                  // cubit.createAndValidateInvoice(
+                                                  //     orderId: widget.orderModel.id ?? -1);
+                                                });
+                                              },
+                                              backgroundColor: AppColors.blue,
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     )
                                   :
@@ -449,109 +443,108 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
                                                 //             .getDetailsOrdersModel!
                                                 //             .payments!
                                                 //             .isEmpty)
-                                                    // ?
-                                                     widget.isClientOrder ==
-                                                            true
-                                                        ? const Expanded(
-                                                            child: SizedBox())
-                                                        : Expanded(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      10.0),
-                                                              child:
-                                                                  RoundedButton(
-                                                                text: 'payment'
-                                                                    .tr(),
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    Navigator.pushNamed(
-                                                                        context,
-                                                                        Routes
-                                                                            .paymentRoute,arguments: true);
-                                                                    // cubit.createAndValidateInvoice(
-                                                                    //     orderId: widget.orderModel.id ?? -1);
-                                                                  });
-                                                                },
-                                                                backgroundColor:
-                                                                    AppColors
-                                                                        .blue,
-                                                              ),
-                                                            ),
-                                                          )
-                                                    // : Expanded(
-                                                    //     child: Padding(
-                                                    //       padding:
-                                                    //           const EdgeInsets
-                                                    //               .all(10.0),
-                                                    //       child: ElevatedButton(
-                                                    //         style: ButtonStyle(
-                                                    //           backgroundColor:
-                                                    //               MaterialStateProperty
-                                                    //                   .all(AppColors
-                                                    //                       .blue),
-                                                    //         ),
-                                                    //         child: Row(
-                                                    //           crossAxisAlignment:
-                                                    //               CrossAxisAlignment
-                                                    //                   .center,
-                                                    //           mainAxisAlignment:
-                                                    //               MainAxisAlignment
-                                                    //                   .center,
-                                                    //           children: [
-                                                    //             Center(
-                                                    //               child: Icon(
-                                                    //                 Icons.print,
-                                                    //                 color: AppColors
-                                                    //                     .white,
-                                                    //               ),
-                                                    //             ),
-                                                    //             SizedBox(
-                                                    //               width: 5.w,
-                                                    //             ),
-                                                    //             Center(
-                                                    //               child: AutoSizeText(
-                                                    //                   'receipt_voucher'
-                                                    //                       .tr(),
-                                                    //                   textAlign:
-                                                    //                       TextAlign
-                                                    //                           .center,
-                                                    //                   style:
-                                                    //                       TextStyle(
-                                                    //                     color: AppColors
-                                                    //                         .white,
-                                                    //                     fontWeight:
-                                                    //                         FontWeight.bold,
-                                                    //                     fontSize:
-                                                    //                         20.sp,
-                                                    //                   )),
-                                                    //             ),
-                                                    //           ],
-                                                    //         ),
-                                                    //         onPressed: () {
-                                                    //           if (cubit
-                                                    //               .getDetailsOrdersModel!
-                                                    //               .payments!
-                                                    //               .isNotEmpty) {
-                                                    //             Navigator.push(
-                                                    //                 context,
-                                                    //                 MaterialPageRoute(
-                                                    //               builder:
-                                                    //                   (context) {
-                                                    //                 return PdfViewerPage(
-                                                    //                   baseUrl:
-                                                    //                       '${EndPoints.printPayment}${cubit.getDetailsOrdersModel!.payments![0].paymentId.toString()}',
-                                                    //                 );
-                                                    //                 // return PaymentWebViewScreen(url: "",);
-                                                    //               },
-                                                    //             ));
-                                                    //           }
-                                                    //         },
-                                                    //       ),
-                                                    //     ),
-                                                    //   ),
-                                               , Expanded(
+                                                // ?
+                                                widget.isClientOrder == true
+                                                    ? const Expanded(
+                                                        child: SizedBox())
+                                                    : Expanded(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10.0),
+                                                          child: RoundedButton(
+                                                            text:
+                                                                'payment'.tr(),
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    Routes
+                                                                        .paymentRoute,
+                                                                    arguments:
+                                                                        true);
+                                                                // cubit.createAndValidateInvoice(
+                                                                //     orderId: widget.orderModel.id ?? -1);
+                                                              });
+                                                            },
+                                                            backgroundColor:
+                                                                AppColors.blue,
+                                                          ),
+                                                        ),
+                                                      )
+                                                // : Expanded(
+                                                //     child: Padding(
+                                                //       padding:
+                                                //           const EdgeInsets
+                                                //               .all(10.0),
+                                                //       child: ElevatedButton(
+                                                //         style: ButtonStyle(
+                                                //           backgroundColor:
+                                                //               MaterialStateProperty
+                                                //                   .all(AppColors
+                                                //                       .blue),
+                                                //         ),
+                                                //         child: Row(
+                                                //           crossAxisAlignment:
+                                                //               CrossAxisAlignment
+                                                //                   .center,
+                                                //           mainAxisAlignment:
+                                                //               MainAxisAlignment
+                                                //                   .center,
+                                                //           children: [
+                                                //             Center(
+                                                //               child: Icon(
+                                                //                 Icons.print,
+                                                //                 color: AppColors
+                                                //                     .white,
+                                                //               ),
+                                                //             ),
+                                                //             SizedBox(
+                                                //               width: 5.w,
+                                                //             ),
+                                                //             Center(
+                                                //               child: AutoSizeText(
+                                                //                   'receipt_voucher'
+                                                //                       .tr(),
+                                                //                   textAlign:
+                                                //                       TextAlign
+                                                //                           .center,
+                                                //                   style:
+                                                //                       TextStyle(
+                                                //                     color: AppColors
+                                                //                         .white,
+                                                //                     fontWeight:
+                                                //                         FontWeight.bold,
+                                                //                     fontSize:
+                                                //                         20.sp,
+                                                //                   )),
+                                                //             ),
+                                                //           ],
+                                                //         ),
+                                                //         onPressed: () {
+                                                //           if (cubit
+                                                //               .getDetailsOrdersModel!
+                                                //               .payments!
+                                                //               .isNotEmpty) {
+                                                //             Navigator.push(
+                                                //                 context,
+                                                //                 MaterialPageRoute(
+                                                //               builder:
+                                                //                   (context) {
+                                                //                 return PdfViewerPage(
+                                                //                   baseUrl:
+                                                //                       '${EndPoints.printPayment}${cubit.getDetailsOrdersModel!.payments![0].paymentId.toString()}',
+                                                //                 );
+                                                //                 // return PaymentWebViewScreen(url: "",);
+                                                //               },
+                                                //             ));
+                                                //           }
+                                                //         },
+                                                //       ),
+                                                //     ),
+                                                //   ),
+                                                ,
+                                                Expanded(
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(

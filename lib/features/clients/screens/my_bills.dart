@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/features/clients/screens/widgets/widgets_bills/custom_bill_container.dart';
-import '../cubit/clients_cubit.dart';
+import '../cubit/clients_cubit.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../cubit/clients_state.dart';
 
 class MyBillsScreen extends StatefulWidget {
@@ -33,56 +34,55 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
       return SafeArea(
         child: Scaffold(
             //appBar: AppBar(leading: Text("Invoices",style:TextStyle(color:AppColors.primary)),),
-            body:
-
-            state is ProfileClientLoading?
-                Center(
-                  child:
-                  CircularProgressIndicator(),
-                )
-                :           SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Image.asset(ImageAssets.arrowAr)),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "invoices".tr(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            (  cubit.partnerModel!.invoices!.isEmpty)
-                  ? Center(
-                      child: Text(
-                        "no_data".tr(),
-                        style: TextStyle(color: Colors.orange),
-                      ),
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: cubit.partnerModel?.invoices?.length,
-                      itemBuilder: (context, index) {
-                        return CustomBillContainer(
-                          isCurrent: false,
-                          invoice: cubit.partnerModel?.invoices![index],
-                        );
-                      })
-            ],
-          ),
-        )),
+            body: state is ProfileClientLoading
+                ? Center(
+                    child: CustomLoadingIndicator(),
+                  )
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Image.asset(ImageAssets.arrowAr)),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "invoices".tr(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        (cubit.partnerModel!.invoices!.isEmpty)
+                            ? Center(
+                                child: Text(
+                                  "no_data".tr(),
+                                  style: TextStyle(color: Colors.orange),
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: cubit.partnerModel?.invoices?.length,
+                                itemBuilder: (context, index) {
+                                  return CustomBillContainer(
+                                    isCurrent: false,
+                                    invoice:
+                                        cubit.partnerModel?.invoices![index],
+                                  );
+                                })
+                      ],
+                    ),
+                  )),
       );
     });
   }

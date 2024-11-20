@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
-import 'package:top_sale/core/utils/get_size.dart';
+import 'package:top_sale/core/utils/get_size.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/clients/cubit/clients_state.dart';
 import 'package:top_sale/features/clients/screens/widgets/custom_card_client.dart';
 import 'package:top_sale/features/contact_us/cubit/contact_us_cubit.dart';
@@ -123,7 +124,7 @@ class _ClientScreenState extends State<ClientScreen> {
                   Flexible(
                     child: (state is LoadingGetPartnersState)
                         ? const Center(
-                            child: CircularProgressIndicator(),
+                            child: CustomLoadingIndicator(),
                           )
                         : (cubit.allPartnersModel == null ||
                                 cubit.allPartnersModel?.result == [])
@@ -206,7 +207,7 @@ class _ClientScreenState extends State<ClientScreen> {
                                                       'tel:${cubit.allPartnersModel!.result![index].phone}');
                                             } else {
                                               errorGetBar('الرقم خطأ');
-                                            }                                            
+                                            }
                                             return false;
                                           },
                                           child: CustomCardClient(

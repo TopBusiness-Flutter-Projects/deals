@@ -4,7 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:top_sale/core/models/all_journals_model.dart';
+import 'package:top_sale/core/models/all_journals_model.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/features/details_order/cubit/details_orders_state.dart';
@@ -45,9 +46,9 @@ class _PaymentOptionsState extends State<PaymentOptions> {
     return BlocBuilder<DetailsOrdersCubit, DetailsOrdersState>(
       builder: (context, state) {
         if (state is GetAllJournalsLoadingState) {
-          // Show a single CircularProgressIndicator for loading state
+          // Show a single CustomLoadingIndicator for loading state
           return Center(
-            child: CircularProgressIndicator(
+            child: CustomLoadingIndicator(
               color: AppColors.primaryColor,
             ),
           );

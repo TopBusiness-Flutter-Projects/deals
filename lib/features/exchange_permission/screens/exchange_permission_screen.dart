@@ -6,7 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/api/end_points.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
-import 'package:top_sale/core/utils/app_fonts.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_cubit.dart';
 import 'package:top_sale/features/exchange_permission/cubit/exchange_permission_state.dart';
@@ -70,7 +71,7 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
               SizedBox(height: 20.h),
               cubit.getPickingsModel == null ||
                       cubit.getPickingsModel!.result == null
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(child: CustomLoadingIndicator())
                   : cubit.getPickingsModel!.result!.data!.isEmpty
                       ? Center(child: Text("no_data".tr()))
                       : Expanded(

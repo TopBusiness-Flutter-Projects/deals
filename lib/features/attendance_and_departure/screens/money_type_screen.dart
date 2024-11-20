@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_state.dart';
 import 'package:top_sale/features/login/widget/textfield_with_text.dart';
@@ -50,7 +51,7 @@ class _MoneyTypeScreenState extends State<MoneyTypeScreen> {
           var cubit = context.read<AttendanceAndDepartureCubit>();
           return (cubit.getAllExpensesProductModel == null)
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CustomLoadingIndicator(),
                 )
               : ListView.builder(
                   shrinkWrap: true,
@@ -168,8 +169,7 @@ void _showBottomSheet(
                                           size: 40, color: AppColors.primary),
                                       SizedBox(height: 5.sp),
                                       const Text(
-                                                                                '  ارفع الصورة أو الملف',
-
+                                        '  ارفع الصورة أو الملف',
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ],
@@ -179,7 +179,8 @@ void _showBottomSheet(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.file(
                                     // Display the image using Image.file
-                                    File(cubit.profileImage!.path),errorBuilder:
+                                    File(cubit.profileImage!.path),
+                                    errorBuilder:
                                         (context, error, stackTrace) => Center(
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
@@ -267,13 +268,12 @@ void _showBottomSheet(
                       backgroundColor: AppColors.primaryColor,
                       text: 'add'.tr(),
                       onPressed: () {
-                         if (cubit.formKey.currentState!.validate()) {
-                               cubit.createExpense(context, productId: productId);
-                            } else {
-                              // Handle validation failure
-                              print("Validation failed");
-                            }
-                       
+                        if (cubit.formKey.currentState!.validate()) {
+                          cubit.createExpense(context, productId: productId);
+                        } else {
+                          // Handle validation failure
+                          print("Validation failed");
+                        }
                       },
                     ),
                   ),

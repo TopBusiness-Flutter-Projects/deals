@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stepindicator/flutter_stepindicator.dart';
 import 'package:top_sale/core/utils/get_size.dart';
-import 'package:top_sale/features/details_order/cubit/details_orders_cubit.dart';
+import 'package:top_sale/features/details_order/cubit/details_orders_cubit.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/details_order/cubit/details_orders_state.dart';
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
@@ -152,12 +153,12 @@ class _DetailsOrderState extends State<DetailsOrder> {
         }
         if (state is CreateAndValidateInvoiceLoadingState) {
           setState(() {
-            const CircularProgressIndicator();
+            const CustomLoadingIndicator();
           });
         }
         if (state is ConfirmDeliveryLoadingState) {
           setState(() {
-            const CircularProgressIndicator();
+            const CustomLoadingIndicator();
           });
         }
       }, builder: (context, state) {
@@ -176,7 +177,7 @@ class _DetailsOrderState extends State<DetailsOrder> {
                         right: getSize(context) / 30),
                     child: (cubit.getDetailsOrdersModel == null)
                         ? const Center(
-                            child: CircularProgressIndicator(),
+                            child: CustomLoadingIndicator(),
                           )
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

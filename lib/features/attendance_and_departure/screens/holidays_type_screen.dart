@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
-import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_state.dart';
+import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_state.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/attendance_and_departure/screens/widgets/build_data_filter.dart';
 import 'package:top_sale/features/login/widget/textfield_with_text.dart';
 import '../../../core/utils/app_fonts.dart';
@@ -42,7 +43,7 @@ class _HolidaysTypeScreenState extends State<HolidaysTypeScreen> {
           var cubit = context.read<AttendanceAndDepartureCubit>();
           return (cubit.holidaysTypeModel == null)
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CustomLoadingIndicator(),
                 )
               : ListView.builder(
                   shrinkWrap: true,
@@ -148,103 +149,101 @@ void _showBottomSheet(BuildContext context,
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (context) {
-      return BlocBuilder<AttendanceAndDepartureCubit, AttendanceAndDepartureState>(
-        builder: (context,state) {
-          return Padding(
-            padding: EdgeInsets.only(
-              left: getSize(context) / 20,
-              right: getSize(context) / 20,
-              top: getSize(context) / 20,
-              bottom:
-                  MediaQuery.of(context).viewInsets.bottom + getSize(context) / 20,
-            ),
-            child: SingleChildScrollView(
-              child: Form(
-                key: cubit.formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                     Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 10.w, left: 10.w),
-                                child: Text(
-                                  "from".tr(),
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+      return BlocBuilder<AttendanceAndDepartureCubit,
+          AttendanceAndDepartureState>(builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: getSize(context) / 20,
+            right: getSize(context) / 20,
+            top: getSize(context) / 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom +
+                getSize(context) / 20,
+          ),
+          child: SingleChildScrollView(
+            child: Form(
+              key: cubit.formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 10.w, left: 10.w),
+                              child: Text(
+                                "from".tr(),
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              BuildDataFilter(
-                                  onTap: () => cubit.onSelectedDate(true, context),
-                                  selectedDate: cubit.selectedStartDate),
-                            ],
-                          ),
+                            ),
+                            BuildDataFilter(
+                                onTap: () =>
+                                    cubit.onSelectedDate(true, context),
+                                selectedDate: cubit.selectedStartDate),
+                          ],
                         ),
-                        SizedBox(width: 16.w),
-                        // "To" Date
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 10.w, left: 10.w),
-                                child: Text(
-                                  "to".tr(),
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              BuildDataFilter(
-                                  onTap: () => cubit.onSelectedDate(false, context),
-                                  selectedDate:cubit.selectedEndDate),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    CustomTextFieldWithTitle(
-                      maxLines: 5,
-                      title: "reason".tr(),
-                      controller: cubit.reasonController,
-                      hint: "reason".tr(),
-                      keyboardType: TextInputType.text,
-                    ),
-                    SizedBox(
-                      height: getSize(context) / 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: getSize(context) / 20,
-                          right: getSize(context) / 20),
-                      child: RoundedButton(
-                        backgroundColor: AppColors.primaryColor,
-                        text: 'add'.tr(),
-                        onPressed: () {
-
-                          cubit.addTimeOff(
-                              context: context,
-                              timeOffTypeId: timeOffTypeId);
-
-                        },
                       ),
+                      SizedBox(width: 16.w),
+                      // "To" Date
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 10.w, left: 10.w),
+                              child: Text(
+                                "to".tr(),
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            BuildDataFilter(
+                                onTap: () =>
+                                    cubit.onSelectedDate(false, context),
+                                selectedDate: cubit.selectedEndDate),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  CustomTextFieldWithTitle(
+                    maxLines: 5,
+                    title: "reason".tr(),
+                    controller: cubit.reasonController,
+                    hint: "reason".tr(),
+                    keyboardType: TextInputType.text,
+                  ),
+                  SizedBox(
+                    height: getSize(context) / 30,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: getSize(context) / 20,
+                        right: getSize(context) / 20),
+                    child: RoundedButton(
+                      backgroundColor: AppColors.primaryColor,
+                      text: 'add'.tr(),
+                      onPressed: () {
+                        cubit.addTimeOff(
+                            context: context, timeOffTypeId: timeOffTypeId);
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          );
-        }
-      );
+          ),
+        );
+      });
     },
   );
 }
@@ -311,8 +310,6 @@ class _DatePickerFieldState extends State<DatePickerField> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-
                 Text(
                   _selectedDate,
                   style: TextStyle(fontSize: 16.sp),

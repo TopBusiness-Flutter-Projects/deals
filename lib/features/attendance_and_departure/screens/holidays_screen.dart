@@ -6,7 +6,8 @@ import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
 import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_state.dart';
 import '../../../config/routes/app_routes.dart';
-import '../../../core/utils/app_fonts.dart';
+import '../../../core/utils/app_fonts.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 
 class HolidaysScreen extends StatefulWidget {
   const HolidaysScreen({super.key});
@@ -21,6 +22,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
     context.read<AttendanceAndDepartureCubit>().getAllHolidays();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<AttendanceAndDepartureCubit>();
@@ -54,34 +56,50 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0.w),
-        child: BlocBuilder<AttendanceAndDepartureCubit,AttendanceAndDepartureState>(
-          builder: (context,state) {
-            return cubit.holidaysModel.timeOffRequests == null ?
-            Center(
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.black,
-                color: AppColors.primary,
-              ),
-            ) :
-                cubit.holidaysModel.timeOffRequests!.length == 0 ?
-                Center(child: Text("No holidays".tr())) :
-            ListView.builder(
-
-              shrinkWrap: true,
-              itemCount: cubit.holidaysModel.timeOffRequests!.length,
-              itemBuilder: (context, index) =>  HolidayRequestCard(
-                  status:cubit.holidaysModel.timeOffRequests![index].status, // Approved
-                  statusColor: Colors.black,
-                  requestDate: cubit.holidaysModel.timeOffRequests![index].dateCreated ?? "",
-                  leaveType: cubit.holidaysModel.timeOffRequests![index].timeOffType ?? "", // Sick leave
-                  startDate: cubit.holidaysModel.timeOffRequests![index].dateFrom ?? "",
-                  endDate: cubit.holidaysModel.timeOffRequests![index].dateTo ?? "",
-                  notes: (cubit.holidaysModel.timeOffRequests![index].description.toString() == "false") ? "": cubit.holidaysModel.timeOffRequests![index].description.toString(), // Notes
-                leaveDays: cubit.holidaysModel.timeOffRequests![index].duration ?? "0",                ),
-
-            );
-          }
-        ),
+        child: BlocBuilder<AttendanceAndDepartureCubit,
+            AttendanceAndDepartureState>(builder: (context, state) {
+          return cubit.holidaysModel.timeOffRequests == null
+              ? Center(
+                  child: CustomLoadingIndicator(
+                    backgroundColor: AppColors.black,
+                    color: AppColors.primary,
+                  ),
+                )
+              : cubit.holidaysModel.timeOffRequests!.length == 0
+                  ? Center(child: Text("No holidays".tr()))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: cubit.holidaysModel.timeOffRequests!.length,
+                      itemBuilder: (context, index) => HolidayRequestCard(
+                        status: cubit.holidaysModel.timeOffRequests![index]
+                            .status, // Approved
+                        statusColor: Colors.black,
+                        requestDate: cubit.holidaysModel.timeOffRequests![index]
+                                .dateCreated ??
+                            "",
+                        leaveType: cubit.holidaysModel.timeOffRequests![index]
+                                .timeOffType ??
+                            "", // Sick leave
+                        startDate: cubit.holidaysModel.timeOffRequests![index]
+                                .dateFrom ??
+                            "",
+                        endDate: cubit
+                                .holidaysModel.timeOffRequests![index].dateTo ??
+                            "",
+                        notes: (cubit.holidaysModel.timeOffRequests![index]
+                                    .description
+                                    .toString() ==
+                                "false")
+                            ? ""
+                            : cubit.holidaysModel.timeOffRequests![index]
+                                .description
+                                .toString(), // Notes
+                        leaveDays: cubit.holidaysModel.timeOffRequests![index]
+                                .duration ??
+                            "0",
+                      ),
+                    );
+        }),
       ),
     );
   }
@@ -151,34 +169,30 @@ class HolidayRequestCard extends StatelessWidget {
               '$leaveType من $startDate الى $endDate',
               style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
             ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 8.h),
-                  Text(
-                    notes,
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        color: AppColors.black.withOpacity(0.8)),
-                  ),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 8.h),
+                Text(
+                  notes,
+                  style: TextStyle(
+                      fontSize: 16.sp, color: AppColors.black.withOpacity(0.8)),
+                ),
+              ],
+            ),
             SizedBox(
               height: 10.sp,
             ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${"number_of_leave_days".tr()} : $leaveDays',
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        color: AppColors.black.withOpacity(0.8)),
-                  ),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${"number_of_leave_days".tr()} : $leaveDays',
+                  style: TextStyle(
+                      fontSize: 16.sp, color: AppColors.black.withOpacity(0.8)),
+                ),
+              ],
+            ),
           ],
         ),
       ),

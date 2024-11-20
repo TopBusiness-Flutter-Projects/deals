@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'app_colors.dart';
 
-class AppWidget{
+class AppWidget {
   static createProgressDialog(BuildContext context, String msg) {
     showDialog(
         barrierDismissible: false,
@@ -12,7 +13,7 @@ class AppWidget{
             backgroundColor: AppColors.white,
             content: Row(
               children: [
-                CircularProgressIndicator(
+                CustomLoadingIndicator(
                   color: AppColors.primary,
                 ),
                 const SizedBox(
@@ -27,5 +28,4 @@ class AppWidget{
           );
         });
   }
-
 }

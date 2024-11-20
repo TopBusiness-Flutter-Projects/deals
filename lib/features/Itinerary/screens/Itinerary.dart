@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
-import 'package:top_sale/core/utils/app_fonts.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/core/widgets/decode_image.dart';
 import 'package:top_sale/features/Itinerary/cubit/cubit.dart';
 import 'package:top_sale/features/Itinerary/cubit/state.dart';
@@ -43,7 +44,7 @@ class _ItineraryScreenState extends State<ItineraryScreen> {
         var cubit = context.read<ItineraryCubit>();
         var cubit2 = context.read<ClientsCubit>();
         return cubit.getEmployeeDataModel == null
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: CustomLoadingIndicator())
             : cubit.getEmployeeDataModel!.carIds!.isEmpty
                 // : cubit.getEmployeeDataModel!.carIds!.isEmpty
                 ? Center(

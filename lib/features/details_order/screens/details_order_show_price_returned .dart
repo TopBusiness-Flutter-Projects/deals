@@ -7,7 +7,8 @@ import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
 import 'package:top_sale/features/details_order/screens/widgets/product_card.dart';
-import 'package:top_sale/features/details_order/screens/widgets/rounded_button.dart';
+import 'package:top_sale/features/details_order/screens/widgets/rounded_button.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../../../config/routes/app_routes.dart';
 import '../../../core/models/get_orders_model.dart';
 import 'package:easy_localization/easy_localization.dart' as tr;
@@ -86,7 +87,7 @@ class _DetailsOrderShowPriceReturnsState
                       right: getSize(context) / 30),
                   child: (cubit.getDetailsOrdersModel == null)
                       ? const Center(
-                          child: CircularProgressIndicator(),
+                          child: CustomLoadingIndicator(),
                         )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +165,7 @@ class _DetailsOrderShowPriceReturnsState
                 (state is LoadingUpdateQuotation ||
                         state is LoadingConfirmQuotation)
                     ? const Center(
-                        child: CircularProgressIndicator(),
+                        child: CustomLoadingIndicator(),
                       )
                     : cubit.getDetailsOrdersModel?.orderLines?.length == 0
                         ? Container()
@@ -177,48 +178,45 @@ class _DetailsOrderShowPriceReturnsState
                                       // (cubit.getDetailsOrdersModel!.invoices!
                                       //         .isNotEmpty)
                                       //     ?
-                                           Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: RoundedButton(
-                                                  text: 'confirm_return'.tr(),
-                                                  onPressed: () {
-                                                    cubit.returnOrder(
-                                                        pickingId: cubit
-                                                                .getDetailsOrdersModel!
-                                                                .pickings
-                                                                ?.first
-                                                                .pickingId ??
-                                                            -1,
-                                                        // widget.orderModel.id ??
-                                                        //     -1,
-                                                        orderModel:
-                                                            widget.orderModel,
-                                                        context: context);
-                                                    // setState(() {
-                                                    //   Navigator
-                                                    //       .pushReplacementNamed(
-                                                    //           context,
-                                                    //           Routes
-                                                    //               .detailsOrderReturns,
-                                                    //           arguments: {
-                                                    //         'isClientOrder':
-                                                    //             false,
-                                                    //         'orderModel': widget
-                                                    //             .orderModel
-                                                    //       });
-                                                    //   // cubit.createAndValidateInvoice(
-                                                    //   //     orderId: widget.orderModel.id ?? -1);
-                                                    // });
-                                                  },
-                                                  backgroundColor:
-                                                      AppColors.blue,
-                                                ),
-                                              ),
-                                            )
-                                          // : SizedBox()
-                                          ,
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: RoundedButton(
+                                            text: 'confirm_return'.tr(),
+                                            onPressed: () {
+                                              cubit.returnOrder(
+                                                  pickingId: cubit
+                                                          .getDetailsOrdersModel!
+                                                          .pickings
+                                                          ?.first
+                                                          .pickingId ??
+                                                      -1,
+                                                  // widget.orderModel.id ??
+                                                  //     -1,
+                                                  orderModel: widget.orderModel,
+                                                  context: context);
+                                              // setState(() {
+                                              //   Navigator
+                                              //       .pushReplacementNamed(
+                                              //           context,
+                                              //           Routes
+                                              //               .detailsOrderReturns,
+                                              //           arguments: {
+                                              //         'isClientOrder':
+                                              //             false,
+                                              //         'orderModel': widget
+                                              //             .orderModel
+                                              //       });
+                                              //   // cubit.createAndValidateInvoice(
+                                              //   //     orderId: widget.orderModel.id ?? -1);
+                                              // });
+                                            },
+                                            backgroundColor: AppColors.blue,
+                                          ),
+                                        ),
+                                      )
+                                      // : SizedBox()
+                                      ,
                                       // Expanded(
                                       //     child: Padding(
                                       //       padding: EdgeInsets.all(12.0.sp),

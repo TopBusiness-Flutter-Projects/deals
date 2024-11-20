@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
-import 'package:top_sale/core/utils/assets_manager.dart';
+import 'package:top_sale/core/utils/assets_manager.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../../../core/utils/app_strings.dart';
 import '../../login/widget/custom_button.dart';
 import '../../login/widget/textfield_with_text.dart';
@@ -45,7 +46,7 @@ class _CreateReceiptCoucherScreenState
               child: BlocBuilder<CreateReceiptCoucherCubit,
                   CreateReceiptCoucherState>(builder: (context, state) {
                 return (cubit.getAllJournalsModel == null)
-                    ? CircularProgressIndicator(
+                    ? CustomLoadingIndicator(
                         color: AppColors.primaryColor,
                       )
                     : Column(

@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/widgets/shard_appbar_app.dart';
 import '../cubit/notification_cubit.dart';
 import '../cubit/notification_state.dart';
-import 'custom_notificaton_widget.dart';
+import 'custom_notificaton_widget.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'notification_dialog.dart';
 
 class NotificationScreens extends StatefulWidget {
@@ -40,7 +41,7 @@ class _NotificationScreensState extends State<NotificationScreens> {
                 return (state is LoadingNotificationState)
                     ? const Expanded(
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: CustomLoadingIndicator(),
                         ),
                       )
                     :

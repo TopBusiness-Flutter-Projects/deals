@@ -9,7 +9,8 @@ import 'package:top_sale/features/direct_sell/screens/widgets/scanner.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/models/category_model.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_strings.dart';
+import '../../../core/utils/app_strings.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../../../core/utils/get_size.dart';
 import '../../clients/cubit/clients_cubit.dart';
 import '../cubit/direct_sell_cubit.dart';
@@ -36,7 +37,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
     return BlocBuilder<DirectSellCubit, DirectSellState>(
         builder: (context, state) {
       // if (state is LoadingCatogries) {
-      //   return Scaffold(body: const Center(child: CircularProgressIndicator()));
+      //   return Scaffold(body: const Center(child: CustomLoadingIndicator()));
       // }
 
       var cubit = context.read<DirectSellCubit>();
@@ -72,7 +73,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
         backgroundColor: AppColors.white,
         body: state is LoadingCatogries
             ? Center(
-                child: CircularProgressIndicator(
+                child: CustomLoadingIndicator(
                 color: AppColors.primary,
               ))
             : RefreshIndicator(
@@ -84,8 +85,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                 child: cubit.allProductsModel == null ||
                         cubit.catogriesModel == null
                     ? Center(
-                        child:
-                            CircularProgressIndicator(color: AppColors.primary))
+                        child: CustomLoadingIndicator(color: AppColors.primary))
                     : cubit.searchController.text.isEmpty
                         ? SingleChildScrollView(
                             physics:
@@ -141,7 +141,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                   ),
                                   state == LoadingCatogries
                                       ? Center(
-                                          child: CircularProgressIndicator(
+                                          child: CustomLoadingIndicator(
                                               color: AppColors.primary))
                                       : CustomCategorySection(
                                           result:
@@ -151,7 +151,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                   SizedBox(height: 25.h),
                                   cubit.homeProductsModel.result == null
                                       ? const Center(
-                                          child: CircularProgressIndicator())
+                                          child: CustomLoadingIndicator())
                                       : CustomProductSection(
                                           isSearch: false,
                                           result: cubit.homeProductsModel

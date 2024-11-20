@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 /*----------------------------------------------------------------------------*/
 /*------------------------------  Error Get Bar  -----------------------------*/
@@ -101,7 +102,7 @@ loadingDialog() {
             ),
             const SizedBox(width: 5),
             // SpinKitCircle(),vx
-            CircularProgressIndicator(color: Get.theme.colorScheme.secondary),
+            CustomLoadingIndicator(color: Get.theme.colorScheme.secondary),
           ],
         ),
       ),

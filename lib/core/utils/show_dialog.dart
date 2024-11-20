@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'app_colors.dart';
 
@@ -12,7 +13,7 @@ createProgressDialog(BuildContext context, String msg) {
         backgroundColor: AppColors.white,
         content: Row(
           children: [
-            CircularProgressIndicator(
+            CustomLoadingIndicator(
               color: AppColors.primary,
             ),
             SizedBox(

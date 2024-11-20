@@ -6,7 +6,8 @@ import 'package:flutter_stepindicator/flutter_stepindicator.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
 import 'package:top_sale/features/details_order/screens/widgets/order_attachments_bottomshet.dart';
-import 'package:top_sale/features/details_order/screens/widgets/product_card.dart';
+import 'package:top_sale/features/details_order/screens/widgets/product_card.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import 'package:top_sale/features/login/widget/custom_button.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/models/get_orders_model.dart';
@@ -50,8 +51,8 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
               (widget.orderModel.state == 'draft' && !widget.isClientOrder)
                   ? IconButton(
                       onPressed: () {
-                          cubit.profileImage = null;
-                    cubit.selectedBase64String = '';
+                        cubit.profileImage = null;
+                        cubit.selectedBase64String = '';
                         showCancelAttachmentBottomSheet(
                             cubit.getDetailsOrdersModel!.id ?? -1,
                             widget.orderModel,
@@ -109,7 +110,7 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                     left: getSize(context) / 30, right: getSize(context) / 30),
                 child: (cubit.getDetailsOrdersModel == null)
                     ? const Center(
-                        child: CircularProgressIndicator(),
+                        child: CustomLoadingIndicator(),
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +186,7 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
               (state is LoadingUpdateQuotation ||
                       state is LoadingConfirmQuotation)
                   ? const Center(
-                      child: CircularProgressIndicator(),
+                      child: CustomLoadingIndicator(),
                     )
                   : cubit.getDetailsOrdersModel?.orderLines?.length == 0
                       ? Container()

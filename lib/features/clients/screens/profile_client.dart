@@ -6,7 +6,8 @@ import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_strings.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/core/widgets/decode_image.dart';
-import 'package:top_sale/features/clients/screens/widgets/custom_row_profile_client.dart';
+import 'package:top_sale/features/clients/screens/widgets/custom_row_profile_client.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+
 import '../../../config/routes/app_routes.dart';
 import '../cubit/clients_cubit.dart';
 import '../cubit/clients_state.dart';
@@ -110,7 +111,7 @@ class _ProfileClientState extends State<ProfileClient> {
                 height: 25.h,
               ),
               if (cubit.partnerModel == null)
-                CircularProgressIndicator(
+                CustomLoadingIndicator(
                   color: AppColors.secondPrimary,
                 )
               else ...[
