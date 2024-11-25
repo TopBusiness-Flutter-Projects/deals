@@ -194,6 +194,7 @@ class _CustomBasketItemState extends State<CustomBasketItem> {
                                     });
                                   },
                                   child: Container(
+                                    alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: AppColors.white,
                                       border: Border.all(

@@ -199,6 +199,7 @@ class _CustomOrderDetailsShowPriceItemState
                                     });
                                   },
                                   child: Container(
+                                    alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: AppColors.white,
                                       border: Border.all(
