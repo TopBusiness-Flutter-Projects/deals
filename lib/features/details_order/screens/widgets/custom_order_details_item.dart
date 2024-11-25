@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,19 +54,19 @@ class _CustomOrderDetailsShowPriceItemState
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomDecodedImageWithText(
-                character: widget.item.productName.toString().length >= 2
-                    ? widget.item.productName
-                        .toString()
-                        .removeAllWhitespace
-                        .substring(0, 2)
-                        .toString()
-                    : widget.item.productName.toString().removeAllWhitespace,
-                base64String: false,
-                //context: context,
-                width: getSize(context) / 8,
-                height: getSize(context) / 8,
-              ),
+              // CustomDecodedImageWithText(
+              //   character: widget.item.productName.toString().length >= 2
+              //       ? widget.item.productName
+              //           .toString()
+              //           .removeAllWhitespace
+              //           .substring(0, 2)
+              //           .toString()
+              //       : widget.item.productName.toString().removeAllWhitespace,
+              //   base64String: false,
+              //   //context: context,
+              //   width: getSize(context) / 8,
+              //   height: getSize(context) / 8,
+              // ),
               // CircleAvatar(
               //   radius: getSize(context) / 13,
               //   backgroundColor: AppColors.orange,
@@ -162,7 +163,30 @@ class _CustomOrderDetailsShowPriceItemState
                           child: Row(
                             children: [
                               Expanded(
-                                flex: 5,
+                                // flex: 4,
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsetsDirectional.only(
+                                        end: 10),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      border: Border.all(
+                                          color: AppColors.orangeThirdPrimary,
+                                          width: 1.8),
+                                      borderRadius: BorderRadius.circular(
+                                          getSize(context) / 22),
+                                    ),
+                                    child: AutoSizeText(
+                                      '${calculateDiscountedPrice(widget.item.discount, widget.item.priceUnit, 1)}',
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: AppColors.orangeThirdPrimary,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                              ),
+                              Expanded(
+                                // flex: 5,
                                 child: GestureDetector(
                                   onTap: () {
                                     cubit2.newQtyController.text =
@@ -215,7 +239,7 @@ class _CustomOrderDetailsShowPriceItemState
                                             ),
                                           ),
                                           //SizedBox(width: 8.w),
-                                          Text(
+                                          AutoSizeText(
                                               widget.item.productUomQty
                                                       .toString() ??
                                                   '0',
@@ -247,7 +271,7 @@ class _CustomOrderDetailsShowPriceItemState
                                 ),
                               ),
                               Expanded(
-                                flex: 4,
+                                // flex: 4,
                                 child: Container(
                                     alignment: Alignment.center,
                                     margin: const EdgeInsetsDirectional.only(
@@ -260,8 +284,8 @@ class _CustomOrderDetailsShowPriceItemState
                                       borderRadius: BorderRadius.circular(
                                           getSize(context) / 22),
                                     ),
-                                    child: Text(
-                                      '${calculateDiscountedPrice(widget.item.discount, widget.item.priceUnit, widget.item.productUomQty)} ج',
+                                    child: AutoSizeText(
+                                      '${calculateDiscountedPrice(widget.item.discount, widget.item.priceUnit, widget.item.productUomQty)}',
                                       maxLines: 1,
                                       style: TextStyle(
                                         color: AppColors.orangeThirdPrimary,

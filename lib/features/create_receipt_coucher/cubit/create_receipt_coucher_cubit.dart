@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/core/api/end_points.dart';
 import 'package:top_sale/core/models/all_payments_model.dart';
 import 'package:top_sale/core/remote/service.dart';
@@ -76,8 +77,22 @@ class CreateReceiptCoucherCubit extends Cubit<CreateReceiptCoucherState> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                pickImage(context, false);
+             onPressed: () async {pickImage(context, false);
+                // var status = await Permission.camera.status;
+                // if (status.isDenied ||
+                //     status.isRestricted ||
+                //     status.isPermanentlyDenied) {
+                //   if (await Permission.camera.request().isGranted) {
+                //     pickImage(context, false);
+                //   } else {
+                //     errorGetBar(
+                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
+                //   }
+
+                //   await Permission.camera.request();
+                // } else {
+                //   pickImage(context, false);
+                // }
               },
               child: Text(
                 "camera".tr(),

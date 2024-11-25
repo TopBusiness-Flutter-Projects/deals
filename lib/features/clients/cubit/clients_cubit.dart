@@ -15,6 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart' as perm;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/core/models/defaul_model.dart';
 import 'package:top_sale/core/preferences/preferences.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
@@ -75,8 +76,22 @@ class ClientsCubit extends Cubit<ClientsState> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                pickImage(context, false);
+              onPressed: () async {pickImage(context, false);
+                // var status = await Permission.camera.status;
+                // if (status.isDenied ||
+                //     status.isRestricted ||
+                //     status.isPermanentlyDenied) {
+                //   if (await Permission.camera.request().isGranted) {
+                //     pickImage(context, false);
+                //   } else {
+                //     errorGetBar(
+                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
+                //   }
+
+                //   await Permission.camera.request();
+                // } else {
+                //   pickImage(context, false);
+                // }
               },
               child: Text(
                 "camera".tr(),
@@ -89,6 +104,7 @@ class ClientsCubit extends Cubit<ClientsState> {
       },
     );
   }
+
 
   Future pickImage(BuildContext context, bool isGallery) async {
     final picker = ImagePicker();

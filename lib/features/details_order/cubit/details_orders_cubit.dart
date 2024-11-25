@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/return_model.dart';
 import 'package:top_sale/core/models/rigister_payment_model.dart';
@@ -160,8 +161,23 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
               ),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 pickImage(context, false);
+                // var status = await Permission.camera.status;
+                // if (status.isDenied ||
+                //     status.isRestricted ||
+                //     status.isPermanentlyDenied) {
+                //   if (await Permission.camera.request().isGranted) {
+                //     pickImage(context, false);
+                //   } else {
+                //     errorGetBar(
+                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
+                //   }
+
+                //   await Permission.camera.request();
+                // } else {
+                //   pickImage(context, false);
+                // }
               },
               child: Text(
                 "camera".tr(),
@@ -178,6 +194,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   Future pickImage(BuildContext context, bool isGallery) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
+        maxWidth: 1024,
+        maxHeight: 1024,
         source: isGallery ? ImageSource.gallery : ImageSource.camera);
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
@@ -600,7 +618,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
             profileImage == null ? "" : profileImage!.path.split('/').last,
         orderId: orderId,
         note: note,
-         lat: context.read<ClientsCubit>().currentLocation?.latitude ?? 0.0,
+        lat: context.read<ClientsCubit>().currentLocation?.latitude ?? 0.0,
         long: context.read<ClientsCubit>().currentLocation?.longitude ?? 0.0,
         address: context.read<ClientsCubit>().address,
         image: selectedBase64String);

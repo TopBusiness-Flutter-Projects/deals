@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
@@ -322,8 +323,23 @@ class DirectSellCubit extends Cubit<DirectSellState> {
               ),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 pickImage(context, false);
+                // var status = await Permission.camera.status;
+                // if (status.isDenied ||
+                //     status.isRestricted ||
+                //     status.isPermanentlyDenied) {
+                //   if (await Permission.camera.request().isGranted) {
+                //     pickImage(context, false);
+                //   } else {
+                //     errorGetBar(
+                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
+                //   }
+
+                //   await Permission.camera.request();
+                // } else {
+                //   pickImage(context, false);
+                // }
               },
               child: Text(
                 "camera".tr(),
@@ -383,7 +399,8 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     final result = await api.createQuotation(
         note: note,
         image: selectedBase64String,
-        imagePath: profileImage == null ? "" : profileImage!.path.split('/').last,
+        imagePath:
+            profileImage == null ? "" : profileImage!.path.split('/').last,
         partnerId: partnerId,
         products: basket,
         warehouseId: warehouseId,
@@ -395,19 +412,25 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       Navigator.pop(context);
       emit(ErrorCreateQuotation());
     }, (r) {
-      //Navigator.pop(context);
-      createOrderModel = r;
-      successGetBar('Success Create Quotation');
-      debugPrint("Success Create Quotation");
-      profileImage = null;
-      selectedBase64String = '';
-      //! Nav to
-      // Navigator.pushReplacementNamed(context, Routes.deleveryOrderRoute);
+      if (r.result?.message == null) {
+        errorGetBar('عدم كفاية المخزون لمنتج واحد أو أكثر');
+      } else {
+        createOrderModel = r;
+        successGetBar('Success Create Quotation');
+        debugPrint("Success Create Quotation");
+        profileImage = null;
+        selectedBase64String = '';
 
-      getOrderFromId(context, createOrderModel!.result!.orderId!);
+        getOrderFromId(context, createOrderModel!.result!.orderId!);
 
-      basket = [];
-      emit(LoadedCreateQuotation());
+        basket = [];
+           // **Update Quantities Across All Relevant Models**
+    updateUserOrderedQuantities(homeProductsModel);
+    updateUserOrderedQuantities(allProductsModel);
+
+    updateUserOrderedQuantities(searchedProductsModel);
+        emit(LoadedCreateQuotation());
+      }
     });
   }
 

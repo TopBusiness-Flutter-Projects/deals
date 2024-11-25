@@ -1,4 +1,4 @@
-package com.topbusiness.top_sale
+package com.topbusiness.deals
 
 import io.flutter.embedding.android.FlutterActivity
 

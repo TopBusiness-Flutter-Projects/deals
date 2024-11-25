@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ import '../../login/widget/textfield_with_text.dart';
 import '../cubit/cubit.dart';
 
 class CustomBasketItem extends StatefulWidget {
-  const CustomBasketItem({required this.item, super.key,  this.isEditable = true});
+  const CustomBasketItem(
+      {required this.item, super.key, this.isEditable = true});
   final ProductModelData item;
   final bool isEditable;
   @override
@@ -48,17 +50,17 @@ class _CustomBasketItemState extends State<CustomBasketItem> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomDecodedImageWithText(
-                character: widget.item.name!.length >= 2
-                    ? widget.item.name!.removeAllWhitespace
-                        .substring(0, 2)
-                        .toString()
-                    : widget.item.name!.removeAllWhitespace,
-                base64String: widget.item.image1920,
-                // context: context,
-                width: getSize(context) / 8,
-                height: getSize(context) / 8,
-              ),
+              // CustomDecodedImageWithText(
+              //   character: widget.item.name!.length >= 2
+              //       ? widget.item.name!.removeAllWhitespace
+              //           .substring(0, 2)
+              //           .toString()
+              //       : widget.item.name!.removeAllWhitespace,
+              //   base64String: widget.item.image1920,
+              //   // context: context,
+              //   width: getSize(context) / 8,
+              //   height: getSize(context) / 8,
+              // ),
               Flexible(
                 fit: FlexFit.tight,
                 child: Padding(
@@ -78,64 +80,64 @@ class _CustomBasketItemState extends State<CustomBasketItem> {
                               ),
                             ),
                           ),
-if (widget.isEditable)
-                          InkWell(
-                            onTap: () {
-                              cubit2.newDiscountController.text =
-                                  widget.item.discount.toString();
-
-                              customShowBottomSheet(
-                                  context, cubit2.newDiscountController,
-                                  onPressed: () {
-                                if (double.parse(cubit2
-                                        .newDiscountController.text
-                                        .toString()) <
-                                    100) {
-                                  cubit2.onChnageDiscountOfUnit(
-                                      widget.item, context);
-                                } else {
-                                  errorGetBar('discount_validation'.tr());
-                                }
-                              });
-
-                              //! add discount
-
-                              // customShowBottomSheet(
-                              //   context,
-                              //   cubit.controllerPercent,
-                              //   onPressed: () {
-                              //     //! set dis count to model
-                              //     //! cal the new value of price
-                              //     //! case all discout remove discount of itms first then make all and loop on them
-                              //     //! clear controller
-                              //   },
-                              // );
-                            },
-                            child: Image.asset(
-                              ImageAssets.discount,
-                              width: getSize(context) / 14,
-                            ),
-                          ),
                           if (widget.isEditable)
-                          Padding(
-                            padding: const EdgeInsetsDirectional.symmetric(
-                                horizontal: 5.0),
-                            child: InkWell(
-                                onTap: () {
-                                  cubit2.newPriceController.text =
-                                      widget.item.listPrice.toString();
+                            InkWell(
+                              onTap: () {
+                                cubit2.newDiscountController.text =
+                                    widget.item.discount.toString();
 
-                                  customPriceShowBottomSheet(
-                                      context, cubit2.newPriceController, () {
-                                    cubit2.onChnagePriceOfUnit(
+                                customShowBottomSheet(
+                                    context, cubit2.newDiscountController,
+                                    onPressed: () {
+                                  if (double.parse(cubit2
+                                          .newDiscountController.text
+                                          .toString()) <
+                                      100) {
+                                    cubit2.onChnageDiscountOfUnit(
                                         widget.item, context);
-                                  });
-                                },
-                                child: Image.asset(
-                                  ImageAssets.edit2Icon,
-                                  width: getSize(context) / 18,
-                                )),
-                          ),
+                                  } else {
+                                    errorGetBar('discount_validation'.tr());
+                                  }
+                                });
+
+                                //! add discount
+
+                                // customShowBottomSheet(
+                                //   context,
+                                //   cubit.controllerPercent,
+                                //   onPressed: () {
+                                //     //! set dis count to model
+                                //     //! cal the new value of price
+                                //     //! case all discout remove discount of itms first then make all and loop on them
+                                //     //! clear controller
+                                //   },
+                                // );
+                              },
+                              child: Image.asset(
+                                ImageAssets.discount,
+                                width: getSize(context) / 14,
+                              ),
+                            ),
+                          if (widget.isEditable)
+                            Padding(
+                              padding: const EdgeInsetsDirectional.symmetric(
+                                  horizontal: 5.0),
+                              child: InkWell(
+                                  onTap: () {
+                                    cubit2.newPriceController.text =
+                                        widget.item.listPrice.toString();
+
+                                    customPriceShowBottomSheet(
+                                        context, cubit2.newPriceController, () {
+                                      cubit2.onChnagePriceOfUnit(
+                                          widget.item, context);
+                                    });
+                                  },
+                                  child: Image.asset(
+                                    ImageAssets.edit2Icon,
+                                    width: getSize(context) / 18,
+                                  )),
+                            ),
                           //! delete Product
                           IconButton(
                               onPressed: () async {
@@ -154,17 +156,42 @@ if (widget.isEditable)
                           child: Row(
                             children: [
                               Expanded(
-                                flex: 5,
+                                // flex: 4,
+                                child: Container(
+                                    // width: getSize(context) / 10,
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsetsDirectional.only(
+                                        end: 10),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      border: Border.all(
+                                          color: AppColors.orangeThirdPrimary,
+                                          width: 1.8),
+                                      borderRadius: BorderRadius.circular(
+                                          getSize(context) / 22),
+                                    ),
+                                    child: AutoSizeText(
+                                      '${calculateDiscountedPrice(widget.item.discount, widget.item.listPrice, 1)}',
+                                      // '${calculateDiscountedPrice(widget.item.discount, widget.item.listPrice, widget.item.userOrderedQuantity)} ${widget.item.currencyId?.name ?? ''}',
+                                      style: TextStyle(
+                                        color: AppColors.orangeThirdPrimary,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                              ),
+                              Expanded(
+                                // flex: 5,
                                 child: GestureDetector(
                                   onTap: () {
-                                     cubit2.newQtyController.text =
-                                      widget.item.userOrderedQuantity.toString();
+                                    cubit2.newQtyController.text = widget
+                                        .item.userOrderedQuantity
+                                        .toString();
 
-                                  customQtyShowBottomSheet(
-                                      context, cubit2.newQtyController, () {
-                                    cubit2.onChnageProductQuantity(
-                                        widget.item, context);
-                                  });
+                                    customQtyShowBottomSheet(
+                                        context, cubit2.newQtyController, () {
+                                      cubit2.onChnageProductQuantity(
+                                          widget.item, context);
+                                    });
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -191,12 +218,13 @@ if (widget.isEditable)
                                             },
                                             child: Icon(
                                               Icons.add,
-                                              color: AppColors.orangeThirdPrimary,
+                                              color:
+                                                  AppColors.orangeThirdPrimary,
                                               size: 30.w,
                                             ),
                                           ),
                                           //SizedBox(width: 8.w),
-                                          Text(
+                                          AutoSizeText(
                                               widget.item.userOrderedQuantity
                                                   .toString(),
                                               style: getBoldStyle(
@@ -212,7 +240,8 @@ if (widget.isEditable)
                                             },
                                             child: Icon(
                                               Icons.remove,
-                                              color: AppColors.orangeThirdPrimary,
+                                              color:
+                                                  AppColors.orangeThirdPrimary,
                                               size: 30.w,
                                             ),
                                           ),
@@ -223,7 +252,7 @@ if (widget.isEditable)
                                 ),
                               ),
                               Expanded(
-                                flex: 4,
+                                // flex: 4,
                                 child: Container(
                                     alignment: Alignment.center,
                                     margin: const EdgeInsetsDirectional.only(
@@ -236,8 +265,8 @@ if (widget.isEditable)
                                       borderRadius: BorderRadius.circular(
                                           getSize(context) / 22),
                                     ),
-                                    child: Text(
-                                      '${calculateDiscountedPrice(widget.item.discount, widget.item.listPrice, widget.item.userOrderedQuantity)} ${context.read<HomeCubit>().currencyName}',
+                                    child: AutoSizeText(
+                                      '${calculateDiscountedPrice(widget.item.discount, widget.item.listPrice, widget.item.userOrderedQuantity)}',
                                       // '${calculateDiscountedPrice(widget.item.discount, widget.item.listPrice, widget.item.userOrderedQuantity)} ${widget.item.currencyId?.name ?? ''}',
                                       style: TextStyle(
                                         color: AppColors.orangeThirdPrimary,
