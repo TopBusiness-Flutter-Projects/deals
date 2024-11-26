@@ -26,6 +26,7 @@ import 'features/on_boarding/cubit/onboarding_cubit.dart';
 import 'features/returns/cubit/returns_cubit.dart';
 import 'features/splash/cubit/cubit.dart';
 import 'features/update_profile/cubit/update_profile_cubit.dart';
+import 'features/tasks/cubit/tasks_cubit.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -104,8 +105,12 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             create: (_) => injector.serviceLocator<ItineraryCubit>(),
-          ),BlocProvider(
+          ),
+          BlocProvider(
             create: (_) => injector.serviceLocator<ExchangePermissionCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => injector.serviceLocator<TasksCubit>(),
           ),
         ],
         child: ScreenUtilInit(

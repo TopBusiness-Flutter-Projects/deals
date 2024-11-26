@@ -27,6 +27,7 @@ import 'features/on_boarding/cubit/onboarding_cubit.dart';
 import 'features/profile/cubit/profile_cubit.dart';
 import 'features/returns/cubit/returns_cubit.dart';
 import 'features/update_profile/cubit/update_profile_cubit.dart';
+import 'features/tasks/cubit/tasks_cubit.dart';
 
 // import 'features/downloads_videos/cubit/downloads_videos_cubit.dart';
 
@@ -56,6 +57,7 @@ Future<void> setup() async {
   serviceLocator.registerFactory(() => CreateReceiptCoucherCubit(serviceLocator()));
   serviceLocator.registerFactory(() => ItineraryCubit(serviceLocator()));
   serviceLocator.registerFactory(() => ExchangePermissionCubit(serviceLocator()));
+  serviceLocator.registerFactory(() => TasksCubit(serviceLocator()));
   ///////////////////////////////////////////////////////////////////////////////
 
   //! External
