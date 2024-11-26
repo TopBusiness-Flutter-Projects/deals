@@ -1711,7 +1711,36 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+Future<Either<Failure, CreateOrderModel>> createTask({
+    required String description,
+    required String title,
+    required String deadline,
+  }) async {
+        String userId = await Preferences.instance.getUserId() ?? "1";
 
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    try {
+      final response = await dio.post(
+        odooUrl + EndPoints.createTask,
+        body: {
+    "title": title,
+    "description": description,
+    "user_id": int.parse(userId), 
+    // "stage_id": 8,
+    "deadline": deadline
+}
+,
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(CreateOrderModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
   Future<Either<Failure, WareHouse>> getWareHouseById() async {
     AuthModel? authModel = await Preferences.instance.getUserModel();
 

@@ -12,6 +12,7 @@ String createOrderModelToJson(CreateOrderModel data) =>
 
 class CreateOrderModel {
   Result? result;
+  
 
   CreateOrderModel({
     this.result,
@@ -29,6 +30,8 @@ class CreateOrderModel {
 
 class Result {
   dynamic message;
+  dynamic error;
+  dynamic success;
   
   dynamic paymentId;
   dynamic pickingId;
@@ -37,12 +40,14 @@ class Result {
 
   Result({
     this.message,
-    this.paymentId,
+    this.paymentId,this.success,this.error,
     this.orderId,this.pickingId
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         message: json["message"],
+        success: json["success"],
+        error: json["error"],
         paymentId: json["payment_id"],
         pickingId: json["picking_id"],
         orderId: json["order_id"],
@@ -50,6 +55,8 @@ class Result {
 
   Map<String, dynamic> toJson() => {
         "message": message,
+        "success": success,
+        "error": error,
         "payment_id": paymentId,
         "picking_id": pickingId,
         "order_id": orderId,
