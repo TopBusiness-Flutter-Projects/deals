@@ -233,12 +233,12 @@ void showAddTasksBottomSheet(BuildContext context, TasksCubit cubit) {
               TextFieldWidget(
                   titleFromTextField: "address".tr(),
                   controller: cubit.titleController,
-                  hintFromTextField: "add_your_address".tr()),
+                  hintFromTextField: "enter_address".tr()),
               SizedBox(height: 20.h),
               TextFieldWidget(
                 controller: cubit.tasksController,
                 maxLines: 4,
-                hintFromTextField: "add_task".tr(),
+                hintFromTextField: "add_your_task".tr(),
                 titleFromTextField: "task".tr(),
               ),
               SizedBox(height: 20.h),
