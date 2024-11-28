@@ -63,12 +63,12 @@ class Preferences {
   Future<void> setAllOrders(GetOrdersModel orders) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(
-        'Orders', jsonEncode(GetOrdersModel.fromJson(orders.toJson())));
-    print("tasks = ${orders.result!.first.displayName}");
+        'orders', jsonEncode(GetOrdersModel.fromJson(orders.toJson())));
+    print("orders = ${orders.result!.first.displayName}");
   }
   Future<GetOrdersModel> getAllOrders() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? jsonData = preferences.getString('Orders');
+    String? jsonData = preferences.getString('orders');
     GetOrdersModel ordersModel;
     if (jsonData != null) {
       ordersModel = GetOrdersModel.fromJson(jsonDecode(jsonData));

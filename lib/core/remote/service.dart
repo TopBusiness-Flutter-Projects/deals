@@ -651,6 +651,32 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+   Future<Either<Failure, GetOrdersModel>> getDraftOrders() async {
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+
+    String? employeeId = await Preferences.instance.getEmployeeId();
+    try {
+      final response = await dio.get(
+        employeeId == null
+            ? odooUrl +
+                EndPoints.saleOrder +
+                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,expected_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId],["state", "=", "draft"]]'
+            : odooUrl +
+                EndPoints.saleOrder +
+                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,expected_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId],["employee_id", "=", $employeeId],["state", "=", "draft"]]',
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(GetOrdersModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
 
   Future<Either<Failure, GetOrdersModel>> getOrderFromId(int id) async {
     String odooUrl =

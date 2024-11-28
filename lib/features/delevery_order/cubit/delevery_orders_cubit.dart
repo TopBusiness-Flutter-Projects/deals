@@ -45,14 +45,12 @@ class DeleveryOrdersCubit extends Cubit<DeleveryOrdersState> {
     result.fold(
       (failure) => emit(OrdersErrorState('Error loading  data: $failure')),
       (r) async {
-        Preferences.instance.setAllOrders(r);
-
         for (var element in r.result!) {
           // Completed orders contain only fully invoiced and fully delivered orders
           if (element.state.toString() == 'sale' &&
               element.invoiceStatus.toString() == 'invoiced' &&
-             ( element.deliveryStatus.toString() == 'full' ||
-         element.deliveryStatus.toString() == 'done'  ) ) {
+              (element.deliveryStatus.toString() == 'full' ||
+                  element.deliveryStatus.toString() == 'done')) {
             completeOrders.add(element);
           }
           // Canceled orders contain only canceled orders
@@ -66,24 +64,19 @@ class DeleveryOrdersCubit extends Cubit<DeleveryOrdersState> {
             // Draft orders
             if (element.state.toString() == 'draft') {
               draftOrders.add(element);
-
             }
             // New orders (to be invoiced, pending delivery)
             else if (element.state.toString() == 'sale' &&
                 element.invoiceStatus.toString() == 'to invoice' &&
-               ( element.deliveryStatus.toString() == 'pending' ||
-element.deliveryStatus.toString() == 'assigned')
-                
-                ) {
+                (element.deliveryStatus.toString() == 'pending' ||
+                    element.deliveryStatus.toString() == 'assigned')) {
               newOrders.add(element);
             }
             // Delivered orders (to be invoiced, fully delivered)
             else if (element.state.toString() == 'sale' &&
                 element.invoiceStatus.toString() == 'to invoice' &&
-             (   element.deliveryStatus.toString() == 'full' ||
-             element.deliveryStatus.toString() == 'done'  
-            )
-                ) {
+                (element.deliveryStatus.toString() == 'full' ||
+                    element.deliveryStatus.toString() == 'done')) {
               deliveredOrders.add(element);
             }
           }
@@ -92,6 +85,25 @@ element.deliveryStatus.toString() == 'assigned')
         getOrdersModel = r;
 
         print("model $getOrdersModel");
+        emit(OrdersLoadedState());
+      },
+    );
+  }
+
+  GetOrdersModel getDraftOrdersModel = GetOrdersModel();
+  Future<void> getDraftOrders() async {
+    emit(OrdersLoadingState());
+    print("rrrrrrrrrr");
+
+    final result = await api.getDraftOrders();
+    result.fold(
+      (failure) => emit(OrdersErrorState('Error loading  data: $failure')),
+      (r) async {
+        if (r.result != null) {
+
+          Preferences.instance.setAllOrders(r);
+        }
+
         emit(OrdersLoadedState());
       },
     );
@@ -111,5 +123,4 @@ element.deliveryStatus.toString() == 'assigned')
   //   );
   //   return partnerModel!;
   // }
-  
 }
