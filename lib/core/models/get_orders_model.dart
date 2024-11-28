@@ -95,7 +95,7 @@ class OrderModel {
             ? null
             : CurrencyId.fromJson(json["currency_id"]),
         writeDate: json["write_date"],
-        expectedDate: json["validity_date"],
+        expectedDate: json["date_order"],
        // amountTotal: json["amount_untaxed"],
          amountTotal: json["amount_total"],
         invoiceStatus: json["invoice_status"],
@@ -114,7 +114,7 @@ class OrderModel {
         "state": state,
         "currency_id": currencyId?.toJson(),
         "write_date": writeDate,
-        "validity_date": expectedDate,
+        "date_order": expectedDate,
 
          "amount_total": amountTotal,
        // "amount_untaxed": amountTotal,

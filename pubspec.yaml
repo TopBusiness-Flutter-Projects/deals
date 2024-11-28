@@ -79,7 +79,7 @@ dependencies:
   connectivity_plus: 
   flutter_widget_from_html: ^0.15.3
   timezone: ^0.9.4
-  flutter_timezone: ^3.0.1
+  flutter_timezone: 
  
   # package_info_plus: ^8.0.3
   # share_plus: ^10.0.3

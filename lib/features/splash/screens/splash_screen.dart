@@ -9,6 +9,7 @@ import 'package:http/http.dart';
 import 'package:top_sale/core/preferences/preferences.dart';
 import 'package:top_sale/features/Itinerary/cubit/cubit.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
+import 'package:top_sale/features/delevery_order/cubit/delevery_orders_cubit.dart';
 import 'package:top_sale/features/login/cubit/cubit.dart';
 import '../../../core/utils/assets_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -181,6 +182,7 @@ class _SplashScreenState extends State<SplashScreen>
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
                   Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                   context.read<DeleveryOrdersCubit>().getDraftOrders();
                 } else {
                   Navigator.pushReplacementNamed(context, Routes.loginRoute);
                 }
@@ -196,7 +198,9 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
+                   context.read<DeleveryOrdersCubit>().getDraftOrders();
                   Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                   context.read<DeleveryOrdersCubit>().getDraftOrders();
                 } else {
                   Navigator.pushReplacementNamed(context, Routes.loginRoute);
                 }
@@ -215,7 +219,9 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
+                   context.read<DeleveryOrdersCubit>().getDraftOrders();
                   Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                   context.read<DeleveryOrdersCubit>().getDraftOrders();
                 } else {
                   Navigator.pushReplacementNamed(context, Routes.loginRoute);
                 }
@@ -278,6 +284,7 @@ class _SplashScreenState extends State<SplashScreen>
                   database: await Preferences.instance.getDataBaseName() ?? '');
               if (session != "error") {
                 Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                 context.read<DeleveryOrdersCubit>().getDraftOrders();
               } else {
                 Navigator.pushReplacementNamed(context, Routes.loginRoute);
               }
@@ -291,6 +298,7 @@ class _SplashScreenState extends State<SplashScreen>
                 database: await Preferences.instance.getDataBaseName() ?? '');
             if (session != "error") {
               Navigator.pushReplacementNamed(context, Routes.mainRoute);
+               context.read<DeleveryOrdersCubit>().getDraftOrders();
             } else {
               Navigator.pushReplacementNamed(context, Routes.loginRoute);
             }

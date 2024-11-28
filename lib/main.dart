@@ -10,6 +10,7 @@ import 'package:timezone/data/latest.dart' as tz_data;
 import 'app_bloc_observer.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'core/utils/restart_app_class.dart';
+
 /// flutter local notification
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -59,6 +60,7 @@ void main() async {
   }
 
   scheduleDailyTenAMNotification();
+  scheduleOrdersNotification();
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('ar', ''), Locale('en', '')],
@@ -121,6 +123,7 @@ Future<void> scheduleDailyTenAMNotification() async {
     }
   });
 }
+
 Future<void> scheduleOrdersNotification() async {
   print("rrrrrrrrrr localll");
   print("rrrrrrrrrr ${tz.TZDateTime.now(tz.local).toString()}");
@@ -128,39 +131,39 @@ Future<void> scheduleOrdersNotification() async {
   Preferences.instance.getAllOrders().then((value) async {
     if (value.result != null) {
       for (int i = 0; i < value.result!.length; i++) {
-        // if (value.result![i].state.toString() == 'draft'){
+        print(
+            "order = ${value.result![i].displayName}  ${value.result![i].state.toString()}");
+      
+          
 
-        // If the task has a valid deadline, parse the date and extract the day, month, year, and time
-        DateTime taskDeadline = DateTime.parse(value.result![i].expectedDate.toString() != "false" ? value.result![i].expectedDate.toString(): "2024-11-19");
-        // Extract the date components (day, month, year)
-        int day = taskDeadline.day;
-        int month = taskDeadline.month;
-        int year = taskDeadline.year;
+          DateTime orderDead = DateTime.parse(
+              value.result![i].expectedDate ?? "2024-11-28 12:53:32.587255Z");
 
-
-
-
-        // Schedule the notification at the extracted time
-        await flutterLocalNotificationsPlugin.zonedSchedule(
-          i, // Use the index as the unique ID
-          'هناك طلب جديد',
-          '${value.result![i].displayName}',
-          _nextOrders(year, month, day), // Schedule the notification at the extracted time
-          const NotificationDetails(
-            android: AndroidNotificationDetails('daily notification channel id',
-                'daily notification channel name',
-                channelDescription: 'daily notification description'),
-          ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-          uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-          matchDateTimeComponents: DateTimeComponents.time,
-        );
+          int day = orderDead.day;
+          int month = orderDead.month;
+          int year = orderDead.year;
+          await flutterLocalNotificationsPlugin.zonedSchedule(
+            i, // Use the index as the unique ID
+            'هناك طلب جديد',
+            '${value.result![i].displayName}',
+            _nextOrders(year, month,
+                day), // Schedule the notification at the extracted time
+            const NotificationDetails(
+              android: AndroidNotificationDetails(
+                  'daily notification channel id',
+                  'daily notification channel name',
+                  channelDescription: 'daily notification description'),
+            ),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime,
+            matchDateTimeComponents: DateTimeComponents.time,
+          );
+        
       }
-    // }
-  }});
+    }
+  });
 }
-
 
 tz.TZDateTime _nextInstanceOfTenAM(int year, int month, int day) {
   print("get notification ");
@@ -169,18 +172,16 @@ tz.TZDateTime _nextInstanceOfTenAM(int year, int month, int day) {
 
   tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, year, month, day, 6);
 
-
-
   return scheduledDate;
 }
+
 tz.TZDateTime _nextOrders(int year, int month, int day) {
   print("get notification ");
 
   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
 
-  tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, 2024, 11, 28, 12 ,8);
-
-
+  tz.TZDateTime scheduledDate =
+      tz.TZDateTime(tz.local, year, month, day, 6);
 
   return scheduledDate;
 }
