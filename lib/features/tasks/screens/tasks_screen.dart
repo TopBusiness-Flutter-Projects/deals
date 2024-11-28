@@ -7,11 +7,9 @@ import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/date_widget.dart';
 import 'package:top_sale/core/utils/textfield_widget.dart';
 import 'package:top_sale/features/login/widget/custom_button.dart';
-
 import '../cubit/tasks_cubit.dart';
 import '../cubit/tasks_state.dart';
 import '../../../core/utils/style_text.dart';
-
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
   @override
