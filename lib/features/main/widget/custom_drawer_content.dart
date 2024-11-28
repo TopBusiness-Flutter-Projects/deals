@@ -11,21 +11,21 @@ class MenuScreen extends StatelessWidget {
   final void Function(int)? callback;
   final int? current;
 
-  const MenuScreen(this.mainMenu, {this.callback, this.current});
+  const MenuScreen(this.mainMenu, {super.key, this.callback, this.current});
 
   @override
   Widget build(BuildContext context) {
-    const _androidStyle = TextStyle(
+    const androidStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     );
-    const _iosStyle = TextStyle(color: Colors.white);
+    const iosStyle = TextStyle(color: Colors.white);
     final style = kIsWeb
-        ? _androidStyle
+        ? androidStyle
         : Platform.isAndroid
-            ? _androidStyle
-            : _iosStyle;
+            ? androidStyle
+            : iosStyle;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
