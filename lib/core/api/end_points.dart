@@ -35,6 +35,8 @@ class EndPoints {
   static String updateQuotation = '/api/quotation/update/';
   static String getAllJournals =
       '/api/account.journal/?query={id, display_name}';
+  static String updateState = "/api/project/task/update_state";
+
   static String printOrder = '/report/pdf/sale.report_saleorder/';
   static String printPicking = '/report/pdf/stock.report_picking/';
   static String printPayment = '/report/pdf/account.report_payment_receipt/';
@@ -48,6 +50,7 @@ class EndPoints {
   static String employee = '/api/employee/';
   static String expense = '/api/expense/products';
   static String updatePartnerLocation = '/api/res.partner';
+  static String getTasks = '/api/project/tasks/by_user';
 
   ///////
   // static String authWithSession = "$baseUrl/web/session/authenticate";

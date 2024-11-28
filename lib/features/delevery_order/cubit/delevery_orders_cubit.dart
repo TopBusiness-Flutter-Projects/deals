@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:top_sale/core/preferences/preferences.dart';
 import 'package:top_sale/core/remote/service.dart';
 import '../../../core/models/get_orders_model.dart';
 import '../../../core/models/partner_model.dart';
@@ -44,6 +45,8 @@ class DeleveryOrdersCubit extends Cubit<DeleveryOrdersState> {
     result.fold(
       (failure) => emit(OrdersErrorState('Error loading  data: $failure')),
       (r) async {
+        Preferences.instance.setAllOrders(r);
+
         for (var element in r.result!) {
           // Completed orders contain only fully invoiced and fully delivered orders
           if (element.state.toString() == 'sale' &&
@@ -63,6 +66,7 @@ class DeleveryOrdersCubit extends Cubit<DeleveryOrdersState> {
             // Draft orders
             if (element.state.toString() == 'draft') {
               draftOrders.add(element);
+
             }
             // New orders (to be invoiced, pending delivery)
             else if (element.state.toString() == 'sale' &&

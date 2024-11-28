@@ -24,6 +24,8 @@
   "address": "العنوان",
   "sales": "المبيعات",
   "overdue_amounts": "المبالغ المتأخرة",
+  "add_task": "اضافة مهمة",
+  "add_your_address": "ادخل العنوان",
   "unbilled_amounts": "المبالغ الغير مفوترة",
   "payments_due": "الدفعات المستحقة",
   "invoices": "الفواتير",

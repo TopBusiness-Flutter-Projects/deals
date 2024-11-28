@@ -56,12 +56,13 @@ class OrderModel {
   int? id;
   int? userId;
   PartnerId? partnerId;
-  String? displayName;
-  String? state;
-  String? writeDate;
+  dynamic displayName;
+  dynamic state;
+  dynamic writeDate;
+  dynamic expectedDate;
   CurrencyId? currencyId;
-  dynamic? amountTotal;
-  dynamic? amountUnTaxed;
+  dynamic amountTotal;
+  dynamic amountUnTaxed;
   String? invoiceStatus;
   dynamic deliveryStatus;
   EmployeeId? employeeId;
@@ -73,6 +74,7 @@ class OrderModel {
     this.displayName,
     this.state,
     this.writeDate,
+    this.expectedDate,
     this.currencyId,
     this.amountTotal,
     this.invoiceStatus,
@@ -93,6 +95,7 @@ class OrderModel {
             ? null
             : CurrencyId.fromJson(json["currency_id"]),
         writeDate: json["write_date"],
+        expectedDate: json["validity_date"],
        // amountTotal: json["amount_untaxed"],
          amountTotal: json["amount_total"],
         invoiceStatus: json["invoice_status"],
@@ -111,6 +114,8 @@ class OrderModel {
         "state": state,
         "currency_id": currencyId?.toJson(),
         "write_date": writeDate,
+        "validity_date": expectedDate,
+
          "amount_total": amountTotal,
        // "amount_untaxed": amountTotal,
         "invoice_status": invoiceStatus,

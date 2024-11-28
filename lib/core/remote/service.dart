@@ -12,6 +12,7 @@ import 'package:top_sale/core/models/all_journals_model.dart';
 import 'package:top_sale/core/models/all_partners_for_reports_model.dart';
 import 'package:top_sale/core/models/all_payments_model.dart';
 import 'package:top_sale/core/models/all_products_model.dart';
+import 'package:top_sale/core/models/all_tasks_model.dart';
 import 'package:top_sale/core/models/all_ware_house_model.dart';
 import 'package:top_sale/core/models/approve_expenses_model.dart';
 import 'package:top_sale/core/models/category_model.dart';
@@ -43,6 +44,7 @@ import '../models/all_salary_model.dart';
 import '../models/car_details_model.dart';
 import '../models/holidays_model.dart';
 import '../models/holidays_type_model.dart';
+import '../models/update_state.dart';
 
 class ServiceApi {
   final BaseApiConsumer dio;
@@ -63,7 +65,27 @@ class ServiceApi {
       return "error";
     }
   }
+  Future<Either<Failure, AllTasksModel>> getAllTasks(
+      { required String state}) async {
+    try {
+      String userId = await Preferences.instance.getUserId() ?? "1";
 
+      String? sessionId = await Preferences.instance.getSessionId();
+      String odooUrl =
+          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      final response = await dio.get(
+        odooUrl +
+            EndPoints.getTasks +
+            '?user_id=$userId&state=$state',
+        options: Options(
+          headers: {"Cookie": "frontend_lang=en_US;session_id=$sessionId"},
+        ),
+      );
+      return Right(AllTasksModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
   Future<Either<ServerFailure, AuthModel>> login(
       {required String phoneOrMail,
       required String password,
@@ -616,10 +638,10 @@ class ServiceApi {
         employeeId == null
             ? odooUrl +
                 EndPoints.saleOrder +
-                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId]]'
+                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,expected_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId]]'
             : odooUrl +
                 EndPoints.saleOrder +
-                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId],["employee_id", "=", $employeeId]]',
+                '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,expected_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["user_id", "=", $userId],["employee_id", "=", $employeeId]]',
         options: Options(
           headers: {"Cookie": "session_id=$sessionId"},
         ),
@@ -638,10 +660,10 @@ class ServiceApi {
       final response = await dio.get(
         odooUrl +
             EndPoints.saleOrder +
-            '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["id", "=", $id]]',
-        //             '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,amount_total,invoice_status,delivery_status,employee_id{id,name}}&page_size=20&page=1&filter=[["delivery_status", "!=","started"]]',
+            '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,expected_date,amount_total,invoice_status,delivery_status,employee_id{id,name},amount_untaxed}&page_size=20&page=1&filter=[["delivery_status", "!=","returned"],["id", "=", $id]]',
+        //             '?query={id,user_id,partner_id{id,name,phone,partner_latitude,partner_longitude},currency_id{name},display_name,state,write_date,expected_date,amount_total,invoice_status,delivery_status,employee_id{id,name}}&page_size=20&page=1&filter=[["delivery_status", "!=","started"]]',
 
-        // '?query={id,partner_id,display_name,state,write_date,amount_total}&filter=[["user_id", "=",1]]',
+        // '?query={id,partner_id,display_name,state,write_date,expected_date,amount_total}&filter=[["user_id", "=",1]]',
         options: Options(
           headers: {"Cookie": "session_id=$sessionId"},
         ),
@@ -1257,6 +1279,29 @@ class ServiceApi {
     }
   }
 
+  Future<Either<Failure, UpdateStateModel>> updateStateData({
+    required int taskId,
+    required String state,
+
+  }) async {
+    String? sessionId = await Preferences.instance.getSessionId();
+    String odooUrl =
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String userId = await Preferences.instance.getUserId() ?? "1";
+    try {
+      final response = await dio.put(odooUrl + EndPoints.updateState,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
+          body: {
+            "task_id":int.parse(taskId.toString()) ,
+            "state": "1_done"
+          });
+      return Right(UpdateStateModel.fromJson(response));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
   Future<Either<Failure, CreateOrderModel>> createPartner({
     required String name,
     required String mobile,

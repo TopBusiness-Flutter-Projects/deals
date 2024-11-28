@@ -12,14 +12,11 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/get_size.dart';
-import '../../../core/widgets/network_image.dart';
 import '../../home_screen/cubit/state.dart';
-import '../../profile/cubit/profile_cubit.dart';
 import 'list_tile_menu_widget.dart';
 
 class MenuScreenWidget extends StatefulWidget {
-  const MenuScreenWidget({Key? key, required this.closeClick})
-      : super(key: key);
+  const MenuScreenWidget({super.key, required this.closeClick});
 
   final VoidCallback closeClick;
 
@@ -33,8 +30,8 @@ class _MenuScreenWidgetState extends State<MenuScreenWidget> {
     String lang = EasyLocalization.of(context)!.locale.languageCode;
     return ClipRRect(
       borderRadius: BorderRadius.only(
-        bottomRight: lang == 'en' ? Radius.circular(60) : Radius.zero,
-        bottomLeft: lang == 'ar' ? Radius.circular(60) : Radius.zero,
+        bottomRight: lang == 'en' ? const Radius.circular(60) : Radius.zero,
+        bottomLeft: lang == 'ar' ? const Radius.circular(60) : Radius.zero,
       ),
       child: Stack(
         children: [
