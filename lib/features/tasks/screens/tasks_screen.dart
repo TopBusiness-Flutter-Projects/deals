@@ -2,16 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:top_sale/core/utils/app_colors.dart';
-import 'package:top_sale/core/utils/date_widget.dart';
-import 'package:top_sale/core/utils/textfield_widget.dart';
-import 'package:top_sale/features/login/widget/custom_button.dart';
-
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/custom_button.dart';
+import '../../../core/utils/textfield_widget.dart';
+import '../../../core/utils/date_widget.dart';
 import '../cubit/tasks_cubit.dart';
 import '../cubit/tasks_state.dart';
 import '../../../core/utils/style_text.dart';
-
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
   @override
@@ -19,158 +17,158 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-  final List<String> arabicDays = [
-    'الأحد',
-    'الاثنين',
-    'الثلاثاء',
-    'الأربعاء',
-    'الخميس',
-    'الجمعة',
-    'السبت',
-  ];
+  @override
+  void initState() {
+    context.read<TasksCubit>().changeIndex("01_in_progress");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TasksCubit>(context);
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        title: Text('tasks'.tr()),
-        centerTitle: false,
-        titleTextStyle: TextStyles.size16FontWidget400Black,
-      ),
       floatingActionButtonLocation:
-          FloatingActionButtonLocation.endFloat, // FAB on bottom left
+      FloatingActionButtonLocation.endFloat, // FAB on bottom left
       floatingActionButton: Padding(
         padding: EdgeInsets.only(
             left: 5.0.w, bottom: 80.0.h), // Adjust padding if needed
-        child: FloatingActionButton(
-          shape: CircleBorder(),
-          backgroundColor: AppColors.secondPrimary,
-          onPressed: () {
-            showAddTasksBottomSheet(context, cubit);
-          },
-          child: Icon(
-            Icons.add,
-            color: AppColors.white,
-            size: 30.sp,
+        child: taskFloatingActionButton(context, cubit),
+      ),
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0.0,
+        centerTitle: true,
+        title: Text(
+          "tasks".tr(),
+          style: TextStyles.size22FontWidget400White.copyWith(
+            color: AppColors.black,
           ),
-        ),
+        )
       ),
       body: BlocBuilder<TasksCubit, TasksState>(builder: (context, state) {
-        return ListView(
-          shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
+        return Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(8.0.sp),
-              margin: EdgeInsets.all(8.0.sp),
-              height: MediaQuery.of(context).size.height * 0.45,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadiusDirectional.circular(8.sp),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: TableCalendar(
-                locale: 'ar',
-                firstDay: DateTime.utc(2020, 1, 1),
-                lastDay: DateTime.utc(2030, 12, 31),
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                },
-                calendarStyle: CalendarStyle(
-                  todayDecoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  defaultTextStyle: TextStyle(color: Colors.black),
-                  todayTextStyle: TextStyle(
-                    color: (_selectedDay != null &&
-                            isSameDay(_selectedDay, DateTime.now()))
-                        ? Colors.white
-                        : Colors.black,
-                  ),
-                  weekendTextStyle: TextStyle(color: Colors.black),
-                  markerMargin: EdgeInsets.symmetric(horizontal: 0.5),
-                  outsideDaysVisible: false,
-                ),
-                daysOfWeekStyle: DaysOfWeekStyle(
-                    dowTextFormatter: (date, locale) {
-                      return arabicDays[date.weekday % 7];
-                    },
-                    weekdayStyle: TextStyles.size16FontWidget400Black,
-                    weekendStyle: TextStyles.size16FontWidget400Black),
-                headerStyle: HeaderStyle(
-                  formatButtonShowsNext: false,
-                  titleTextStyle: TextStyles.size18FontWidget700Gray,
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                ),
-                headerVisible: true,
-              ),
-            ),
-            SizedBox(height: 10.h),
-            ListView(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.only(
-                  bottom: 70.0), // Add padding at the bottom to avoid overlap
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TaskCard(
-                  title: "عنوان المهمة",
-                  description:
-                      "عندنا اجتماع في النشرة الساعة الخامسة اجتماع لمناقشة مهام الشركة",
+                Expanded(
+                  child: taskContainerCustom(
+                    cubit: cubit,
+                    color: cubit.stateOrder == "01_in_progress"
+                        ? AppColors.primary
+                        : AppColors.primary.withOpacity(0.4),
+                    title: "المهام الجديدة",
+                  ),
                 ),
-                TaskCard(
-                  title: "عنوان المهمة",
-                  description:
-                      "عندنا اجتماع في النشرة الساعة الخامسة اجتماع لمناقشة مهام الشركة",
+                Expanded(
+                  child: taskContainerCustom(
+                    cubit: cubit,
+                    color: cubit.stateOrder == "1_done"
+                        ? AppColors.primary
+                        : AppColors.primary.withOpacity(0.4),
+                    title: "المهام المكتملة",
+                  ),
                 ),
               ],
             ),
+            (cubit.allTasksModel.tasks == null)
+                ? Center(
+              child: CircularProgressIndicator(),
+            )
+                : (cubit.allTasksModel.tasks == [])
+                ? Center(
+              child: Text("لا يوجد مهام",
+                  style: TextStyles.size14FontWidget400Black),
+            )
+                : Expanded(
+              child: ListView.builder(
+                  itemCount: cubit.allTasksModel.tasks!.length,
+                  shrinkWrap: true,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return TaskCard(
+                      index: index,
+                      cubit: cubit,
+
+                    );
+                  }),
+            )
           ],
         );
       }),
+    );}
+  FloatingActionButton taskFloatingActionButton(
+      BuildContext context, TasksCubit cubit) {
+    return FloatingActionButton(
+      shape: CircleBorder(),
+      backgroundColor: AppColors.secondPrimary,
+      onPressed: () {
+        showAddTasksBottomSheet(context, cubit);
+      },
+      child: Icon(
+        Icons.add,
+        color: AppColors.white,
+        size: 30.sp,
+      ),
+    );
+  }
+
+  GestureDetector taskContainerCustom(
+      {required TasksCubit cubit,
+        required String title,
+        required Color color}) {
+    return GestureDetector(
+      onTap: () {
+        cubit.changeIndex(title == "المهام الجديدة" ? "01_in_progress" : "1_done");
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0.sp, vertical: 10.0.sp),
+        child: Container(
+          padding: EdgeInsets.all(8.sp),
+          decoration: BoxDecoration(
+
+            borderRadius: BorderRadius.circular(50.sp),
+            color: color,
+          ),
+          child: Center(
+              child: Text(title, style: TextStyles.size22FontWidget400White.copyWith(fontSize: 16.sp))),
+        ),
+      ),
     );
   }
 }
-
 class TaskCard extends StatelessWidget {
-  final String title;
-  final String description;
 
-  TaskCard({required this.title, required this.description});
+  final TasksCubit cubit;
+  final int index;
+
+  TaskCard(
+      {
+        required this.cubit,
+        required this.index});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.0.sp),
-      child: Card(
-        color: AppColors.white,
+      child: Container(
+
         margin: EdgeInsets.symmetric(vertical: 8.sp),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.sp),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          boxShadow: [
+            BoxShadow(
+              blurStyle: BlurStyle.outer,
+              color: Colors.black.withOpacity(
+                  0.1), // لون الظل مع تقليل الشفافية
+              spreadRadius: 1, // مدى انتشار الظل
+              blurRadius: 4, // مدى نعومة الظل
+              offset: const Offset(
+                  0, 1), // الاتجاه الأفقي والرأسي للظل
+            ),
+          ],
         ),
         child: Padding(
           padding: EdgeInsets.all(8.0.sp),
@@ -180,16 +178,87 @@ class TaskCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(title, style: TextStyles.size16FontWidget400Primary),
-                  Icon(Icons.delete_forever_rounded,
-                      color: AppColors.red, size: 25.sp),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_month,
+                        color: AppColors.gray,
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            cubit.allTasksModel.tasks![index].deadline == null
+                                ? ""
+                                : cubit.allTasksModel.tasks![index].deadline
+                                .toString()
+                                .substring(0, 10),
+                            style: TextStyles.size16FontWidget400Gray,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  cubit.stateOrder == "01_in_progress"
+                      ? Icon(
+                    Icons.delete_forever_rounded,
+                    color: AppColors.red,
+                  )
+                      : SizedBox()
                 ],
               ),
+              Text(  cubit.allTasksModel.tasks![index].description == false ? "" :cubit.allTasksModel.tasks![index].taskName, style: TextStyles.size16FontWidget400Primary),
               SizedBox(height: 8.sp),
-              Text(
-                description,
-                style: TextStyles.size14FontWidget400Black,
+              HtmlWidget(
+                cubit.allTasksModel.tasks![index].description == false ? "" :  cubit.allTasksModel.tasks![index].description,
+
               ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: "وقت التسليم: ",
+                          style: TextStyles.size14FontWidget400Black.copyWith(color: AppColors.gray),
+                        ),
+                        TextSpan(
+                            text: cubit.allTasksModel.tasks![index].deadline == null
+                                ? ""
+                                : cubit.allTasksModel.tasks![index].deadline
+                                .toString()
+                                .substring(0, 10),
+                            style: TextStyles.size14FontWidget400Black),
+                      ])),
+                  cubit.stateOrder == "01_in_progress"
+                      ? Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.0.sp, vertical: 3.0.sp),
+                    child: GestureDetector(
+                      onTap: () {
+                        cubit.updateState(context: context, taskId: cubit.allTasksModel.tasks![index].taskId!);
+                      },
+                      child: Text(
+                        "تم",
+                        style: TextStyles.size16FontWidget400Gray.copyWith(color: AppColors.white),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+
+                      color: AppColors.green,
+                      borderRadius: BorderRadius.circular(10.sp),
+                    ),
+                  )
+                      : SizedBox()
+                ],
+              )
             ],
           ),
         ),
@@ -227,18 +296,17 @@ void showAddTasksBottomSheet(BuildContext context, TasksCubit cubit) {
                   cubit.onSelectedDate(context);
                 },
                 selectedDate: cubit.selectedDate,
-            
               ),
               SizedBox(height: 10.h),
               TextFieldWidget(
                   titleFromTextField: "address".tr(),
                   controller: cubit.titleController,
-                  hintFromTextField: "enter_address".tr()),
+                  hintFromTextField: "add_your_address".tr()),
               SizedBox(height: 20.h),
               TextFieldWidget(
                 controller: cubit.tasksController,
                 maxLines: 4,
-                hintFromTextField: "add_your_task".tr(),
+                hintFromTextField: "add_task".tr(),
                 titleFromTextField: "task".tr(),
               ),
               SizedBox(height: 20.h),

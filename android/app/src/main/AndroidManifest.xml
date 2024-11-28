@@ -39,7 +39,18 @@
             android:value="2" />
              <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDoCmLvBGaAdbv_Z_ULO1tpqJplKMvr8C0" />
+            android:value="AIzaSyDoCmLvBGaAdbv_Z_ULO1tpqJplKMvr8C0" />  <!-- Local Notification Receivers (if needed) -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+
+        <!-- Boot receiver with the correct export attribute -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and

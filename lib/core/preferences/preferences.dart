@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:top_sale/core/models/all_tasks_model.dart';
+import 'package:top_sale/core/models/get_orders_model.dart';
 
 import '../models/login_model.dart';
 
@@ -44,6 +46,43 @@ class Preferences {
       userModel = AuthModel();
     }
     return userModel;
+  }
+  //// Schedule notification
+  Future<AllTasksModel> getNewTasks() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? jsonData = preferences.getString('newTasks');
+    AllTasksModel tasksModel;
+    if (jsonData != null) {
+      tasksModel = AllTasksModel.fromJson(jsonDecode(jsonData));
+    } else {
+      tasksModel = AllTasksModel();
+    }
+    return tasksModel;
+  }
+
+  Future<void> setAllOrders(GetOrdersModel orders) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString(
+        'Orders', jsonEncode(GetOrdersModel.fromJson(orders.toJson())));
+    print("tasks = ${orders.result!.first.displayName}");
+  }
+  Future<GetOrdersModel> getAllOrders() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? jsonData = preferences.getString('Orders');
+    GetOrdersModel ordersModel;
+    if (jsonData != null) {
+      ordersModel = GetOrdersModel.fromJson(jsonDecode(jsonData));
+    } else {
+      ordersModel = GetOrdersModel();
+    }
+    return ordersModel;
+  }
+
+  Future<void> setNewTasks(AllTasksModel tasks) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString(
+        'newTasks', jsonEncode(AllTasksModel.fromJson(tasks.toJson())));
+    print("tasks = ${tasks.tasks!.first.taskName}");
   }
 
   Future<void> setUserModel(AuthModel user) async {
