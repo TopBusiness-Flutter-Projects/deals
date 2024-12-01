@@ -11,6 +11,7 @@ import 'package:top_sale/features/Itinerary/cubit/cubit.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import 'package:top_sale/features/delevery_order/cubit/delevery_orders_cubit.dart';
 import 'package:top_sale/features/login/cubit/cubit.dart';
+import 'package:top_sale/features/tasks/cubit/tasks_cubit.dart';
 import '../../../core/utils/assets_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../config/routes/app_routes.dart';
@@ -182,7 +183,8 @@ class _SplashScreenState extends State<SplashScreen>
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
                   Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                   context.read<DeleveryOrdersCubit>().getDraftOrders();
+                   context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
+
                 } else {
                   Navigator.pushReplacementNamed(context, Routes.loginRoute);
                 }
@@ -198,9 +200,9 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
-                   context.read<DeleveryOrdersCubit>().getDraftOrders();
                   Navigator.pushReplacementNamed(context, Routes.mainRoute);
                    context.read<DeleveryOrdersCubit>().getDraftOrders();
+                   context.read<TasksCubit>().changeIndex("01_in_progress");
                 } else {
                   Navigator.pushReplacementNamed(context, Routes.loginRoute);
                 }
@@ -219,9 +221,9 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
-                   context.read<DeleveryOrdersCubit>().getDraftOrders();
                   Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                   context.read<DeleveryOrdersCubit>().getDraftOrders();
+                   context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
+
                 } else {
                   Navigator.pushReplacementNamed(context, Routes.loginRoute);
                 }
@@ -284,7 +286,8 @@ class _SplashScreenState extends State<SplashScreen>
                   database: await Preferences.instance.getDataBaseName() ?? '');
               if (session != "error") {
                 Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                 context.read<DeleveryOrdersCubit>().getDraftOrders();
+                 context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
+
               } else {
                 Navigator.pushReplacementNamed(context, Routes.loginRoute);
               }
@@ -298,7 +301,8 @@ class _SplashScreenState extends State<SplashScreen>
                 database: await Preferences.instance.getDataBaseName() ?? '');
             if (session != "error") {
               Navigator.pushReplacementNamed(context, Routes.mainRoute);
-               context.read<DeleveryOrdersCubit>().getDraftOrders();
+               context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
+
             } else {
               Navigator.pushReplacementNamed(context, Routes.loginRoute);
             }

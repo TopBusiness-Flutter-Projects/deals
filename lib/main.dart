@@ -109,7 +109,7 @@ Future<void> scheduleDailyTenAMNotification() async {
           i, // Use the index as the unique ID
           'هناك مهمة جديدة',
           '${value.tasks![i].taskName}',
-          _nextInstanceOfTenAM(year, month, day),
+          tz.TZDateTime(tz.local, year, month, day),
           const NotificationDetails(
             android: AndroidNotificationDetails('daily notification channel id',
                 'daily notification channel name',
@@ -143,8 +143,7 @@ Future<void> scheduleOrdersNotification() async {
             i, // Use the index as the unique ID
             'هناك طلب جديد',
             '${value.result![i].displayName}',
-            _nextOrders(year, month,
-                day), // Schedule the notification at the extracted time
+            tz.TZDateTime(tz.local, year, month, day), // Schedule the notification at the extracted time
             const NotificationDetails(
               android: AndroidNotificationDetails(
                   'daily notification channel id',
@@ -162,13 +161,3 @@ Future<void> scheduleOrdersNotification() async {
   });
 }
 
-tz.TZDateTime _nextInstanceOfTenAM(int year, int month, int day) {
-  tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, year, month, day);
-  return scheduledDate;
-}
-
-tz.TZDateTime _nextOrders(int year, int month, int day) {
-  tz.TZDateTime scheduledDate =
-      tz.TZDateTime(tz.local, year, month, day);
-  return scheduledDate;
-}
