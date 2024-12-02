@@ -113,6 +113,7 @@ class _DetailsOrderState extends State<DetailsOrder> {
                           fontSize: 18.sp,
                         )))
           ],
+          
           backgroundColor: AppColors.white,
           centerTitle: false,
           leading: IconButton(
