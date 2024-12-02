@@ -91,9 +91,7 @@ Future<void> showNotification(
 }
 
 Future<void> scheduleDailyTenAMNotification() async {
-  print("rrrrrrrrrr localll");
-  print("rrrrrrrrrr ${tz.TZDateTime.now(tz.local).toString()}");
-
+  
   Preferences.instance.getNewTasks().then((value) async {
     if (value.tasks != null) {
       for (int i = 0; i < value.tasks!.length; i++) {
@@ -104,11 +102,14 @@ Future<void> scheduleDailyTenAMNotification() async {
         int month = taskDeadline.month;
         int year =
             taskDeadline.year; // Extract the month from the task's deadline
+       
+                   if (taskDeadline.day == tz.TZDateTime.now(tz.local).day && taskDeadline.month == tz.TZDateTime.now(tz.local).month && taskDeadline.year == tz.TZDateTime.now(tz.local).year) {
+
         await flutterLocalNotificationsPlugin.zonedSchedule(
           i, // Use the index as the unique ID
           'هناك مهمة جديدة',
           '${value.tasks![i].taskName}',
-          _nextInstanceOfTenAM(year, month, day),
+          tz.TZDateTime(tz.local, year, month, day),
           const NotificationDetails(
             android: AndroidNotificationDetails('daily notification channel id',
                 'daily notification channel name',
@@ -119,35 +120,30 @@ Future<void> scheduleDailyTenAMNotification() async {
               UILocalNotificationDateInterpretation.absoluteTime,
           matchDateTimeComponents: DateTimeComponents.time,
         );
-      }
+      }}
     }
   });
 }
 
 Future<void> scheduleOrdersNotification() async {
-  print("rrrrrrrrrr localll");
-  print("rrrrrrrrrr ${tz.TZDateTime.now(tz.local).toString()}");
 
   Preferences.instance.getAllOrders().then((value) async {
     if (value.result != null) {
       for (int i = 0; i < value.result!.length; i++) {
         print(
             "order = ${value.result![i].displayName}  ${value.result![i].state.toString()}");
-      
-          
-
           DateTime orderDead = DateTime.parse(
               value.result![i].expectedDate ?? "2024-11-28 12:53:32.587255Z");
-
           int day = orderDead.day;
           int month = orderDead.month;
           int year = orderDead.year;
+                      if (orderDead.day == tz.TZDateTime.now(tz.local).day && orderDead.month == tz.TZDateTime.now(tz.local).month && orderDead.year == tz.TZDateTime.now(tz.local).year) {
+
           await flutterLocalNotificationsPlugin.zonedSchedule(
             i, // Use the index as the unique ID
             'هناك طلب جديد',
             '${value.result![i].displayName}',
-            _nextOrders(year, month,
-                day), // Schedule the notification at the extracted time
+            tz.TZDateTime(tz.local, year, month, day), // Schedule the notification at the extracted time
             const NotificationDetails(
               android: AndroidNotificationDetails(
                   'daily notification channel id',
@@ -158,30 +154,10 @@ Future<void> scheduleOrdersNotification() async {
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime,
             matchDateTimeComponents: DateTimeComponents.time,
-          );
+          );}
         
       }
     }
   });
 }
 
-tz.TZDateTime _nextInstanceOfTenAM(int year, int month, int day) {
-  print("get notification ");
-
-  final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-
-  tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, year, month, day, 6);
-
-  return scheduledDate;
-}
-
-tz.TZDateTime _nextOrders(int year, int month, int day) {
-  print("get notification ");
-
-  final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-
-  tz.TZDateTime scheduledDate =
-      tz.TZDateTime(tz.local, year, month, day, 6);
-
-  return scheduledDate;
-}
