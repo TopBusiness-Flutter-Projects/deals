@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
         isConnected = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content:
               Text('No internet connection. Please check your connection.'),
         ),
