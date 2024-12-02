@@ -3,8 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/utils/get_size.dart';
-import 'package:top_sale/features/delevery_order/screens/widgets/drop_down_widget.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/features/delevery_order/screens/widgets/drop_down_widget.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'package:top_sale/features/delevery_order/screens/widgets/shipment_card_widget.dart';
 import '../../../core/utils/app_colors.dart';
@@ -32,65 +34,77 @@ class _DeleveryOrderScreenState extends State<DeleveryOrderScreen> {
         builder: (context, state) {
       var cubit = context.read<DeleveryOrdersCubit>();
 
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.white,
-          centerTitle: false,
-          // leadingWidth: 40.w,
-          title: Text(
-            "delevery_order".tr(),
-            style: TextStyle(
-                fontFamily: AppStrings.fontFamily,
-                color: AppColors.black,
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w700),
+      return WillPopScope(
+        onWillPop: () async {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Routes.mainRoute, (route) => false);
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColors.white,
+            centerTitle: false,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, Routes.mainRoute, (route) => false);
+                },
+                icon: const Icon(Icons.arrow_back)),
+            title: Text(
+              "delevery_order".tr(),
+              style: TextStyle(
+                  fontFamily: AppStrings.fontFamily,
+                  color: AppColors.black,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w700),
+            ),
           ),
-        ),
-        backgroundColor: AppColors.white,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Tab bar for filtering current, last, and canceled orders
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildTab(context, cubit, "current_orders", 0),
-                  _buildTab(context, cubit, "last_orders", 1),
-                  _buildTab(context, cubit, "cancel_orders", 2),
-                ],
+          backgroundColor: AppColors.white,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Tab bar for filtering current, last, and canceled orders
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildTab(context, cubit, "current_orders", 0),
+                    _buildTab(context, cubit, "last_orders", 1),
+                    _buildTab(context, cubit, "cancel_orders", 2),
+                  ],
+                ),
               ),
-            ),
 
-            SizedBox(height: getSize(context) / 20),
-
-            // Drop-down filter for current orders (only visible for current orders tab)
-            if (cubit.currentIndex == 0) ...[
-              const DropDownMenuWidget(),
               SizedBox(height: getSize(context) / 20),
-            ],
 
-            // Orders List (Refreshable)
-            Flexible(
-              child: cubit.getOrdersModel.result == null ||
-                      state is OrdersLoadingState
-                  ? const Center(child: CustomLoadingIndicator())
-                  : RefreshIndicator(
-                      onRefresh: () async {
-                        await cubit.getOrders();
-                      },
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: cubit.currentIndex == 0
-                            ? _buildCurrentOrdersList(context, cubit)
-                            : cubit.currentIndex == 1
-                                ? _buildLastOrdersList(context, cubit)
-                                : _buildCanceledOrdersList(context, cubit),
+              // Drop-down filter for current orders (only visible for current orders tab)
+              if (cubit.currentIndex == 0) ...[
+                const DropDownMenuWidget(),
+                SizedBox(height: getSize(context) / 20),
+              ],
+
+              // Orders List (Refreshable)
+              Flexible(
+                child: cubit.getOrdersModel.result == null ||
+                        state is OrdersLoadingState
+                    ? const Center(child: CustomLoadingIndicator())
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          await cubit.getOrders();
+                        },
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: cubit.currentIndex == 0
+                              ? _buildCurrentOrdersList(context, cubit)
+                              : cubit.currentIndex == 1
+                                  ? _buildLastOrdersList(context, cubit)
+                                  : _buildCanceledOrdersList(context, cubit),
+                        ),
                       ),
-                    ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
     });

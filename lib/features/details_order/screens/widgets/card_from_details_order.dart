@@ -17,9 +17,11 @@ class CardDetailsOrders extends StatelessWidget {
       required this.orderDetailsModel,
       required this.orderModel,
       this.isShowPrice = false,
-      this.onTap});
+      this.onTap,
+      this.printWidget});
   OrderDetailsModel orderDetailsModel;
   bool isShowPrice;
+  final Widget? printWidget;
   OrderModel orderModel;
   void Function()? onTap;
   @override
@@ -74,6 +76,7 @@ class CardDetailsOrders extends StatelessWidget {
                           ],
                         ),
                       ),
+                      printWidget ?? const SizedBox(),
                       GestureDetector(
                           onTap: () {
                             context

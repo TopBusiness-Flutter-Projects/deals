@@ -199,6 +199,8 @@ class OrderLine {
   dynamic discount;
   dynamic priceSubtotal;
   dynamic priceTotal;
+  dynamic returned;
+  
   List<dynamic>? taxes;
   OrderLine({
     this.id,
@@ -209,6 +211,7 @@ class OrderLine {
     this.priceUnit,
     this.discount,
     this.priceSubtotal,
+    this.returned,
     this.taxes,this.priceTotal
   });
 
@@ -228,6 +231,7 @@ class OrderLine {
         priceTotal: json["price_total"],
         discount: json["discount"],
         priceSubtotal: json["price_subtotal"],
+        returned: json["returned"],
         taxes: json["taxes"] == null
             ? []
             : List<dynamic>.from(json["taxes"]!.map((x) => x)),
@@ -242,6 +246,7 @@ class OrderLine {
         "discount": discount,
         "price_subtotal": priceSubtotal,
         "price_total": priceTotal,
+        "returned": returned,
         "taxes": taxes == null ? [] : List<dynamic>.from(taxes!.map((x) => x)),
       };
 }

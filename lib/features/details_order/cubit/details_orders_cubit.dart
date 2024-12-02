@@ -53,7 +53,6 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     } catch (e) {
       print(e);
     }
-
     emit(GetLatLongSuccess());
   }
 
@@ -173,7 +172,6 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
                 //     errorGetBar(
                 //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
                 //   }
-
                 //   await Permission.camera.request();
                 // } else {
                 //   pickImage(context, false);
@@ -402,7 +400,10 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   }
 
   onClickBack(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.pushNamedAndRemoveUntil(
+        context, Routes.deleveryOrderRoute, (route) => false);
+        // Navigator.pushNamed(context, Routes.salesRoute);
+    // Navigator.pop(context);
     listOfremovedItems.clear();
     emit(ClickBackState());
   }

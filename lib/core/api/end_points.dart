@@ -42,11 +42,12 @@ class EndPoints {
   static String printPayment = '/report/pdf/account.report_payment_receipt/';
   static String printInvoice =
       '/report/pdf/account.report_invoice_with_payments/';
+  static String printposInvoice =
+      '/report/pdf/top_rest_api.receipt_invoice/';
   static String printPaySlip = '/report/pdf/hr_payroll.report_payslip_lang/';
   static String wareHouse = '/api/stock.warehouse/';
   static String createPayment = '/api/payment/create';
   /////////// HR/////////
-
   static String employee = '/api/employee/';
   static String expense = '/api/expense/products';
   static String updatePartnerLocation = '/api/res.partner';

@@ -7,7 +7,8 @@ import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
 import 'package:top_sale/features/details_order/screens/widgets/product_card.dart';
-import 'package:top_sale/features/details_order/screens/widgets/rounded_button.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/features/details_order/screens/widgets/rounded_button.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import '../../../config/routes/app_routes.dart';
 import '../../../core/models/get_orders_model.dart';
@@ -51,7 +52,9 @@ class _DetailsOrderShowPriceReturnsState
             context
                 .read<DetailsOrdersCubit>()
                 .getDetailsOrders(orderId: widget.orderModel.id ?? -1);
-            return cubit.onClickBack(context);
+
+            Navigator.pop(context);
+            return Future.value(true);
           },
           child: Scaffold(
             backgroundColor: AppColors.white,
@@ -61,7 +64,7 @@ class _DetailsOrderShowPriceReturnsState
                     context
                         .read<DetailsOrdersCubit>()
                         .getDetailsOrders(orderId: widget.orderModel.id ?? -1);
-                    cubit.onClickBack(context);
+                    Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back)),
               backgroundColor: AppColors.white,

@@ -70,6 +70,8 @@ class ImageAssets {
   static const String moneyIcon = '$iconsPath/moneyIcon.png';
   static const String moneyRedIcon = '$imagePath/money-icon 1.png';
   static const String waitingMoneyIcon = '$iconsPath/waiting_money.png';
+  static const String receiptIcon = '$iconsPath/receiptIcon.png';
+  static const String invoicedIcon = '$iconsPath/invoiceIcon.png';
 
   // Lottie
   static const String noLessons = '$lottiePath/no_lessons.json';

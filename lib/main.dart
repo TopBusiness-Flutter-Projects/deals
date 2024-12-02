@@ -138,7 +138,6 @@ Future<void> scheduleOrdersNotification() async {
           int month = orderDead.month;
           int year = orderDead.year;
                       if (orderDead.day == tz.TZDateTime.now(tz.local).day && orderDead.month == tz.TZDateTime.now(tz.local).month && orderDead.year == tz.TZDateTime.now(tz.local).year) {
-
           await flutterLocalNotificationsPlugin.zonedSchedule(
             i, // Use the index as the unique ID
             'هناك طلب جديد',
