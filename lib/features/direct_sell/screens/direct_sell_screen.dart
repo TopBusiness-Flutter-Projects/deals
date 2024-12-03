@@ -139,6 +139,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                       ),
                                     ],
                                   ),
+                               
                                   state == LoadingCatogries
                                       ? Center(
                                           child: CustomLoadingIndicator(

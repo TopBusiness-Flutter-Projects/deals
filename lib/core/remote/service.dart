@@ -582,12 +582,17 @@ class ServiceApi {
 //   }
 
   Future<Either<Failure, GetAllPartnersModel>> getAllPartnersForReport(
-      int page, int pageSize) async {
+      int page, int pageSize,{required bool isUserOnly }) async {
     try {
       String odooUrl =
           await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       String? sessionId = await Preferences.instance.getSessionId();
+      String userId = await Preferences.instance.getUserId() ?? "1";
       final response = await dio.get(
+        isUserOnly?
+         odooUrl +
+            EndPoints.getAllPartners +
+            '?page_size=20&page=$page&query={name,id,phone,image_1920}&filter=[["user_id", "=",$userId]]':
         odooUrl +
             EndPoints.getAllPartners +
             '?page_size=20&page=$page&query={name,id,phone,image_1920}',
@@ -604,13 +609,18 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetAllPartnersModel>> searchUsers(
-      {required int page, required String name}) async {
+      {required int page, required String name,required bool isUserOnly}) async {
     try {
       String odooUrl =
           await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       String? sessionId = await Preferences.instance.getSessionId();
+      String userId = await Preferences.instance.getUserId() ?? "1";
 
       final response = await dio.get(
+        isUserOnly?
+        odooUrl +
+            EndPoints.getAllPartners +
+            '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page&filter=[["user_id", "=",$userId]]':
         odooUrl +
             EndPoints.getAllPartners +
             '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page',
@@ -1696,6 +1706,10 @@ class ServiceApi {
 
   Future<Either<Failure, CreateOrderModel>> createPicking(
       {required int sourceWarehouseId,
+       required String image,
+    String? note,
+    int? partnerId,
+    required String imagePath,
       required List<ProductModelData> products}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1726,6 +1740,12 @@ class ServiceApi {
             "params": {
               //  "data": {
               "source_warehouse_id": sourceWarehouseId,
+
+               if (image.isNotEmpty) "attachment": image,
+                if (image.isNotEmpty) "attachmentname": imagePath,
+                if (note != null) "message": note,       
+                if (partnerId != null) "partner_id": partnerId,       
+        
               "destination_warehouse_id":
                   wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
               "user_id": int.parse(userId),

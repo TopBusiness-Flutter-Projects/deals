@@ -424,11 +424,11 @@ class DirectSellCubit extends Cubit<DirectSellState> {
         getOrderFromId(context, createOrderModel!.result!.orderId!);
 
         basket = [];
-           // **Update Quantities Across All Relevant Models**
-    updateUserOrderedQuantities(homeProductsModel);
-    updateUserOrderedQuantities(allProductsModel);
+        // **Update Quantities Across All Relevant Models**
+        updateUserOrderedQuantities(homeProductsModel);
+        updateUserOrderedQuantities(allProductsModel);
 
-    updateUserOrderedQuantities(searchedProductsModel);
+        updateUserOrderedQuantities(searchedProductsModel);
         emit(LoadedCreateQuotation());
       }
     });
@@ -560,14 +560,21 @@ class DirectSellCubit extends Cubit<DirectSellState> {
   CreateOrderModel? creaPickingModel;
   createPicking({
     required int pickingId,
+    required String image,
+    String? note,
+    int? partnerId,
+    required String imagePath,
     required BuildContext context,
   }) async {
     AppWidget.createProgressDialog(context, "جاري التحميل ..");
     emit(LoadingCreatePicking());
     final result = await api.createPicking(
-      sourceWarehouseId: pickingId,
-      products: basket,
-    );
+        sourceWarehouseId: pickingId,
+        products: basket,
+        image: image,
+        partnerId: partnerId,
+        imagePath: imagePath,
+        note: note);
     result.fold((l) {
       Navigator.pop(context);
       emit(ErrorCreatePicking());

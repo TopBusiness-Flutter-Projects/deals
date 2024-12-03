@@ -31,7 +31,7 @@ import '../../../core/remote/service.dart';
 import '../../../core/utils/assets_manager.dart';
 import '../../../core/utils/dialogs.dart';
 
-enum ClientsRouteEnum { cart, receiptVoucher, details }
+enum ClientsRouteEnum { cart, receiptVoucher, details, dispensingBasket }
 
 class ClientsCubit extends Cubit<ClientsState> {
   ClientsCubit(this.api) : super(ClientsInitial());
@@ -76,7 +76,8 @@ class ClientsCubit extends Cubit<ClientsState> {
               ),
             ),
             TextButton(
-              onPressed: () async {pickImage(context, false);
+              onPressed: () async {
+                pickImage(context, false);
                 // var status = await Permission.camera.status;
                 // if (status.isDenied ||
                 //     status.isRestricted ||
@@ -104,7 +105,6 @@ class ClientsCubit extends Cubit<ClientsState> {
       },
     );
   }
-
 
   Future pickImage(BuildContext context, bool isGallery) async {
     final picker = ImagePicker();
@@ -149,12 +149,14 @@ class ClientsCubit extends Cubit<ClientsState> {
   GetAllPartnersModel? allPartnersModel;
   getAllPartnersForReport(
       {int page = 1,
+      bool? isUserOnly,
       int pageSize = 20, //num of products at one page
       bool isGetMore = false}) async {
     isGetMore
         ? emit(LoadingMorePartnersState())
         : emit(LoadingGetPartnersState());
-    final result = await api.getAllPartnersForReport(page, pageSize);
+    final result = await api.getAllPartnersForReport(page, pageSize,
+        isUserOnly: isUserOnly ?? selectedProducsStockType == "stock");
     result.fold(
       (l) => emit(ErrorGetPartnersState()),
       (r) {
@@ -628,7 +630,9 @@ class ClientsCubit extends Cubit<ClientsState> {
   void getFromSearch() async {
     emit(SearchLoading());
     final result = await api.searchUsers(
-        page: 1, name: searchController.text.toString() ?? "");
+        isUserOnly: selectedProducsStockType == "stock",
+        page: 1,
+        name: searchController.text.toString() ?? "");
     result.fold(
       (failure) => emit(SearchError(error: 'Error loading data: $failure')),
       (r) {
@@ -645,5 +649,11 @@ class ClientsCubit extends Cubit<ClientsState> {
         () => getFromSearch() // <-- The target method
         );
     emit(SearchLoaded());
+  }
+
+  String selectedProducsStockType = "stock";
+  changeProductsStockType(String value) {
+    selectedProducsStockType = value;
+    emit(UpdateFilters());
   }
 }

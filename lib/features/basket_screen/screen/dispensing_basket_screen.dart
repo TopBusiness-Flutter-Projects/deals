@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
-import 'package:top_sale/core/utils/app_colors.dart';import 'package:top_sale/core/utils/circle_progress.dart';
-
+import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
-import 'package:top_sale/core/utils/assets_manager.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
-import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/basket_screen/cubit/cubit.dart';
-import 'package:top_sale/features/home_screen/cubit/cubit.dart';
+import 'package:top_sale/features/basket_screen/screen/attachments_bottomshet.dart';
+import 'package:top_sale/features/basket_screen/screen/custom_card_partner.dart';
+import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import 'package:top_sale/features/login/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../core/models/all_partners_for_reports_model.dart';
+
 import '../../../core/models/all_products_model.dart';
 import '../../direct_sell/cubit/direct_sell_cubit.dart';
 import '../../direct_sell/cubit/direct_sell_state.dart';
@@ -35,8 +35,11 @@ class DispensingBasketScreen extends StatefulWidget {
 class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
   @override
   void initState() {
-    context.read<BasketCubit>().getWareHouses().then((value) => context.read<BasketCubit>().getMyWareHouse());
-    
+    context
+        .read<BasketCubit>()
+        .getWareHouses()
+        .then((value) => context.read<BasketCubit>().getMyWareHouse());
+    context.read<BasketCubit>().setPartner(null);
     super.initState();
   }
 
@@ -51,6 +54,22 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
           appBar: AppBar(
             centerTitle: false,
             actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.clientsRoute,
+                        arguments: ClientsRouteEnum.dispensingBasket);
+                  },
+                  child: Center(
+                    child: Icon(
+                      Icons.person,
+                      size: 30.sp,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
@@ -91,6 +110,51 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    if (cubit.partner != null)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: CustomCardPartner(
+                                partner: cubit.partner,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              cubit.setPartner(null);
+                            },
+                            child: Icon(
+                              Icons.close,
+                              size: 30.sp,
+                              color: AppColors.primaryColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    // Row(
+                    //   children: [
+                    //     Flexible(
+                    //       flex: 1,
+                    //       child: CheckboxListTile(
+                    //         title: Text('هدية ؟',
+                    //             style: getBoldStyle(fontSize: 20.sp)),
+                    //         value: cubit.isGiftt,
+                    //         onChanged: (value) {
+                    //           cubit.changeIsGift(value!);
+                    //         },
+                    //       ),
+                    //     ),
+                    //     Flexible(
+                    //       flex: 1,
+                    //       child: SizedBox(
+                    //         width: 80.w,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.h),
                       child: Text(
@@ -100,87 +164,97 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                     ),
                     SizedBox(height: 8.h),
                     if (cubit.getWareHousesModel != null)
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<int>(
-                            value: cubit
-                                .selectedFromWareHouseId, // This will store the ID (not the name)
-                            hint: Text(
-                              'Select Warehouse',
-                              style: const TextStyle(color: Colors.grey),
+                      if (cubit.getWareHousesModel != null)
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<int>(
+                              value:
+                                  //  cubit.partner != null
+                                  //     ? cubit.myWareHouse?.id
+                                  //     :
+                                  cubit.selectedFromWareHouseId,
+
+                              // This will store the ID (not the name)
+                              hint: Text(
+                                'Select Warehouse',
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                              icon: const Icon(Icons.arrow_drop_down,
+                                  color: Colors.grey),
+                              isExpanded: true,
+                              onChanged: (int? newValue) {
+                                setState(() {
+                                  cubit.selectedFromWareHouseId =
+                                      newValue; // Store the ID in cubit
+                                });
+                              },
+                              items: cubit.getWareHousesModel?.result
+                                      ?.map<DropdownMenuItem<int>>(
+                                          (resultItem) {
+                                    return DropdownMenuItem<int>(
+                                      value: resultItem.id,
+                                      child: Text(resultItem.name ??
+                                          ''), // Display the name
+                                    );
+                                  }).toList() ??
+                                  [],
                             ),
-                            icon: const Icon(Icons.arrow_drop_down,
-                                color: Colors.grey),
-                            isExpanded: true,
-                            onChanged: (int? newValue) {
-                              setState(() {
-                                cubit.selectedFromWareHouseId =
-                                    newValue; // Store the ID in cubit
-                              });
-                            },
-                            items: cubit.getWareHousesModel?.result
-                                    ?.map<DropdownMenuItem<int>>((resultItem) {
-                                  return DropdownMenuItem<int>(
-                                    value: resultItem.id,
-                                    child: Text(resultItem.name ??
-                                        ''), // Display the name
-                                  );
-                                }).toList() ??
-                                [],
                           ),
                         ),
-                      ),
                     SizedBox(height: 10.h),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.h),
-                      child: Text(
-                        "الي",
-                        style: getMediumStyle(),
+                    if (cubit.partner == null)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.h),
+                        child: Text(
+                          "الي",
+                          style: getMediumStyle(),
+                        ),
                       ),
-                    ),
                     SizedBox(height: 8.h),
                     if (cubit.myWareHouse != null)
                       if (cubit.getWareHousesModel != null)
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<int>(
-                            value: cubit
-                                .selectedToWareHouseId, // This will store the ID (not the name)
-                            hint: Text(
-                              'Select Warehouse',
-                              style: const TextStyle(color: Colors.grey),
+                        if (cubit.partner == null)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            icon: const Icon(Icons.arrow_drop_down,
-                                color: Colors.grey),
-                            isExpanded: true,
-                            onChanged: (int? newValue) {
-                              setState(() {
-                                cubit.selectedToWareHouseId =
-                                    newValue; // Store the ID in cubit
-                              });
-                            },
-                            items: cubit.getWareHousesModel?.result
-                                    ?.map<DropdownMenuItem<int>>((resultItem) {
-                                  return DropdownMenuItem<int>(
-                                    value: resultItem.id,
-                                    child: Text(resultItem.name ??
-                                        ''), // Display the name
-                                  );
-                                }).toList() ??
-                                [],
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<int>(
+                                value: cubit
+                                    .selectedToWareHouseId, // This will store the ID (not the name)
+                                hint: Text(
+                                  'Select Warehouse',
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                                icon: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.grey),
+                                isExpanded: true,
+                                onChanged: (int? newValue) {
+                                  setState(() {
+                                    cubit.selectedToWareHouseId =
+                                        newValue; // Store the ID in cubit
+                                  });
+                                },
+                                items: cubit.getWareHousesModel?.result
+                                        ?.map<DropdownMenuItem<int>>(
+                                            (resultItem) {
+                                      return DropdownMenuItem<int>(
+                                        value: resultItem.id,
+                                        child: Text(resultItem.name ??
+                                            ''), // Display the name
+                                      );
+                                    }).toList() ??
+                                    [],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
                     SizedBox(
                       height: 20.h,
                     ),
@@ -208,26 +282,23 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                             : CustomButton(
                                 title: 'تأكيد اذن الصرف',
                                 onTap: () {
-                                  if (cubit.selectedFromWareHouseId == null ||
-                                      cubit.selectedToWareHouseId == null) {
-                                    errorGetBar(
-                                        'يرجى تحديد المستودع و المستودع الخاص بك');
-                                  } else if (cubit.selectedFromWareHouseId ==
-                                      cubit.selectedToWareHouseId) {
-                                    errorGetBar(
-                                        'لا يمكنك اذن صرف من المستودع الخاص بك');
+                                     cubit.profileImage = null;
+                      cubit.selectedBase64String = '';
+                                  if (cubit.partner != null) {
+                                    showAttachmentBottomSheet(context);
                                   } else {
-                                    cubit2.createPicking(
-                                      context: context,
-                                      pickingId:
-                                          cubit.selectedFromWareHouseId ?? -1,
-                                    );
+                                    if (cubit.selectedFromWareHouseId == null ||
+                                        cubit.selectedToWareHouseId == null) {
+                                      errorGetBar(
+                                          'يرجى تحديد المستودع و المستودع الخاص بك');
+                                    } else if (cubit.selectedFromWareHouseId ==
+                                        cubit.selectedToWareHouseId) {
+                                      errorGetBar(
+                                          'لا يمكنك اذن صرف من المستودع الخاص بك');
+                                    } else {
+                                      showAttachmentBottomSheet(context);
+                                    }
                                   }
-                                  // cubit2.createQuotation(
-                                  //     warehouseId: '1',
-                                  //     context: context,
-                                  //     partnerId: widget.partner?.id ?? -1);
-                                  //!
                                 })
                   ],
                 ),

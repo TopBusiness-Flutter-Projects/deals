@@ -4,20 +4,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 import 'package:top_sale/core/utils/dialogs.dart';
-import 'package:top_sale/core/utils/get_size.dart';import 'package:top_sale/core/utils/circle_progress.dart';
-
+import 'package:top_sale/core/utils/get_size.dart';
+import 'package:top_sale/features/basket_screen/cubit/cubit.dart';
 import 'package:top_sale/features/clients/cubit/clients_state.dart';
 import 'package:top_sale/features/clients/screens/widgets/custom_card_client.dart';
 import 'package:top_sale/features/contact_us/cubit/contact_us_cubit.dart';
-import 'package:top_sale/features/home_screen/cubit/cubit.dart';
+
 import '../../../config/routes/app_routes.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/assets_manager.dart';
 import '../../../core/widgets/custom_text_form_field.dart';
-import '../../../core/widgets/decode_image.dart';
 import '../../details_order/screens/widgets/rounded_button.dart';
 import '../../login/widget/textfield_with_text.dart';
 import '../cubit/clients_cubit.dart';
@@ -35,9 +34,11 @@ class _ClientScreenState extends State<ClientScreen> {
   @override
   void initState() {
     scrollController.addListener(_scrollListener);
-    if (context.read<ClientsCubit>().allPartnersModel == null) {
-      context.read<ClientsCubit>().getAllPartnersForReport();
-    }
+    // if (context.read<ClientsCubit>().allPartnersModel == null) {
+    context.read<ClientsCubit>().getAllPartnersForReport(isUserOnly: true);
+    context.read<ClientsCubit>().changeProductsStockType('stock');
+    // }
+
     super.initState();
   }
 
@@ -111,6 +112,45 @@ class _ClientScreenState extends State<ClientScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          title: Text('عملائي'.tr()),
+                          leading: Radio<String>(
+                            value: 'stock',
+                            groupValue: cubit.selectedProducsStockType,
+                            onChanged: (value) {
+                              // setState(() {
+                              cubit.changeProductsStockType(value!);
+                              context
+                                  .read<ClientsCubit>()
+                                  .getAllPartnersForReport(isUserOnly: true);
+                              // });
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          title: Text('الكل'.tr()),
+                          leading: Radio<String>(
+                            value: 'nonStock',
+                            groupValue: cubit.selectedProducsStockType,
+                            onChanged: (value) {
+                              // setState(() {
+                              cubit.changeProductsStockType(value!);
+                              context
+                                  .read<ClientsCubit>()
+                                  .getAllPartnersForReport(isUserOnly: false);
+
+                              // });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   CustomTextField(
                     controller: cubit.searchController,
                     onChanged: cubit.onChangeSearch,
@@ -176,6 +216,17 @@ class _ClientScreenState extends State<ClientScreen> {
                                               context,
                                               Routes.profileClientRoute,
                                             );
+                                          }
+                                          if (widget.clientsRouteEnum ==
+                                              ClientsRouteEnum
+                                                  .dispensingBasket) {
+                                            setState(() {});
+                                            context
+                                                .read<BasketCubit>()
+                                                .setPartner(cubit
+                                                    .allPartnersModel!
+                                                    .result![index]);
+                                            Navigator.pop(context);
                                           }
                                         },
                                         child: Dismissible(

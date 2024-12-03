@@ -53,7 +53,7 @@ class GetAllPartnersModel {
 }
 
 class AllPartnerResults {
-  String? name;
+  dynamic name;
   int? id;
   dynamic phone;
    dynamic image;
