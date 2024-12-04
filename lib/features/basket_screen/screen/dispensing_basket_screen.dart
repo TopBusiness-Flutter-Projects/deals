@@ -40,6 +40,8 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
         .getWareHouses()
         .then((value) => context.read<BasketCubit>().getMyWareHouse());
     context.read<BasketCubit>().setPartner(null);
+    context.read<BasketCubit>().getAllUsers();
+
     super.initState();
   }
 
@@ -282,8 +284,9 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                             : CustomButton(
                                 title: 'تأكيد اذن الصرف',
                                 onTap: () {
-                                     cubit.profileImage = null;
-                      cubit.selectedBase64String = '';
+                                  cubit.profileImage = null;
+                                  cubit.selectedBase64String = '';
+                                  cubit.selectedUsers = [];
                                   if (cubit.partner != null) {
                                     showAttachmentBottomSheet(context);
                                   } else {

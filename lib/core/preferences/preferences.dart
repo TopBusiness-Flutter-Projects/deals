@@ -64,7 +64,6 @@ class Preferences {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(
         'orders', jsonEncode(GetOrdersModel.fromJson(orders.toJson())));
-    print("orders = ${orders.result!.first.displayName}");
   }
   Future<GetOrdersModel> getAllOrders() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();

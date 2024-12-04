@@ -4,8 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
+import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/basket_screen/cubit/cubit.dart';
 import 'package:top_sale/features/basket_screen/cubit/state.dart';
@@ -108,6 +110,7 @@ void showAttachmentBottomSheet(
                     ],
                   ),
                 ),
+                if (cubit.getAllUsersModel != null) UsersWidget(cubit: cubit),
                 CustomTextFieldWithTitle(
                   title: "الملاحظات",
                   controller: noteController,
@@ -128,13 +131,15 @@ void showAttachmentBottomSheet(
                     onPressed: () {
                       cubit2.createPicking(
                         context: context,
+                        users: cubit.selectedUsers,
                         image: cubit.selectedBase64String,
                         note: noteController.text,
                         imagePath: cubit.profileImage == null
                             ? ""
                             : cubit.profileImage!.path.split('/').last,
                         partnerId: cubit.partner?.id,
-                        pickingId: cubit.selectedFromWareHouseId ?? -1,
+                        sourceWarehouseId: cubit.selectedFromWareHouseId ?? -1,
+                        destinationWareHouseId: cubit.selectedToWareHouseId,
                       );
                     },
                   ),
@@ -146,4 +151,91 @@ void showAttachmentBottomSheet(
       });
     },
   );
+}
+
+class UsersWidget extends StatefulWidget {
+  const UsersWidget({
+    super.key,
+    required this.cubit,
+  });
+
+  final BasketCubit cubit;
+
+  @override
+  State<UsersWidget> createState() => _UsersWidgetState();
+}
+
+class _UsersWidgetState extends State<UsersWidget> {
+  int? selectedUserId;
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BasketCubit, BasketState>(builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 10.sp),
+            Text('إشارة الي'.tr(), style: TextStyle(fontSize: 16.sp)),
+            SizedBox(height: 10.sp),
+            Wrap(
+                children: widget.cubit.selectedUsers
+                    .map((user) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Chip(
+                            label: Text(user.name ?? ''),
+                            onDeleted: () {
+                              widget.cubit.addOrRemoveUser(user);
+                            })))
+                    .toList()),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(color: Colors.grey),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<int>(
+                  value:
+                      selectedUserId, // This will store the ID (not the name)
+                  hint: Text(
+                    'Select User',
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                  icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
+                  isExpanded: true,
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      selectedUserId = newValue;
+                    });
+                    if (newValue != null) {
+                      if (widget.cubit.selectedUsers
+                          .any((user) => user.id == newValue)) {
+                        errorGetBar("المستخدم موجود بالفعل");
+                      } else {
+                        widget.cubit.addOrRemoveUser(widget
+                                .cubit.getAllUsersModel?.result
+                                ?.where((element) => element.id == newValue)
+                                .first ??
+                            UserModel());
+                      }
+                    }
+                  },
+                  items: widget.cubit.getAllUsersModel?.result
+                          ?.map<DropdownMenuItem<int>>((resultItem) {
+                        return DropdownMenuItem<int>(
+                          value: resultItem.id,
+                          child:
+                              Text(resultItem.name ?? ''), // Display the name
+                        );
+                      }).toList() ??
+                      [],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
 }

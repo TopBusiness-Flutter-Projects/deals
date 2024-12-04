@@ -8,3 +8,4 @@ class ChangeIsGift extends BasketState {}
 class UpdateProfileImagePicked extends BasketState {}
 class UpdateProfileError extends BasketState {}
 class FileRemovedSuccessfully extends BasketState {}
+class AddOrRemoveUser extends BasketState {}

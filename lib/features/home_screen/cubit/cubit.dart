@@ -119,8 +119,7 @@ class HomeCubit extends Cubit<HomeState> {
         emailOfUser =
             r.workEmail.toString() == "false" ? "" : r.workEmail.toString();
         if (r.wareHouseId.toString() != "false") {
-          await Preferences.instance.setEmployeeWareHouse(
-                r.wareHouseId);
+          await Preferences.instance.setEmployeeWareHouse(r.wareHouseId);
         }
         debugPrint("the model : emmm ${getEmployeeDataModel?.name.toString()}");
         emit(ProfileEmployeeLoaded());
@@ -184,10 +183,12 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   String currencyName = '';
+  bool isAdmin = false;
 
   getCurrencyName() {
     Preferences.instance.getUserModel().then((value) {
       currencyName = value.result!.defaultCurrency!.name ?? "";
+      isAdmin = value.result!.isAdmin ?? false;
     });
   }
 }

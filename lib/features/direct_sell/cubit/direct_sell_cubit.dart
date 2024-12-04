@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
+import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
@@ -559,9 +560,11 @@ class DirectSellCubit extends Cubit<DirectSellState> {
 
   CreateOrderModel? creaPickingModel;
   createPicking({
-    required int pickingId,
+    required int sourceWarehouseId,
+     int? destinationWareHouseId,
     required String image,
-    String? note,
+    required String note,
+    required List<UserModel> users,
     int? partnerId,
     required String imagePath,
     required BuildContext context,
@@ -569,7 +572,9 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     AppWidget.createProgressDialog(context, "جاري التحميل ..");
     emit(LoadingCreatePicking());
     final result = await api.createPicking(
-        sourceWarehouseId: pickingId,
+        sourceWarehouseId: sourceWarehouseId,
+        users: users,
+        destinationWareHouseId: destinationWareHouseId,
         products: basket,
         image: image,
         partnerId: partnerId,

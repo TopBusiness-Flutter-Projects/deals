@@ -6,7 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/api/end_points.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
-import 'package:top_sale/core/utils/app_fonts.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_cubit.dart';
@@ -75,186 +76,207 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
                   : cubit.getPickingsModel!.result!.data!.isEmpty
                       ? Center(child: Text("no_data".tr()))
                       : Expanded(
-                          child: ListView.builder(
-                              itemCount: cubit
-                                      .getPickingsModel?.result?.data?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0.sp),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                            builder: (context) {
-                                              return PdfViewerPage(
-                                                baseUrl:
-                                                    '${EndPoints.printPicking}${cubit.getPickingsModel?.result?.data?.elementAt(index).pickingId}',
-                                              );
-                                            },
-                                          ));
-                                        },
-                                        child: Container(
-                                            padding: EdgeInsets.only(
-                                              left: 8.0.sp,
-                                              right: 8.0.sp,
-                                              top: 10.0.sp,
-                                              bottom: 10.0.sp,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  blurStyle: BlurStyle.outer,
-                                                  color: Colors.black
-                                                      .withOpacity(0.1),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 4,
-                                                  offset: const Offset(0, 1),
-                                                ),
-                                              ],
-                                              color: AppColors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10.sp),
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    AutoSizeText(
-                                                      cubit.getPickingsModel
-                                                              ?.result?.data
-                                                              ?.elementAt(index)
-                                                              .scheduledDate
-                                                              .toString()
-                                                              .substring(
-                                                                  0, 10) ??
-                                                          "",
-                                                      style: getBoldStyle(
-                                                          color:
-                                                              AppColors.orange,
-                                                          fontSize: 14.sp),
-                                                    ),
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        // color: AppColors.orange
-                                                        //     .withOpacity(0.5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    16.sp),
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              cubit.getExchangePermission();
+                            },
+                            child: ListView.builder(
+                                itemCount: cubit.getPickingsModel?.result?.data
+                                        ?.length ??
+                                    0,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0.sp),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                              builder: (context) {
+                                                return PdfViewerPage(
+                                                  baseUrl:
+                                                      '${EndPoints.printPicking}${cubit.getPickingsModel?.result?.data?.elementAt(index).pickingId}',
+                                                );
+                                              },
+                                            ));
+                                          },
+                                          child: Container(
+                                              padding: EdgeInsets.only(
+                                                left: 8.0.sp,
+                                                right: 8.0.sp,
+                                                top: 10.0.sp,
+                                                bottom: 10.0.sp,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    blurStyle: BlurStyle.outer,
+                                                    color: Colors.black
+                                                        .withOpacity(0.1),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 4,
+                                                    offset: const Offset(0, 1),
+                                                  ),
+                                                ],
+                                                color: AppColors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10.sp),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      AutoSizeText(
+                                                        cubit.getPickingsModel
+                                                                ?.result?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .scheduledDate
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 10) ??
+                                                            "",
+                                                        style: getBoldStyle(
+                                                            color: AppColors
+                                                                .orange,
+                                                            fontSize: 14.sp),
                                                       ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 5,
-                                                                right: 5,
-                                                                top: 2,
-                                                                bottom: 2),
-                                                        child: AutoSizeText(
-                                                          (cubit.getPickingsModel
-                                                                  ?.result?.data
-                                                                  ?.elementAt(
-                                                                      index)
-                                                                  .status ??
-                                                              ""),
-                                                          style: getBoldStyle(
-                                                              color: AppColors
-                                                                  .orange,
-                                                              fontSize: 14.sp),
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          // color: AppColors.orange
+                                                          //     .withOpacity(0.5),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      16.sp),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 5,
+                                                                  right: 5,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          child: AutoSizeText(
+                                                            (cubit.getPickingsModel
+                                                                    ?.result?.data
+                                                                    ?.elementAt(
+                                                                        index)
+                                                                    .status ??
+                                                                ""),
+                                                            style: getBoldStyle(
+                                                                color: AppColors
+                                                                    .orange,
+                                                                fontSize:
+                                                                    14.sp),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 10.sp),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    AutoSizeText(
-                                                      cubit.getPickingsModel
-                                                              ?.result?.data
-                                                              ?.elementAt(index)
-                                                              .transferName ??
-                                                          "",
-                                                      style: getBoldStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 14.sp),
-                                                    ),
-                                                    AutoSizeText(
-                                                      "",
-                                                      style: getBoldStyle(
-                                                          color: AppColors.blue,
-                                                          fontSize: 14.sp),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 10.sp),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      cubit.getPickingsModel
-                                                              ?.result?.data
-                                                              ?.elementAt(index)
-                                                              .sourceLocation
-                                                              ?.wareHouseName ??
-                                                          cubit.getPickingsModel
-                                                              ?.result?.data
-                                                              ?.elementAt(index)
-                                                              .sourceLocation
-                                                              ?.locationName ??
-                                                          "",
-                                                      style: getMediumStyle(),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 10.w),
-                                                      child: Icon(
-                                                        Icons
-                                                            .arrow_forward_rounded,
-                                                        color: AppColors
-                                                            .orangeThirdPrimary,
-                                                        size: 30.h,
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 10.sp),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      AutoSizeText(
+                                                        cubit.getPickingsModel
+                                                                ?.result?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .transferName ??
+                                                            "",
+                                                        style: getBoldStyle(
+                                                            color:
+                                                                AppColors.black,
+                                                            fontSize: 14.sp),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      cubit.getPickingsModel
-                                                              ?.result?.data
-                                                              ?.elementAt(index)
-                                                              .destinationLocation
-                                                              ?.wareHouseName ??
-                                                          cubit.getPickingsModel
-                                                              ?.result?.data
-                                                              ?.elementAt(index)
-                                                              .destinationLocation
-                                                              ?.locationDestName ??
-                                                          "",
-                                                      style: getMediumStyle(),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )),
-                                      ),
-                                    )
-                                  ],
-                                );
-                              }),
+                                                      AutoSizeText(
+                                                        "",
+                                                        style: getBoldStyle(
+                                                            color:
+                                                                AppColors.blue,
+                                                            fontSize: 14.sp),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 10.sp),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        cubit.getPickingsModel
+                                                                ?.result?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .sourceLocation
+                                                                ?.wareHouseName ??
+                                                            cubit
+                                                                .getPickingsModel
+                                                                ?.result
+                                                                ?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .sourceLocation
+                                                                ?.locationName ??
+                                                            "",
+                                                        style: getMediumStyle(),
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    10.w),
+                                                        child: Icon(
+                                                          Icons
+                                                              .arrow_forward_rounded,
+                                                          color: AppColors
+                                                              .orangeThirdPrimary,
+                                                          size: 30.h,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        cubit.getPickingsModel
+                                                                ?.result?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .destinationLocation
+                                                                ?.wareHouseName ??
+                                                            cubit
+                                                                .getPickingsModel
+                                                                ?.result
+                                                                ?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .destinationLocation
+                                                                ?.locationDestName ??
+                                                            "",
+                                                        style: getMediumStyle(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                }),
+                          ),
                         ),
             ],
           ),

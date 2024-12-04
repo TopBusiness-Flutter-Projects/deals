@@ -25,6 +25,7 @@ class Result {
 
   UserContext? userContext;
   String? name;
+  bool? isAdmin;
   String? username;
   String? partnerDisplayName;
   int? partnerId;
@@ -40,6 +41,7 @@ class Result {
     this.userContext,
     this.name,
     this.username,
+    this.isAdmin = false, 
     this.partnerDisplayName,
     this.partnerId,  
  
@@ -53,7 +55,8 @@ class Result {
             ? null
             : UserContext.fromJson(json["user_context"]),
         name: json["name"],
-        username: json["username"],
+        isAdmin: json["is_admin"],
+                username: json["username"],
         partnerDisplayName: json["partner_display_name"],
         partnerId: json["partner_id"],            
        
@@ -69,7 +72,9 @@ class Result {
         "name": name,
         "username": username,
         "partner_display_name": partnerDisplayName,
-        "partner_id": partnerId,    
+        "partner_id": partnerId, 
+        "is_admin": isAdmin, 
+
         "user_companies": userCompanies?.toJson(),
         "property_warehouse_id": propertyWarehouseId,
         "default_currency": defaultCurrency?.toJson(),

@@ -11,6 +11,7 @@ import 'package:top_sale/features/basket_screen/cubit/cubit.dart';
 import 'package:top_sale/features/clients/cubit/clients_state.dart';
 import 'package:top_sale/features/clients/screens/widgets/custom_card_client.dart';
 import 'package:top_sale/features/contact_us/cubit/contact_us_cubit.dart';
+import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 
 import '../../../config/routes/app_routes.dart';
 import '../../../core/utils/app_colors.dart';
@@ -112,6 +113,7 @@ class _ClientScreenState extends State<ClientScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
                 children: [
+                //  if ( context.read<HomeCubit>().isAdmin)
                   Row(
                     children: [
                       Expanded(

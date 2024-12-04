@@ -23,6 +23,7 @@ import 'package:top_sale/core/models/defaul_model.dart';
 import 'package:top_sale/core/models/get__my_expense_model.dart';
 import 'package:top_sale/core/models/get_all_attendance_model.dart';
 import 'package:top_sale/core/models/get_all_expenses_product_model.dart';
+import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_car_ids_model.dart';
 import 'package:top_sale/core/models/get_contract_model.dart';
 import 'package:top_sale/core/models/get_employee_data_model.dart';
@@ -1707,9 +1708,11 @@ class ServiceApi {
   Future<Either<Failure, CreateOrderModel>> createPicking(
       {required int sourceWarehouseId,
        required String image,
-    String? note,
+       int? destinationWareHouseId,
+    required String note,
     int? partnerId,
     required String imagePath,
+    required List<UserModel> users,
       required List<ProductModelData> products}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1719,15 +1722,15 @@ class ServiceApi {
     int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
     AuthModel? authModel = await Preferences.instance.getUserModel();
     try {
-      // Map the ProductModelData list to order_line format
       List<Map<String, dynamic>> orderLine = products
           .map((product) => {
                 "product_id": product.id,
                 "quantity": product.userOrderedQuantity,
-                // "product_uom_qty": product.userOrderedQuantity,
-                // "price_unit": product.listPrice,
-                // "discount": product.discount
+             
               })
+          .toList();
+      List<int> selectedsers = users
+          .map((user) => user.id!)
           .toList();
 
       final response = await dio.post(odooUrl + EndPoints.createPicking,
@@ -1743,11 +1746,11 @@ class ServiceApi {
 
                if (image.isNotEmpty) "attachment": image,
                 if (image.isNotEmpty) "attachmentname": imagePath,
-                if (note != null) "message": note,       
+                if (note.isNotEmpty) "message": note,       
                 if (partnerId != null) "partner_id": partnerId,       
-        
+        "users":selectedsers,
               "destination_warehouse_id":
-                  wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
+                destinationWareHouseId??  wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
               "user_id": int.parse(userId),
               if (employeeId != null) "employee_id": employeeId,
               "products": orderLine
@@ -1849,6 +1852,25 @@ Future<Either<Failure, CreateOrderModel>> createTask({
         ),
       );
       return Right(WareHouse.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+  
+  Future<Either<Failure, GeyAllUsersModel>> getAllUsers(
+      ) async {
+    try {
+      String? sessionId = await Preferences.instance.getSessionId();
+      // String userId = await Preferences.instance.getUserId() ?? "1";
+      String odooUrl =
+          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      final response = await dio.get(
+        odooUrl + '/api/res.users/?query={id,name}',
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(GeyAllUsersModel.fromJson(response));
     } on ServerException {
       return Left(ServerFailure());
     }

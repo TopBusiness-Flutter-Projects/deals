@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:top_sale/core/models/all_partners_for_reports_model.dart';
 import 'package:top_sale/core/models/all_ware_house_model.dart';
+import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/remote/service.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
@@ -34,6 +35,30 @@ class BasketCubit extends Cubit<BasketState> {
       emit(SuccessGetWareHouses());
     });
   }
+  // int? selectedToWareHouseId;
+
+  GeyAllUsersModel? getAllUsersModel;
+    List<UserModel> selectedUsers = [];
+    void addOrRemoveUser(UserModel userModel){
+      if(selectedUsers.contains(userModel)){
+        selectedUsers.remove(userModel);
+      }else{
+        selectedUsers.add(userModel);
+      }
+      emit(AddOrRemoveUser());
+    }
+  void getAllUsers() async {
+    emit(LoadingGetWareHouses());
+    final response = await api.getAllUsers();
+    response.fold((l) {
+      emit(ErrorGetWareHouses());
+    }, (right) async {
+      getAllUsersModel = right;     
+      emit(SuccessGetWareHouses());
+    });
+  }
+
+
 
   WareHouse? myWareHouse;
   Future<void> getMyWareHouse() async {
