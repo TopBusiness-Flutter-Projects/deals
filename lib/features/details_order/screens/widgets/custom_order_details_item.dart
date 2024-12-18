@@ -196,6 +196,7 @@ class _CustomOrderDetailsShowPriceItemState
                                         context, cubit2.newQtyController, () {
                                       cubit2.onChnageProductQuantity(
                                           widget.item, context);
+                                          
                                     });
                                   },
                                   child: Container(

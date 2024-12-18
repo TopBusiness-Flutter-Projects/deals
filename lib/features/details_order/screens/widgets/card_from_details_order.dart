@@ -32,6 +32,7 @@ class CardDetailsOrders extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
+              
               color:
                   Colors.black.withOpacity(0.1), // لون الظل مع تقليل الشفافية
               spreadRadius: 1, // مدى انتشار الظل

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stepindicator/flutter_stepindicator.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/get_size.dart';
+import 'package:top_sale/core/widgets/custom_text_form_field.dart';
 import 'package:top_sale/features/details_order/screens/pdf.dart';
 import 'package:top_sale/features/details_order/screens/widgets/card_from_details_order.dart';
 import 'package:top_sale/features/details_order/screens/widgets/order_attachments_bottomshet.dart';
@@ -33,11 +35,13 @@ class DetailsOrderShowPrice extends StatefulWidget {
 }
 
 class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
+ 
   @override
   void initState() {
     context
         .read<DetailsOrdersCubit>()
         .getDetailsOrders(orderId: widget.orderModel.id ?? -1);
+   
     super.initState();
   }
 

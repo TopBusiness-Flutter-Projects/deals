@@ -76,3 +76,7 @@ class ClearSearchText extends DirectSellState {}
 class UpdateProfileError extends DirectSellState {}
 class UpdateProfileImagePicked extends DirectSellState {}
 class FileRemovedSuccessfully extends DirectSellState {}
+class GetAllJournalsLoadedState extends DirectSellState {}
+class GetAllJournalsErrorState extends DirectSellState {}
+class GetAllJournalsLoadingState extends DirectSellState {}
+class ChangeJournalStatee extends DirectSellState {}

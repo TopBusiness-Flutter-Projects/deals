@@ -187,7 +187,7 @@ void showCreateAttachmentBottomSheet(
                   height: 20.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Stack(
                     children: [
                       GestureDetector(

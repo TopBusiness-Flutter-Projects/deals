@@ -58,7 +58,6 @@ void main() async {
           sound: true,
         );
   }
-
   scheduleDailyTenAMNotification();
   scheduleOrdersNotification();
   runApp(

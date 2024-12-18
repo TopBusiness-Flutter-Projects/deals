@@ -93,3 +93,4 @@ class SuccessUpdateDleiery extends DetailsOrdersState {}
 class FileRemovedSuccessfully extends DetailsOrdersState {}
 class UpdateProfileImagePicked extends DetailsOrdersState {}
 class UpdateProfileError extends DetailsOrdersState {}
+class ChangeJournalStatee extends DetailsOrdersState {}

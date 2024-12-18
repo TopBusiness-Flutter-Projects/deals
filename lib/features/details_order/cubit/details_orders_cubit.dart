@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
+import 'package:top_sale/core/models/get_shippind.dart';
 import 'package:top_sale/core/models/return_model.dart';
 import 'package:top_sale/core/models/rigister_payment_model.dart';
 import 'package:top_sale/core/remote/service.dart';
@@ -402,7 +403,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   onClickBack(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
         context, Routes.deleveryOrderRoute, (route) => false);
-        // Navigator.pushNamed(context, Routes.salesRoute);
+    // Navigator.pushNamed(context, Routes.salesRoute);
     // Navigator.pop(context);
     listOfremovedItems.clear();
     emit(ClickBackState());
@@ -650,6 +651,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     item.priceUnit = double.parse(newPriceController.text.toString());
     Navigator.pop(context);
     newPriceController.clear();
+    totalBasket();
     emit(OnChangeUnitPriceOfItem());
   }
 
@@ -659,6 +661,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     item.productUomQty = int.parse(newQtyController.text.toString());
     Navigator.pop(context);
     newQtyController.clear();
+    totalBasket();
     emit(OnChangeUnitPriceOfItem());
   }
 
@@ -668,6 +671,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     item.discount = double.parse(newDiscountController.text.toString());
     Navigator.pop(context);
     newDiscountController.clear();
+    totalBasket();
     emit(OnChangeUnitPriceOfItem());
   }
 
@@ -682,4 +686,5 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     newAllDiscountController.clear();
     emit(OnChangeAllUnitPriceOfItem());
   }
+
 }

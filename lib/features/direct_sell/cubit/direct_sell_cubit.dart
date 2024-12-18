@@ -12,6 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
+import 'package:top_sale/core/models/get_shippind.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/appwidget.dart';
@@ -400,6 +401,8 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     final result = await api.createQuotation(
         note: note,
         image: selectedBase64String,
+        shippingId: selectedShipping == null ? '' : selectedShipping.toString(),
+        shippingPrice: priceController.text,
         imagePath:
             profileImage == null ? "" : profileImage!.path.split('/').last,
         partnerId: partnerId,
@@ -413,7 +416,9 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       Navigator.pop(context);
       emit(ErrorCreateQuotation());
     }, (r) {
+      
       if (r.result?.message == null) {
+         Navigator.pop(context);
         errorGetBar('عدم كفاية المخزون لمنتج واحد أو أكثر');
       } else {
         createOrderModel = r;
@@ -561,7 +566,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
   CreateOrderModel? creaPickingModel;
   createPicking({
     required int sourceWarehouseId,
-     int? destinationWareHouseId,
+    int? destinationWareHouseId,
     required String image,
     required String note,
     required List<UserModel> users,
@@ -598,6 +603,27 @@ class DirectSellCubit extends Cubit<DirectSellState> {
 
       emit(LoadedCreatePicking());
     });
+  }
+
+  TextEditingController priceController = TextEditingController();
+
+  int? selectedShipping;
+  void changeShipping(int selectedPayment) {
+    selectedShipping = selectedPayment;
+    emit(ChangeJournalStatee());
+  }
+
+  GetAllShippingModel? getAllShippingModel;
+  void getAllShipping() async {
+    emit(GetAllJournalsLoadingState());
+    final result = await api.getAllShipping();
+    result.fold(
+      (failure) => emit(GetAllJournalsErrorState()),
+      (r) {
+        getAllShippingModel = r;
+        emit(GetAllJournalsLoadedState());
+      },
+    );
   }
 }
 

@@ -30,6 +30,7 @@ import 'package:top_sale/core/models/get_employee_data_model.dart';
 import 'package:top_sale/core/models/get_last_attendance_model.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
 import 'package:top_sale/core/models/get_pickings_model.dart';
+import 'package:top_sale/core/models/get_shippind.dart';
 import 'package:top_sale/core/models/get_user_data_model.dart';
 import 'package:top_sale/core/models/login_model.dart';
 import 'package:top_sale/core/models/order_details_model.dart';
@@ -66,8 +67,9 @@ class ServiceApi {
       return "error";
     }
   }
+
   Future<Either<Failure, AllTasksModel>> getAllTasks(
-      { required String state}) async {
+      {required String state}) async {
     try {
       String userId = await Preferences.instance.getUserId() ?? "1";
 
@@ -75,9 +77,7 @@ class ServiceApi {
       String odooUrl =
           await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
-        odooUrl +
-            EndPoints.getTasks +
-            '?user_id=$userId&state=$state',
+        odooUrl + EndPoints.getTasks + '?user_id=$userId&state=$state',
         options: Options(
           headers: {"Cookie": "frontend_lang=en_US;session_id=$sessionId"},
         ),
@@ -87,6 +87,7 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+
   Future<Either<ServerFailure, AuthModel>> login(
       {required String phoneOrMail,
       required String password,
@@ -583,20 +584,21 @@ class ServiceApi {
 //   }
 
   Future<Either<Failure, GetAllPartnersModel>> getAllPartnersForReport(
-      int page, int pageSize,{required bool isUserOnly }) async {
+      int page, int pageSize,
+      {required bool isUserOnly}) async {
     try {
       String odooUrl =
           await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       String? sessionId = await Preferences.instance.getSessionId();
       String userId = await Preferences.instance.getUserId() ?? "1";
       final response = await dio.get(
-        isUserOnly?
-         odooUrl +
-            EndPoints.getAllPartners +
-            '?page_size=20&page=$page&query={name,id,phone,image_1920}&filter=[["user_id", "=",$userId]]':
-        odooUrl +
-            EndPoints.getAllPartners +
-            '?page_size=20&page=$page&query={name,id,phone,image_1920}',
+        isUserOnly
+            ? odooUrl +
+                EndPoints.getAllPartners +
+                '?page_size=20&page=$page&query={name,id,phone,image_1920}&filter=[["user_id", "=",$userId]]'
+            : odooUrl +
+                EndPoints.getAllPartners +
+                '?page_size=20&page=$page&query={name,id,phone,image_1920}',
         // '?page_size=$pageSize&page=$page&query={name,id,phone,total_overdue,total_due,total_invoiced,credit_to_invoice,sale_order_ids}',
         // 'page_size=$pageSize&page=$page&filter=[["user_id", "=",${authModel.result!.userContext!.uid}]]&query={name,id,phone,total_overdue,total_due,total_invoiced,credit_to_invoice,sale_order_ids}',
         options: Options(
@@ -610,7 +612,9 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetAllPartnersModel>> searchUsers(
-      {required int page, required String name,required bool isUserOnly}) async {
+      {required int page,
+      required String name,
+      required bool isUserOnly}) async {
     try {
       String odooUrl =
           await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -618,13 +622,13 @@ class ServiceApi {
       String userId = await Preferences.instance.getUserId() ?? "1";
 
       final response = await dio.get(
-        isUserOnly?
-        odooUrl +
-            EndPoints.getAllPartners +
-            '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page&filter=[["user_id", "=",$userId]]':
-        odooUrl +
-            EndPoints.getAllPartners +
-            '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page',
+        isUserOnly
+            ? odooUrl +
+                EndPoints.getAllPartners +
+                '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page&filter=[["user_id", "=",$userId]]'
+            : odooUrl +
+                EndPoints.getAllPartners +
+                '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page',
         // 'filter=[["name", "=like", "%$name%"],["user_id", "=",${authModel.result!.userContext!.uid}]]&query={name,id,phone,total_overdue,total_due,total_invoiced,credit_to_invoice,sale_order_ids}&page_size=20&page=$page',
         options: Options(
           headers: {"Cookie": "frontend_lang=en_US;session_id=$sessionId"},
@@ -662,7 +666,8 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
-   Future<Either<Failure, GetOrdersModel>> getDraftOrders() async {
+
+  Future<Either<Failure, GetOrdersModel>> getDraftOrders() async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
@@ -687,7 +692,6 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
-
 
   Future<Either<Failure, GetOrdersModel>> getOrderFromId(int id) async {
     String odooUrl =
@@ -791,9 +795,9 @@ class ServiceApi {
     required String image,
     String? note,
     required String imagePath,
-      required double lat,
-      required double long,
-      required String address,
+    required double lat,
+    required double long,
+    required String address,
   }) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -835,6 +839,8 @@ class ServiceApi {
       required String address,
       required String image,
       required String imagePath,
+      required String shippingId,
+      required String shippingPrice,
       String? note}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -869,6 +875,9 @@ class ServiceApi {
                 "latitude": lat,
                 "longitude": long,
                 "address": address,
+                if (shippingId.isNotEmpty) "shipping_method_id": shippingId,
+                if (shippingPrice.isNotEmpty)
+                  "shipping_cost": double.parse(shippingPrice),
                 if (image.isNotEmpty) "attachment": image,
                 if (image.isNotEmpty) "filename": imagePath,
                 if (note != null) "note": note,
@@ -1316,10 +1325,28 @@ class ServiceApi {
     }
   }
 
+  Future<Either<Failure, GetAllShippingModel>> getAllShipping() async {
+    try {
+      String? sessionId = await Preferences.instance.getSessionId();
+      String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
+      String userId = await Preferences.instance.getUserId() ?? "1";
+      String odooUrl =
+          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      final response = await dio.get(
+        odooUrl + EndPoints.getAllShipping,
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(GetAllShippingModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
   Future<Either<Failure, UpdateStateModel>> updateStateData({
     required int taskId,
     required String state,
-
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
     String odooUrl =
@@ -1330,15 +1357,13 @@ class ServiceApi {
           options: Options(
             headers: {"Cookie": "session_id=$sessionId"},
           ),
-          body: {
-            "task_id":int.parse(taskId.toString()) ,
-            "state": "1_done"
-          });
+          body: {"task_id": int.parse(taskId.toString()), "state": "1_done"});
       return Right(UpdateStateModel.fromJson(response));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
   Future<Either<Failure, CreateOrderModel>> createPartner({
     required String name,
     required String mobile,
@@ -1707,12 +1732,12 @@ class ServiceApi {
 
   Future<Either<Failure, CreateOrderModel>> createPicking(
       {required int sourceWarehouseId,
-       required String image,
-       int? destinationWareHouseId,
-    required String note,
-    int? partnerId,
-    required String imagePath,
-    required List<UserModel> users,
+      required String image,
+      int? destinationWareHouseId,
+      required String note,
+      int? partnerId,
+      required String imagePath,
+      required List<UserModel> users,
       required List<ProductModelData> products}) async {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1726,12 +1751,9 @@ class ServiceApi {
           .map((product) => {
                 "product_id": product.id,
                 "quantity": product.userOrderedQuantity,
-             
               })
           .toList();
-      List<int> selectedsers = users
-          .map((user) => user.id!)
-          .toList();
+      List<int> selectedsers = users.map((user) => user.id!).toList();
 
       final response = await dio.post(odooUrl + EndPoints.createPicking,
           options: Options(
@@ -1744,13 +1766,15 @@ class ServiceApi {
               //  "data": {
               "source_warehouse_id": sourceWarehouseId,
 
-               if (image.isNotEmpty) "attachment": image,
-                if (image.isNotEmpty) "attachmentname": imagePath,
-                if (note.isNotEmpty) "message": note,       
-                if (partnerId != null) "partner_id": partnerId,       
-        "users":selectedsers,
-              "destination_warehouse_id":
-                destinationWareHouseId??  wareHouseId ?? authModel.result?.propertyWarehouseId ?? 1,
+              if (image.isNotEmpty) "attachment": image,
+              if (image.isNotEmpty) "attachmentname": imagePath,
+              if (note.isNotEmpty) "message": note,
+              if (partnerId != null) "partner_id": partnerId,
+              "users": selectedsers,
+              "destination_warehouse_id": destinationWareHouseId ??
+                  wareHouseId ??
+                  authModel.result?.propertyWarehouseId ??
+                  1,
               "user_id": int.parse(userId),
               if (employeeId != null) "employee_id": employeeId,
               "products": orderLine
@@ -1805,12 +1829,13 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
-Future<Either<Failure, CreateOrderModel>> createTask({
+
+  Future<Either<Failure, CreateOrderModel>> createTask({
     required String description,
     required String title,
     required String deadline,
   }) async {
-        String userId = await Preferences.instance.getUserId() ?? "1";
+    String userId = await Preferences.instance.getUserId() ?? "1";
 
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
@@ -1819,13 +1844,12 @@ Future<Either<Failure, CreateOrderModel>> createTask({
       final response = await dio.post(
         odooUrl + EndPoints.createTask,
         body: {
-    "title": title,
-    "description": description,
-    "user_id": int.parse(userId), 
-    // "stage_id": 8,
-    "deadline": deadline
-}
-,
+          "title": title,
+          "description": description,
+          "user_id": int.parse(userId),
+          // "stage_id": 8,
+          "deadline": deadline
+        },
         options: Options(
           headers: {"Cookie": "session_id=$sessionId"},
         ),
@@ -1835,6 +1859,7 @@ Future<Either<Failure, CreateOrderModel>> createTask({
       return Left(ServerFailure());
     }
   }
+
   Future<Either<Failure, WareHouse>> getWareHouseById() async {
     AuthModel? authModel = await Preferences.instance.getUserModel();
 
@@ -1856,9 +1881,8 @@ Future<Either<Failure, CreateOrderModel>> createTask({
       return Left(ServerFailure());
     }
   }
-  
-  Future<Either<Failure, GeyAllUsersModel>> getAllUsers(
-      ) async {
+
+  Future<Either<Failure, GeyAllUsersModel>> getAllUsers() async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       // String userId = await Preferences.instance.getUserId() ?? "1";
