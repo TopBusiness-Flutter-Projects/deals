@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
@@ -31,9 +32,9 @@ class CustomButton extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              color: AppColors.white,
-              fontFamily: AppStrings.fontFamily,
-            ),
+                fontWeight: FontWeight.bold,
+                fontSize: 16.sp,
+                color: AppColors.white),
           ),
         ),
       ),

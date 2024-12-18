@@ -40,6 +40,8 @@ class ImageAssets {
   static const String cartIcon = '$imagePath/cart-arrow.png';
   static const String sarfIcon = '$imagePath/sarf.png';
   static const String pdfImage = '$imagePath/pdf17.png';
+  static const String dailyorders = '$imagePath/daily.png';
+  // static const String dailyorders = '$imagePath/daily_orders.png';
   // icons
   static const String phoneIcon = '$iconsPath/phone.svg';
   static const String numberOfBills = '$iconsPath/number_bill.svg';

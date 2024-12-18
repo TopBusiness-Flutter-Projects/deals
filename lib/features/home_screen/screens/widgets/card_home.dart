@@ -33,6 +33,7 @@ class CardHome extends StatelessWidget {
             Flexible(
               child: Image.asset(
                 image,
+                color: AppColors.primary,
                 fit: BoxFit.contain,
                 width: getSize(context) / 7,
                 height: getSize(context) / 7,

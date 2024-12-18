@@ -670,8 +670,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   onChnageDiscountOfUnit(OrderLine item, BuildContext context) {
     item.discount = double.parse(newDiscountController.text.toString());
     Navigator.pop(context);
-    newDiscountController.clear();
-    totalBasket();
+      totalBasket();
+  newDiscountController.clear();
     emit(OnChangeUnitPriceOfItem());
   }
 
@@ -683,8 +683,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
           double.parse(newAllDiscountController.text.toString());
     }
     Navigator.pop(context);
-    newAllDiscountController.clear();
+       totalBasket();
+ newAllDiscountController.clear();
     emit(OnChangeAllUnitPriceOfItem());
   }
-
 }

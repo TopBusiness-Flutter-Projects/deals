@@ -6,15 +6,12 @@ import 'package:top_sale/features/login/cubit/cubit.dart';
 import 'package:top_sale/features/splash/cubit/cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:top_sale/core/remote/service.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'core/api/app_interceptors.dart';
 import 'core/api/base_api_consumer.dart';
 import 'core/api/dio_consumer.dart';
 import 'features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
 import 'features/basket_screen/cubit/cubit.dart';
-
 import 'features/clients/cubit/clients_cubit.dart';
 import 'features/contact_us/cubit/contact_us_cubit.dart';
 import 'features/create_receipt_coucher/cubit/create_receipt_coucher_cubit.dart';
@@ -28,16 +25,11 @@ import 'features/profile/cubit/profile_cubit.dart';
 import 'features/returns/cubit/returns_cubit.dart';
 import 'features/update_profile/cubit/update_profile_cubit.dart';
 import 'features/tasks/cubit/tasks_cubit.dart';
-
 // import 'features/downloads_videos/cubit/downloads_videos_cubit.dart';
-
 final serviceLocator = GetIt.instance;
-
 Future<void> setup() async {
   //! Features
-
   ///////////////////////// Blocs ////////////////////////
-
   serviceLocator.registerFactory(() => SplashCubit());
   serviceLocator.registerFactory(() => LoginCubit(serviceLocator()));
   serviceLocator.registerFactory(() => HomeCubit(serviceLocator()));
@@ -50,13 +42,16 @@ Future<void> setup() async {
   serviceLocator.registerFactory(() => UpdateProfileCubit(serviceLocator()));
   serviceLocator.registerFactory(() => BasketCubit(serviceLocator()));
   serviceLocator.registerFactory(() => ClientsCubit(serviceLocator()));
-  serviceLocator.registerFactory(() => AttendanceAndDepartureCubit(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => AttendanceAndDepartureCubit(serviceLocator()));
   serviceLocator.registerFactory(() => ReturnsCubit(serviceLocator()));
   serviceLocator.registerFactory(() => DetailsOrdersCubit(serviceLocator()));
   serviceLocator.registerFactory(() => DeleveryOrdersCubit(serviceLocator()));
-  serviceLocator.registerFactory(() => CreateReceiptCoucherCubit(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => CreateReceiptCoucherCubit(serviceLocator()));
   serviceLocator.registerFactory(() => ItineraryCubit(serviceLocator()));
-  serviceLocator.registerFactory(() => ExchangePermissionCubit(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => ExchangePermissionCubit(serviceLocator()));
   serviceLocator.registerFactory(() => TasksCubit(serviceLocator()));
   ///////////////////////////////////////////////////////////////////////////////
 

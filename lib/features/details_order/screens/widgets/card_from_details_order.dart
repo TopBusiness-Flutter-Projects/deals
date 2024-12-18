@@ -32,7 +32,6 @@ class CardDetailsOrders extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              
               color:
                   Colors.black.withOpacity(0.1), // لون الظل مع تقليل الشفافية
               spreadRadius: 1, // مدى انتشار الظل
@@ -155,8 +154,10 @@ class CardDetailsOrders extends StatelessWidget {
                       ),
                       SizedBox(width: getSize(context) / 60),
                       AutoSizeText(
-                        "${context.read<DetailsOrdersCubit>().getDetailsOrdersModel?.amountTotal} ${orderModel.currencyId?.name ?? ''}",
-                        // "${calculateTotalDiscountedPrice(orderDetailsModel.orderLines ?? [])} ${orderModel.currencyId?.name ?? ''}",
+                        // "${context.read<DetailsOrdersCubit>().getDetailsOrdersModel?.amountTotal} ${orderModel.currencyId?.name ?? ''}"
+                        // "\n"
+                        "${calculateTotalDiscountedPrice(orderDetailsModel.orderLines ?? [])} ${orderModel.currencyId?.name ?? ''}",
+
                         style: TextStyle(
                           fontFamily: "cairo",
                           color: AppColors.black,

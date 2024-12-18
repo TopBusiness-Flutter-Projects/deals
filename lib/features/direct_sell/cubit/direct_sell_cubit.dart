@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
+import 'package:top_sale/core/models/get_all_promotions.dart';
 import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
 import 'package:top_sale/core/models/get_shippind.dart';
@@ -399,9 +400,10 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     AppWidget.createProgressDialog(context, "جاري التحميل ..");
     emit(LoadingCreateQuotation());
     final result = await api.createQuotation(
-        note: note,
+      note: note,
         image: selectedBase64String,
         shippingId: selectedShipping == null ? '' : selectedShipping.toString(),
+        promotionId: selectedCoupune == null ? '' : selectedCoupune.toString(),
         shippingPrice: priceController.text,
         imagePath:
             profileImage == null ? "" : profileImage!.path.split('/').last,
@@ -416,10 +418,11 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       Navigator.pop(context);
       emit(ErrorCreateQuotation());
     }, (r) {
-      
+      Navigator.pop(context);
       if (r.result?.message == null) {
-         Navigator.pop(context);
         errorGetBar('عدم كفاية المخزون لمنتج واحد أو أكثر');
+      } else if (r.result?.error != null) {
+        errorGetBar(r.result!.error!.toString(), seconds: 4);
       } else {
         createOrderModel = r;
         successGetBar('Success Create Quotation');
@@ -625,6 +628,37 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       },
     );
   }
+  GetPromotionsModel? getPromotionsModel;
+  void getAllPromotions() async {
+    emit(GetAllJournalsLoadingState());
+    final result = await api.getAllPromotions();
+    result.fold(
+      (failure) => emit(GetAllJournalsErrorState()),
+      (r) {
+        getPromotionsModel = r;
+        emit(GetAllJournalsLoadedState());
+      },
+    );
+  }
+
+  int? selectedCoupune;
+  void changeCoupone(int selectedPayment) {
+    selectedCoupune = selectedPayment;
+    emit(ChangeJournalStatee());
+  }
+
+  // GetAllShippingModel? getAllShippingModel;
+  // void getAllShipping() async {
+  //   emit(GetAllJournalsLoadingState());
+  //   final result = await api.getAllShipping();
+  //   result.fold(
+  //     (failure) => emit(GetAllJournalsErrorState()),
+  //     (r) {
+  //       getAllShippingModel = r;
+  //       emit(GetAllJournalsLoadedState());
+  //     },
+  //   );
+  // }
 }
 
 //

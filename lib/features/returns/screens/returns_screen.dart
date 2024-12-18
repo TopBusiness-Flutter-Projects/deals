@@ -1,19 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';import 'package:top_sale/core/utils/circle_progress.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:top_sale/core/api/end_points.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
-import 'package:top_sale/core/utils/assets_manager.dart';
-import 'package:top_sale/features/details_order/screens/pdf.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import 'package:top_sale/features/returns/cubit/returns_cubit.dart';
 import 'package:top_sale/features/returns/cubit/returns_state.dart';
+
 import '../../../config/routes/app_routes.dart';
-import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 
 class ReturnsScreen extends StatefulWidget {
   const ReturnsScreen({super.key});

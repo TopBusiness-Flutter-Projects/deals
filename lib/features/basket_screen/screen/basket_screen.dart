@@ -16,14 +16,12 @@ import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import 'package:top_sale/features/login/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:top_sale/core/utils/circle_progress.dart';
-
 import '../../../core/models/all_partners_for_reports_model.dart';
 import '../../../core/models/all_products_model.dart';
 import '../../direct_sell/cubit/direct_sell_cubit.dart';
 import '../../direct_sell/cubit/direct_sell_state.dart';
 import '../cubit/state.dart';
 import 'custom_basket_item.dart';
-
 class BasketScreen extends StatefulWidget {
   const BasketScreen({
     required this.partner,
@@ -31,29 +29,27 @@ class BasketScreen extends StatefulWidget {
     super.key,
   });
   final AllPartnerResults? partner;
-
   final String currency;
   @override
   State<BasketScreen> createState() => _BasketScreenState();
 }
-
 class _BasketScreenState extends State<BasketScreen> {
   TextEditingController copouneController = TextEditingController();
   @override
   void initState() {
     context.read<DirectSellCubit>().getAllShipping();
-    context.read<DirectSellCubit>().priceController.clear();
+    context.read<DirectSellCubit>().getAllPromotions();
+    context.read<DirectSellCubit>().selectedCoupune = null;
     context.read<DirectSellCubit>().selectedShipping = null;
-
+    context.read<DirectSellCubit>().priceController.clear();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DirectSellCubit, DirectSellState>(
       builder: (context, state) {
-        var cubit = context.read<BasketCubit>();
-        var cubit2 = context.read<DirectSellCubit>();
+        var basketCubit = context.read<BasketCubit>();
+        var directSellCubit = context.read<DirectSellCubit>();
         return Scaffold(
           backgroundColor: AppColors.white,
           appBar: AppBar(
@@ -175,7 +171,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                 ),
                               ),
                               Text(
-                                '${calculateTotalDiscountedPrice(cubit2.basket)} ${cubit2.basket.isEmpty ? '' : context.read<HomeCubit>().currencyName}',
+                                '${calculateTotalDiscountedPrice(directSellCubit.basket)} ${directSellCubit.basket.isEmpty ? '' : context.read<HomeCubit>().currencyName}',
                                 // '${calculateTotalDiscountedPrice(cubit2.basket)} ${cubit2.basket.isEmpty ? '' : cubit2.basket.first.currencyId?.name ?? ''}',
                                 maxLines: 1,
                                 style: TextStyle(
@@ -183,20 +179,20 @@ class _BasketScreenState extends State<BasketScreen> {
                                   fontSize: 14.sp,
                                 ),
                               ),
-                              cubit2.basket.isEmpty
+                              directSellCubit.basket.isEmpty
                                   ? Container()
                                   : InkWell(
                                       onTap: () {
-                                        cubit2.newAllDiscountController.text =
+                                        directSellCubit.newAllDiscountController.text =
                                             '0.0'.toString();
                                         customShowBottomSheet(context,
-                                            cubit2.newAllDiscountController,
+                                            directSellCubit.newAllDiscountController,
                                             onPressed: () {
-                                          if (double.parse(cubit2
+                                          if (double.parse(directSellCubit
                                                   .newAllDiscountController.text
                                                   .toString()) <
                                               100) {
-                                            cubit2.onChnageAllDiscountOfUnit(
+                                            directSellCubit.onChnageAllDiscountOfUnit(
                                                 context);
                                           } else {
                                             errorGetBar(
@@ -234,195 +230,324 @@ class _BasketScreenState extends State<BasketScreen> {
                   SizedBox(
                     height: getSize(context) / 16,
                   ),
-                  cubit2.basket.isEmpty
+                  directSellCubit.basket.isEmpty
                       ? Center(child: Text("لا يوجد منتجات في السلة"))
                       : ListView.builder(
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
-                          itemCount: cubit2.basket.length,
+                          itemCount: directSellCubit.basket.length,
                           itemBuilder: (context, index) {
-                            var item = cubit2.basket[index];
+                            var item = directSellCubit.basket[index];
                             return CustomBasketItem(item: item);
                           },
                         ),
                   SizedBox(height: 32.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: RoundedButton(
-                            text: 'اضافة شحن'.tr(),
-                            onPressed: () {
-                              context
-                                  .read<DirectSellCubit>()
-                                  .priceController
-                                  .clear();
-                              context.read<DirectSellCubit>().selectedShipping =
-                                  null;
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return BlocBuilder<DirectSellCubit,
-                                          DirectSellState>(
-                                      builder: (context, state) {
-                                    return AlertDialog(
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'اضافة شحن'.tr(),
-                                              style: getMediumStyle(),
-                                            ),
-                                            GestureDetector(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  context
-                                                      .read<DirectSellCubit>()
-                                                      .priceController
-                                                      .clear();
-                                                  context
-                                                      .read<DirectSellCubit>()
-                                                      .selectedShipping = null;
-                                                },
-                                                child: Icon(Icons.close))
-                                          ],
-                                        ),
-                                        content: SizedBox(
-                                          width: getSize(context),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 12.0.sp),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  border: Border.all(
-                                                      color: Colors.grey),
-                                                ),
-                                                child:
-                                                    DropdownButtonHideUnderline(
-                                                  child: DropdownButton<int>(
-                                                    value: cubit2
-                                                        .selectedShipping, // This will store the ID (not the name)
-                                                    hint: Text(
-                                                      'اختر طريقة الشحن'.tr(),
-                                                      style: const TextStyle(
-                                                          color: Colors.grey),
+                  directSellCubit.basket.isEmpty
+                      ? Container()
+                      : BlocBuilder<DirectSellCubit, DirectSellState>(
+                          builder: (context, state) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: RoundedButton(
+                                    text: directSellCubit.selectedShipping == null
+                                        ? 'اضافة شحن'.tr()
+                                        : 'تغيير الشحن'.tr(),
+                                    onPressed: () {
+                                      // context
+                                      //     .read<DirectSellCubit>()
+                                      //     .priceController
+                                      //     .clear();
+                                      // context
+                                      //     .read<DirectSellCubit>()
+                                      //     .selectedShipping = null;
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return BlocBuilder<DirectSellCubit,
+                                                  DirectSellState>(
+                                              builder: (context, state) {
+                                            return AlertDialog(
+                                                title: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      'اضافة شحن'.tr(),
+                                                      style: getMediumStyle(),
                                                     ),
-                                                    icon: const Icon(
-                                                        Icons.arrow_drop_down,
-                                                        color: Colors.grey),
-                                                    isExpanded: true,
-                                                    onChanged: (int? newValue) {
-                                                      cubit2.changeShipping(
-                                                          newValue!); // Store the ID in cubit
-                                                    },
-                                                    items: cubit2
-                                                            .getAllShippingModel
-                                                            ?.shippingMethods
-                                                            ?.map<
-                                                                    DropdownMenuItem<
-                                                                        int>>(
-                                                                (resultItem) {
-                                                          return DropdownMenuItem<
-                                                              int>(
-                                                            value:
-                                                                resultItem.id,
-                                                            child: Text(resultItem
-                                                                    .name ??
-                                                                ''), // Display the name
-                                                          );
-                                                        }).toList() ??
-                                                        [],
-                                                  ),
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          setState(() {
+                                                            context
+                                                                .read<
+                                                                    DirectSellCubit>()
+                                                                .priceController
+                                                                .clear();
+                                                            context
+                                                                .read<
+                                                                    DirectSellCubit>()
+                                                                .selectedShipping = null;
+                                                          });
+                                                        },
+                                                        child:
+                                                            Icon(Icons.close))
+                                                  ],
                                                 ),
-                                              ),
-                                              CustomTextField(
-                                                labelText: "السعر",
-                                                controller:
-                                                    cubit2.priceController,
-                                                borderRadius: 8,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              CustomButton(
-                                                  title: "اضافة",
-                                                  onTap: () {
-                                                    if (cubit2.priceController
-                                                            .text.isEmpty ||
-                                                        cubit2.selectedShipping ==
-                                                            null) {
-                                                      errorGetBar(
-                                                          "من فضلك اضف المعلومات");
-                                                    } else {
-                                                      Navigator.pop(context);
-                                                    }
-                                                  })
-                                            ],
-                                          ),
-                                        ));
-                                  });
-                                },
-                              );
-                            },
-                            backgroundColor: AppColors.blue,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: RoundedButton(
-                            text: 'اضافة كوبون'.tr(),
-                            onPressed: () {
-                              copouneController.clear();
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      title: Text(
-                                        'اضافة الكوبون'.tr(),
-                                        style: getMediumStyle(),
-                                      ),
-                                      content: SizedBox(
-                                        width: getSize(context),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CustomTextField(
-                                              labelText: "الكوبون",
-                                              borderRadius: 8,
-                                              controller: copouneController,
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            CustomButton(title: "اضافة")
-                                          ],
-                                        ),
-                                      ));
-                                },
-                              );
-                            },
-                            backgroundColor: AppColors.blue,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                                                content: SizedBox(
+                                                  width: getSize(context),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    12.0.sp),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                        child:
+                                                            DropdownButtonHideUnderline(
+                                                          child: DropdownButton<
+                                                              int>(
+                                                            value: directSellCubit
+                                                                .selectedShipping, // This will store the ID (not the name)
+                                                            hint: Text(
+                                                              'اختر طريقة الشحن'
+                                                                  .tr(),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .grey),
+                                                            ),
+                                                            icon: const Icon(
+                                                                Icons
+                                                                    .arrow_drop_down,
+                                                                color: Colors
+                                                                    .grey),
+                                                            isExpanded: true,
+                                                            onChanged: (int?
+                                                                newValue) {
+                                                              directSellCubit.changeShipping(
+                                                                  newValue!); // Store the ID in cubit
+                                                            },
+                                                            items: directSellCubit
+                                                                    .getAllShippingModel
+                                                                    ?.shippingMethods
+                                                                    ?.map<DropdownMenuItem<int>>(
+                                                                        (resultItem) {
+                                                                  return DropdownMenuItem<
+                                                                      int>(
+                                                                    value:
+                                                                        resultItem
+                                                                            .id,
+                                                                    child: Text(
+                                                                        resultItem.name ??
+                                                                            ''), // Display the name
+                                                                  );
+                                                                }).toList() ??
+                                                                [],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      CustomTextField(
+                                                        labelText: "السعر",
+                                                        controller: directSellCubit
+                                                            .priceController,
+                                                        borderRadius: 8,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      CustomButton(
+                                                          title: "اضافة",
+                                                          onTap: () {
+                                                            if (directSellCubit
+                                                                    .priceController
+                                                                    .text
+                                                                    .isEmpty ||
+                                                                directSellCubit.selectedShipping ==
+                                                                    null) {
+                                                              errorGetBar(
+                                                                  "من فضلك اضف المعلومات");
+                                                            } else {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }
+                                                          })
+                                                    ],
+                                                  ),
+                                                ));
+                                          });
+                                        },
+                                      );
+                                    },
+                                    backgroundColor: AppColors.blue,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: RoundedButton(
+                                    text: directSellCubit.selectedCoupune == null
+                                        ? 'اضافة كوبون'.tr()
+                                        : 'تغيير الكوبون'.tr(),
+                                        
+                                    onPressed: () {
+                                      // context
+                                      //     .read<DirectSellCubit>()
+                                      //     .selectedCoupune = null;
+
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return BlocBuilder<DirectSellCubit,
+                                                  DirectSellState>(
+                                              builder: (context, state) {
+                                            return AlertDialog(
+                                                title: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      'اضافة الكوبون'.tr(),
+                                                      style: getMediumStyle(),
+                                                    ),
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          setState(() {
+                                                            context
+                                                                .read<
+                                                                    DirectSellCubit>()
+                                                                .selectedCoupune = null;
+                                                          });
+                                                        },
+                                                        child:
+                                                            Icon(Icons.close))
+                                                  ],
+                                                ),
+                                                content: SizedBox(
+                                                  width: getSize(context),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    12.0.sp),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                        child:
+                                                            DropdownButtonHideUnderline(
+                                                          child: DropdownButton<
+                                                              int>(
+                                                            value: directSellCubit
+                                                                .selectedCoupune, // This will store the ID (not the name)
+                                                            hint: Text(
+                                                              'اختر الكوبون '
+                                                                  .tr(),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .grey),
+                                                            ),
+                                                            icon: const Icon(
+                                                                Icons
+                                                                    .arrow_drop_down,
+                                                                color: Colors
+                                                                    .grey),
+                                                            isExpanded: true,
+                                                            onChanged: (int?
+                                                                newValue) {
+                                                              directSellCubit.changeCoupone(
+                                                                  newValue!); // Store the ID in cubit
+                                                            },
+                                                            items: directSellCubit
+                                                                    .getPromotionsModel
+                                                                    ?.result
+                                                                    ?.map<DropdownMenuItem<int>>(
+                                                                        (resultItem) {
+                                                                  return DropdownMenuItem<
+                                                                      int>(
+                                                                    value:
+                                                                        resultItem
+                                                                            .id,
+                                                                    child: Text(
+                                                                        resultItem.name ??
+                                                                            ''), // Display the name
+                                                                  );
+                                                                }).toList() ??
+                                                                [],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      CustomButton(
+                                                          title: "اضافة",
+                                                          onTap: () {
+                                                            if (directSellCubit
+                                                                    .selectedCoupune ==
+                                                                null) {
+                                                              errorGetBar(
+                                                                  "من فضلك اضف الكوبون");
+                                                            } else {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }
+                                                          })
+                                                    ],
+                                                  ),
+                                                ));
+                                          });
+                                        },
+                                      );
+                                    },
+                                    backgroundColor: AppColors.blue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
 
                   (state is LoadingCreateQuotation)
                       ? const Center(child: CustomLoadingIndicator())
-                      : cubit2.basket.isEmpty
+                      : directSellCubit.basket.isEmpty
                           ? Container()
                           : CustomButton(
                               title: 'show_price'.tr(),

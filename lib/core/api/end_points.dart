@@ -37,6 +37,8 @@ class EndPoints {
       '/api/account.journal/?query={id, display_name}';
   static String getAllShipping =
       '/api/shipping_methods/';
+  static String getAllPromotions =
+      '/api/active-promotions/';
   static String updateState = "/api/project/task/update_state";
 
   static String printOrder = '/report/pdf/sale.report_saleorder/';

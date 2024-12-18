@@ -23,6 +23,7 @@ import 'package:top_sale/core/models/defaul_model.dart';
 import 'package:top_sale/core/models/get__my_expense_model.dart';
 import 'package:top_sale/core/models/get_all_attendance_model.dart';
 import 'package:top_sale/core/models/get_all_expenses_product_model.dart';
+import 'package:top_sale/core/models/get_all_promotions.dart';
 import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_car_ids_model.dart';
 import 'package:top_sale/core/models/get_contract_model.dart';
@@ -840,6 +841,7 @@ class ServiceApi {
       required String image,
       required String imagePath,
       required String shippingId,
+      required String promotionId,
       required String shippingPrice,
       String? note}) async {
     String odooUrl =
@@ -875,9 +877,12 @@ class ServiceApi {
                 "latitude": lat,
                 "longitude": long,
                 "address": address,
-                if (shippingId.isNotEmpty) "shipping_method_id": shippingId,
+                if (shippingId.isNotEmpty)
+                  "shipping_method_id": int.parse(shippingId),
                 if (shippingPrice.isNotEmpty)
                   "shipping_cost": double.parse(shippingPrice),
+                if (promotionId.isNotEmpty)
+                  "promotion_id": int.parse(promotionId),
                 if (image.isNotEmpty) "attachment": image,
                 if (image.isNotEmpty) "filename": imagePath,
                 if (note != null) "note": note,
@@ -1339,6 +1344,25 @@ class ServiceApi {
         ),
       );
       return Right(GetAllShippingModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  Future<Either<Failure, GetPromotionsModel>> getAllPromotions() async {
+    try {
+      String? sessionId = await Preferences.instance.getSessionId();
+      String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
+      String userId = await Preferences.instance.getUserId() ?? "1";
+      String odooUrl =
+          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      final response = await dio.get(
+        odooUrl + EndPoints.getAllPromotions,
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(GetPromotionsModel.fromJson(response));
     } on ServerException {
       return Left(ServerFailure());
     }

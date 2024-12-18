@@ -7,7 +7,7 @@ import 'package:top_sale/core/utils/circle_progress.dart';
 /*----------------------------------------------------------------------------*/
 /*------------------------------  Error Get Bar  -----------------------------*/
 /*----------------------------------------------------------------------------*/
-errorGetBar(String message) {
+errorGetBar(String message , {int? seconds}) {
   Get.showSnackbar(
     GetSnackBar(
       messageText: Text(
@@ -21,7 +21,7 @@ errorGetBar(String message) {
       backgroundColor: AppColors.error,
       barBlur: 5.0,
       borderRadius: 12.0,
-      duration: const Duration(seconds: 2),
+      duration: seconds != null ? Duration(seconds: seconds) : Duration(seconds: 2),
       isDismissible: true,
       margin: const EdgeInsets.all(12.0),
       snackPosition: SnackPosition.BOTTOM,

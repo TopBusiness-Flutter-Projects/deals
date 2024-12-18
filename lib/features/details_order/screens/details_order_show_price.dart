@@ -249,7 +249,7 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                                         style: TextStyle(
                                           color: AppColors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                         )),
                                   ],
                                 ),

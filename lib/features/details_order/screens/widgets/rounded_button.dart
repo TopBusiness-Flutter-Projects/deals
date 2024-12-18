@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/app_strings.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 
 class RoundedButton extends StatelessWidget {
@@ -27,10 +29,9 @@ class RoundedButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: AppColors.white,
-          fontSize: getSize(context) / 22,
-          fontWeight: FontWeight.bold,
-        ),
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+            color: AppColors.white),
         textDirection: TextDirection.rtl, // For Arabic text
       ),
     );

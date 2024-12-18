@@ -442,7 +442,7 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 20.sp,
+                                                          fontSize: 16.sp,
                                                           color:
                                                               AppColors.white),
                                                     ),
@@ -550,7 +550,7 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
-                                                              fontSize: 20.sp,
+                                                              fontSize: 16.sp,
                                                               color: AppColors
                                                                   .white),
                                                         ),
@@ -686,7 +686,7 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                                       FontWeight
                                                                           .bold,
                                                                   fontSize:
-                                                                      20.sp,
+                                                                      16.sp,
                                                                 )),
                                                           ],
                                                         ),

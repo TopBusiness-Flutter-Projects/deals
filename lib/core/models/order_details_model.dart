@@ -9,6 +9,7 @@ OrderDetailsModel orderDetailsModelFromJson(String str) =>
 
 String orderDetailsModelToJson(OrderDetailsModel data) =>
     json.encode(data.toJson());
+
 class OrderDetailsModel {
   int? id;
   dynamic name;
@@ -108,15 +109,16 @@ class Invoice {
   dynamic invoiceDate;
   List<InvoiceLine>? invoiceLines;
 
-  Invoice({
-    this.invoiceId,
-    this.name,
-    this.state,
-    this.amountTotal,
-    this.currency,
-    this.invoiceDate,
-    this.invoiceLines,this.amountDue,this.paymentState
-  });
+  Invoice(
+      {this.invoiceId,
+      this.name,
+      this.state,
+      this.amountTotal,
+      this.currency,
+      this.invoiceDate,
+      this.invoiceLines,
+      this.amountDue,
+      this.paymentState});
 
   factory Invoice.fromJson(Map<String, dynamic> json) => Invoice(
         invoiceId: json["invoice_id"],
@@ -200,20 +202,20 @@ class OrderLine {
   dynamic priceSubtotal;
   dynamic priceTotal;
   dynamic returned;
-  
+
   List<dynamic>? taxes;
-  OrderLine({
-    this.id,
-    this.productId,
-    this.productName,
-    this.productUomQty,
-    this.oldQty,
-    this.priceUnit,
-    this.discount,
-    this.priceSubtotal,
-    this.returned,
-    this.taxes,this.priceTotal
-  });
+  OrderLine(
+      {this.id,
+      this.productId,
+      this.productName,
+      this.productUomQty,
+      this.oldQty,
+      this.priceUnit,
+      this.discount,
+      this.priceSubtotal,
+      this.returned,
+      this.taxes,
+      this.priceTotal});
 
   factory OrderLine.fromJson(Map<String, dynamic> json) => OrderLine(
         id: json["id"],
@@ -223,14 +225,13 @@ class OrderLine {
             double.parse(json["product_uom_qty"].toString())
                 .round()
                 .toString()),
-        oldQty: int.parse(
-            double.parse(json["product_uom_qty"].toString())
-                .round()
-                .toString()),
-        priceUnit: json["price_unit"],
+        oldQty: int.parse(double.parse(json["product_uom_qty"].toString())
+            .round()
+            .toString()),
+        priceUnit: json["price_total"],
         priceTotal: json["price_total"],
         discount: json["discount"],
-        priceSubtotal: json["price_subtotal"],
+        priceSubtotal: json["price_total"],
         returned: json["returned"],
         taxes: json["taxes"] == null
             ? []
@@ -241,11 +242,11 @@ class OrderLine {
         "id": id,
         "product_id": productId,
         "product_name": productName,
-        "product_uom_qty": productUomQty,       
+        "product_uom_qty": productUomQty,
         "price_unit": priceUnit,
         "discount": discount,
-        "price_subtotal": priceSubtotal,
-        "price_total": priceTotal,
+        "price_total": priceSubtotal,
+        // "price_total": priceTotal,
         "returned": returned,
         "taxes": taxes == null ? [] : List<dynamic>.from(taxes!.map((x) => x)),
       };

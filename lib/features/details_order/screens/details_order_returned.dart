@@ -288,7 +288,7 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
                                                     Icon(
                                                       Icons.print,
                                                       color: AppColors.white,
-                                                      size: 20.sp,
+                                                      size: 16.sp,
                                                     ),
                                                     SizedBox(
                                                       width: 5.w,
