@@ -847,7 +847,7 @@ class ServiceApi {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
-    String? employeeId = await Preferences.instance.getEmployeeId();
+    String? employeeId = await Preferences.instance.getEmployeeId()?? await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
     int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
     AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -1766,7 +1766,7 @@ class ServiceApi {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
-    String? employeeId = await Preferences.instance.getEmployeeId();
+    String? employeeId = await Preferences.instance.getEmployeeId() ?? await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
     int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
     AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -1815,7 +1815,7 @@ class ServiceApi {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
-    String? employeeId = await Preferences.instance.getEmployeeId();
+    String? employeeId = await Preferences.instance.getEmployeeId()?? await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
 
     try {
