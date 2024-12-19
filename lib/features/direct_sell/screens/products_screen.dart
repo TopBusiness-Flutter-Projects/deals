@@ -8,7 +8,8 @@ import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_state.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/custom_product_section.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/scanner.dart';
-import '../../../config/routes/app_routes.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import '../../../config/routes/app_routes.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import '../../../core/models/all_products_model.dart';
 import '../../../core/utils/app_colors.dart';
@@ -33,6 +34,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
     super.initState();
     //! listen pangination
     scrollController.addListener(_scrollListener);
+    if (widget.catId == '0') {
+      context.read<DirectSellCubit>().selectedPriceList = null;
+    }
 
     ///!
     context.read<DirectSellCubit>().currentIndex = -1;
@@ -126,59 +130,165 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   Row(
                     children: [
                       Expanded(
-                        child: ListTile(
-                          title: Text('المخزون'.tr()),
-                          leading: Radio<String>(
-                            value: 'stock',
-                            groupValue: cubit.selectedProducsStockType,
-                            onChanged: (value) {
-                              // setState(() {
-                              cubit.changeProductsStockType(value!);
-                              if (widget.catId != '-1' && widget.catId != '0') {
-                                context
-                                    .read<DirectSellCubit>()
-                                    .getAllProductsByCatogrey(
-                                        id: int.parse(widget.catId));
-                              } else {
-                                context
-                                    .read<DirectSellCubit>()
-                                    .getAllProducts();
-                                context.read<DirectSellCubit>().currentIndex ==
-                                    -1;
-                              }
-                              // });
-                            },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<int>(
+                              value: cubit
+                                  .selectedPriceList, // This will store the ID (not the name)
+                              hint: Text(
+                                'قائمة الأسعار'.tr(),
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                              icon: const Icon(Icons.arrow_drop_down,
+                                  color: Colors.grey),
+                              isExpanded: true,
+                              onChanged: (int? newValue) {
+                                cubit.changePriceList(newValue!);
+                                if (widget.catId != '-1' &&
+                                    widget.catId != '0') {
+                                  context
+                                      .read<DirectSellCubit>()
+                                      .getAllProductsByCatogrey(
+                                          id: int.parse(widget.catId));
+                                } else {
+                                  context
+                                      .read<DirectSellCubit>()
+                                      .getAllProducts();
+                                  context
+                                          .read<DirectSellCubit>()
+                                          .currentIndex ==
+                                      -1;
+                                } // Store the ID in cubit
+                              },
+                              items: cubit.getAllPriceListtsModel?.pricelists
+                                      ?.map<DropdownMenuItem<int>>(
+                                          (resultItem) {
+                                    return DropdownMenuItem<int>(
+                                      value: resultItem.pricelistId,
+                                      child: Text(resultItem.pricelistName ??
+                                          ''), // Display the name
+                                    );
+                                  }).toList() ??
+                                  [],
+                            ),
                           ),
                         ),
                       ),
+                      SizedBox(width: 10),
                       Expanded(
-                        child: ListTile(
-                          title: Text('الكل'.tr()),
-                          leading: Radio<String>(
-                            value: 'nonStock',
-                            groupValue: cubit.selectedProducsStockType,
-                            onChanged: (value) {
-                              // setState(() {
-                              cubit.changeProductsStockType(value!);
-                              if (widget.catId != '-1' && widget.catId != '0') {
-                                context
-                                    .read<DirectSellCubit>()
-                                    .getAllProductsByCatogrey(
-                                        id: int.parse(widget.catId));
-                              } else {
-                                context
-                                    .read<DirectSellCubit>()
-                                    .getAllProducts();
-                                context.read<DirectSellCubit>().currentIndex ==
-                                    -1;
-                              }
-                              // });
-                            },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: cubit
+                                  .selectedProducsStockType, // This will store the ID (not the name)
+                              hint: Text(
+                                'اختر المخزن '.tr(),
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                              icon: const Icon(Icons.arrow_drop_down,
+                                  color: Colors.grey),
+                              isExpanded: true,
+                              onChanged: (String? newValue) {
+                                cubit.changeProductsStockType(
+                                    newValue!); // Store the ID in cubit
+                                if (widget.catId != '-1' &&
+                                    widget.catId != '0') {
+                                  context
+                                      .read<DirectSellCubit>()
+                                      .getAllProductsByCatogrey(
+                                          id: int.parse(widget.catId));
+                                } else {
+                                  context
+                                      .read<DirectSellCubit>()
+                                      .getAllProducts();
+                                  context
+                                          .read<DirectSellCubit>()
+                                          .currentIndex ==
+                                      -1;
+                                }
+                              },
+                              items: [
+                                DropdownMenuItem<String>(
+                                  value: 'stock',
+                                  child: Text('المخزن '.tr()),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'nonStock',
+                                  child: Text('الكل'.tr()),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
+                SizedBox(
+                  height: 10,
+                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: ListTile(
+                //         title: Text('المخزون'.tr()),
+                //         leading: Radio<String>(
+                //           value: 'stock',
+                //           groupValue: cubit.selectedProducsStockType,
+                //           onChanged: (value) {
+                //             // setState(() {
+                //             cubit.changeProductsStockType(value!);
+                //             if (widget.catId != '-1' && widget.catId != '0') {
+                //               context
+                //                   .read<DirectSellCubit>()
+                //                   .getAllProductsByCatogrey(
+                //                       id: int.parse(widget.catId));
+                //             } else {
+                //               context.read<DirectSellCubit>().getAllProducts();
+                //               context.read<DirectSellCubit>().currentIndex ==
+                //                   -1;
+                //             }
+                //             // });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: ListTile(
+                //         title: Text('الكل'.tr()),
+                //         leading: Radio<String>(
+                //           value: 'nonStock',
+                //           groupValue: cubit.selectedProducsStockType,
+                //           onChanged: (value) {
+                //             // setState(() {
+                //             cubit.changeProductsStockType(value!);
+                //             if (widget.catId != '-1' && widget.catId != '0') {
+                //               context
+                //                   .read<DirectSellCubit>()
+                //                   .getAllProductsByCatogrey(
+                //                       id: int.parse(widget.catId));
+                //             } else {
+                //               context.read<DirectSellCubit>().getAllProducts();
+                //               context.read<DirectSellCubit>().currentIndex ==
+                //                   -1;
+                //             }
+                //             // });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+               
                 cubit.searchController.text.isNotEmpty
                     ? Expanded(
                         child: ListView(children: [

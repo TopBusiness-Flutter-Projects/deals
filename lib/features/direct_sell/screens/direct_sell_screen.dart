@@ -9,7 +9,8 @@ import 'package:top_sale/features/direct_sell/screens/widgets/scanner.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/models/category_model.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_strings.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import '../../../core/utils/app_strings.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import '../../../core/utils/get_size.dart';
 import '../../clients/cubit/clients_cubit.dart';
@@ -100,46 +101,152 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: ListTile(
-                                          title: Text('المخزون'.tr()),
-                                          leading: Radio<String>(
-                                            value: 'stock',
-                                            groupValue:
-                                                cubit.selectedProducsStockType,
-                                            onChanged: (value) {
-                                              // setState(() {
-                                              cubit.changeProductsStockType(
-                                                  value!);
-                                              context
-                                                  .read<DirectSellCubit>()
-                                                  .getAllProducts(isHome: true);
-                                              // });
-                                            },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0.sp),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                          ),
+                                          child: DropdownButtonHideUnderline(
+                                            child: DropdownButton<int>(
+                                              value: cubit
+                                                  .selectedPriceList, // This will store the ID (not the name)
+                                              hint: Text(
+                                                'قائمة الأسعار'.tr(),
+                                                style: const TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              icon: const Icon(
+                                                  Icons.arrow_drop_down,
+                                                  color: Colors.grey),
+                                              isExpanded: true,
+                                              onChanged: (int? newValue) {
+                                                cubit
+                                                    .changePriceList(newValue!);
+                                                context
+                                                    .read<DirectSellCubit>()
+                                                    .getAllProducts(
+                                                        isHome:
+                                                            true); // Store the ID in cubit
+                                              },
+                                              items: cubit
+                                                      .getAllPriceListtsModel
+                                                      ?.pricelists
+                                                      ?.map<
+                                                              DropdownMenuItem<
+                                                                  int>>(
+                                                          (resultItem) {
+                                                    return DropdownMenuItem<
+                                                        int>(
+                                                      value: resultItem
+                                                          .pricelistId,
+                                                      child: Text(resultItem
+                                                              .pricelistName ??
+                                                          ''), // Display the name
+                                                    );
+                                                  }).toList() ??
+                                                  [],
+                                            ),
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 10),
                                       Expanded(
-                                        child: ListTile(
-                                          title: Text('الكل'.tr()),
-                                          leading: Radio<String>(
-                                            value: 'nonStock',
-                                            groupValue:
-                                                cubit.selectedProducsStockType,
-                                            onChanged: (value) {
-                                              // setState(() {
-                                              cubit.changeProductsStockType(
-                                                  value!);
-                                              context
-                                                  .read<DirectSellCubit>()
-                                                  .getAllProducts(isHome: true);
-                                              // });
-                                            },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0.sp),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                          ),
+                                          child: DropdownButtonHideUnderline(
+                                            child: DropdownButton<String>(
+                                              value: cubit
+                                                  .selectedProducsStockType, // This will store the ID (not the name)
+                                              hint: Text(
+                                                'اختر المخزن '.tr(),
+                                                style: const TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              icon: const Icon(
+                                                  Icons.arrow_drop_down,
+                                                  color: Colors.grey),
+                                              isExpanded: true,
+                                              onChanged: (String? newValue) {
+                                                cubit.changeProductsStockType(
+                                                    newValue!); // Store the ID in cubit
+                                                context
+                                                    .read<DirectSellCubit>()
+                                                    .getAllProducts(
+                                                        isHome: true);
+                                              },
+                                              items: [
+                                                DropdownMenuItem<String>(
+                                                  value: 'stock',
+                                                  child: Text('المخزن '.tr()),
+                                                ),
+                                                DropdownMenuItem<String>(
+                                                  value: 'nonStock',
+                                                  child: Text('الكل'.tr()),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                               
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(
+                                  //       child: ListTile(
+                                  //         title: Text('المخزون'.tr()),
+                                  //         leading: Radio<String>(
+                                  //           value: 'stock',
+                                  //           groupValue:
+                                  //               cubit.selectedProducsStockType,
+                                  //           onChanged: (value) {
+                                  //             // setState(() {
+                                  //             cubit.changeProductsStockType(
+                                  //                 value!);
+                                  //             context
+                                  //                 .read<DirectSellCubit>()
+                                  //                 .getAllProducts(isHome: true);
+                                  //             // });
+                                  //           },
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //     Expanded(
+                                  //       child: ListTile(
+                                  //         title: Text('الكل'.tr()),
+                                  //         leading: Radio<String>(
+                                  //           value: 'nonStock',
+                                  //           groupValue:
+                                  //               cubit.selectedProducsStockType,
+                                  //           onChanged: (value) {
+                                  //             // setState(() {
+                                  //             cubit.changeProductsStockType(
+                                  //                 value!);
+                                  //             context
+                                  //                 .read<DirectSellCubit>()
+                                  //                 .getAllProducts(isHome: true);
+                                  //             // });
+                                  //           },
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+
                                   state == LoadingCatogries
                                       ? Center(
                                           child: CustomLoadingIndicator(

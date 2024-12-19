@@ -11,6 +11,7 @@ import 'package:top_sale/core/models/add_time_off.dart';
 import 'package:top_sale/core/models/all_journals_model.dart';
 import 'package:top_sale/core/models/all_partners_for_reports_model.dart';
 import 'package:top_sale/core/models/all_payments_model.dart';
+import 'package:top_sale/core/models/all_pricelists_model.dart';
 import 'package:top_sale/core/models/all_products_model.dart';
 import 'package:top_sale/core/models/all_tasks_model.dart';
 import 'package:top_sale/core/models/all_ware_house_model.dart';
@@ -269,7 +270,7 @@ class ServiceApi {
       final response = await dio.get(
         odooUrl +
             EndPoints.checkEmployee +
-            '?query={id,name,message_partner_ids{id}}&filter=[["barcode","=","$employeeId"],["pin","=","$password"]]',
+            '?query={id,name,work_contact_id,message_partner_ids{id}}&filter=[["barcode","=","$employeeId"],["pin","=","$password"]]',
         options: Options(
           headers: {"Cookie": "frontend_lang=en_US;session_id=$sessionId"},
         ),
@@ -289,7 +290,7 @@ class ServiceApi {
       final response = await dio.get(
         odooUrl +
             EndPoints.checkEmployee +
-            '?query={id,name,message_partner_ids{id}}&filter=[["barcode","=","$employeeId"]]',
+            '?query={id,name,work_contact_id,message_partner_ids{id}}&filter=[["barcode","=","$employeeId"]]',
         options: Options(
           headers: {"Cookie": "frontend_lang=en_US;session_id=$sessionId"},
         ),
@@ -406,7 +407,8 @@ class ServiceApi {
 
 //getAllProducts
   Future<Either<Failure, AllProductsModel>> getAllProducts(
-      int page, bool isStockOnly) async {
+      int page, bool isStockOnly,
+      {int? priceListId}) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -424,7 +426,7 @@ class ServiceApi {
             "limit": 20,
             "page": page,
             "category_id": null,
-            "pricelist_id": null,
+            "pricelist_id": priceListId,
             "in_stock_only": isStockOnly
           }
         },
@@ -440,7 +442,7 @@ class ServiceApi {
 
   Future<Either<Failure, AllProductsModel>> getAllProductsByCategory(
       int? page, bool isStockOnly,
-      {required int categoryId}) async {
+      {required int categoryId, int? priceListId}) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
@@ -458,7 +460,7 @@ class ServiceApi {
             "limit": 20,
             "page": page,
             "category_id": categoryId,
-            "pricelist_id": null,
+            "pricelist_id": priceListId,
             "in_stock_only": isStockOnly
           }
         },
@@ -474,7 +476,8 @@ class ServiceApi {
   }
 
   Future<Either<Failure, AllProductsModel>> searchProducts(
-      int page, String name, bool isBarcode) async {
+      int page, String name, bool isBarcode,
+      {int? priceListId}) async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -497,8 +500,8 @@ class ServiceApi {
               "barcode": isBarcode
                   ? name
                   : null, // Optional: Product barcode (can be null if not used)
-              "pricelist_id":
-                  null // Optional: Price list ID to calculate product prices
+              "pricelist_id": priceListId
+              // Optional: Price list ID to calculate product prices
             }
           }
         },
@@ -847,7 +850,8 @@ class ServiceApi {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
-    String? employeeId = await Preferences.instance.getEmployeeId()?? await Preferences.instance.getEmployeeIdNumber();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
     int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
     AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -1368,6 +1372,25 @@ class ServiceApi {
     }
   }
 
+  Future<Either<Failure, GetAllPriceListtsModel>> getAllPricelists() async {
+    try {
+      String? sessionId = await Preferences.instance.getSessionId();
+      String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
+      String userId = await Preferences.instance.getUserId() ?? "1";
+      String odooUrl =
+          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      final response = await dio.get(
+        odooUrl + EndPoints.getAllPricelists,
+        options: Options(
+          headers: {"Cookie": "session_id=$sessionId"},
+        ),
+      );
+      return Right(GetAllPriceListtsModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
   Future<Either<Failure, UpdateStateModel>> updateStateData({
     required int taskId,
     required String state,
@@ -1766,7 +1789,8 @@ class ServiceApi {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
-    String? employeeId = await Preferences.instance.getEmployeeId() ?? await Preferences.instance.getEmployeeIdNumber();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
     int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
     AuthModel? authModel = await Preferences.instance.getUserModel();
@@ -1815,7 +1839,8 @@ class ServiceApi {
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
-    String? employeeId = await Preferences.instance.getEmployeeId()?? await Preferences.instance.getEmployeeIdNumber();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
 
     try {

@@ -16,19 +16,23 @@ import '../../clients/cubit/clients_cubit.dart';
 import '../cubit/cubit.dart';
 import '../cubit/state.dart';
 import 'daily_orders.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     context.read<DirectSellCubit>().getCategries();
+    context.read<DirectSellCubit>().getAllPricelists();
     context.read<AttendanceAndDepartureCubit>().getIp();
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
@@ -131,16 +135,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Navigator.pushNamed(
                                       context, Routes.exchangePermissionRoute);
                                 }),
-                            CardHome(
-                                text: "المبيعات اليومية".tr(),
-                                image: ImageAssets.dailyorders,
-                                onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) {
-                                      return const DailyOrders();
-                                    },
-                                  ));
-                                }),
+                            // CardHome(
+                            //     text: "المبيعات اليومية".tr(),
+                            //     image: ImageAssets.dailyorders,
+                            //     onPressed: () {
+                            //       Navigator.push(context, MaterialPageRoute(
+                            //         builder: (context) {
+                            //           return const DailyOrders();
+                            //         },
+                            //       ));
+                            //     }),
                           ],
                         ),
                         SizedBox(height: 30.h),

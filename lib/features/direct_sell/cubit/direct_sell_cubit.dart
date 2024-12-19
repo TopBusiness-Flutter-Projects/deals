@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
+import 'package:top_sale/core/models/all_pricelists_model.dart';
 import 'package:top_sale/core/models/get_all_promotions.dart';
 import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
@@ -53,6 +54,25 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     emit(UpdateProductsStockState());
   }
 
+  GetAllPriceListtsModel? getAllPriceListtsModel;
+  void getAllPricelists() async {
+    emit(GetAllJournalsLoadingState());
+    final result = await api.getAllPricelists();
+    result.fold(
+      (failure) => emit(GetAllJournalsErrorState()),
+      (r) {
+        getAllPriceListtsModel = r;
+        emit(GetAllJournalsLoadedState());
+      },
+    );
+  }
+
+  int? selectedPriceList;
+  void changePriceList(int selectedPayment) {
+    selectedPriceList = selectedPayment;
+    emit(ChangeJournalStatee());
+  }
+
   CategoriesModel? catogriesModel;
   Future<void> getCategries() async {
     emit(LoadingCatogries());
@@ -73,8 +93,11 @@ class DirectSellCubit extends Cubit<DirectSellState> {
   Future<void> getAllProducts(
       {bool isHome = false, bool isGetMore = false, int pageId = 1}) async {
     isGetMore ? emit(Loading2Product()) : emit(LoadingProduct());
-    final response =
-        await api.getAllProducts(pageId, selectedProducsStockType == "stock");
+    final response = await api.getAllProducts(
+      pageId,
+      selectedProducsStockType == "stock",
+      priceListId: selectedPriceList,
+    );
 
     response.fold((l) {
       emit(ErrorProduct());
@@ -266,7 +289,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     emit(LoadingProductByCatogrey());
     final response = await api.getAllProductsByCategory(
         1, selectedProducsStockType == "stock",
-        categoryId: id!);
+        priceListId: selectedPriceList, categoryId: id!);
     //
     response.fold((l) {
       emit(ErrorProductByCatogrey());
@@ -400,7 +423,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     AppWidget.createProgressDialog(context, "جاري التحميل ..");
     emit(LoadingCreateQuotation());
     final result = await api.createQuotation(
-      note: note,
+        note: note,
         image: selectedBase64String,
         shippingId: selectedShipping == null ? '' : selectedShipping.toString(),
         promotionId: selectedCoupune == null ? '' : selectedCoupune.toString(),
@@ -486,8 +509,9 @@ class DirectSellCubit extends Cubit<DirectSellState> {
   // Search products by name
   searchProducts(
       {int pageId = 1, bool isGetMore = false, bool isBarcode = false}) async {
-    final response =
-        await api.searchProducts(pageId, searchController.text, isBarcode);
+    final response = await api.searchProducts(
+        pageId, searchController.text, isBarcode,
+        priceListId: selectedPriceList);
     response.fold((l) => emit(ErrorProduct()), (r) {
       searchedProductsModel = r;
       // final updatedResults = _updateUserOrderedQuantity(r.result!);
@@ -628,6 +652,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       },
     );
   }
+
   GetPromotionsModel? getPromotionsModel;
   void getAllPromotions() async {
     emit(GetAllJournalsLoadingState());
