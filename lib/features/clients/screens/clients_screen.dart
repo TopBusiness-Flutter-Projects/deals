@@ -341,7 +341,7 @@ class _ClientScreenState extends State<ClientScreen> {
                       children: [
                         Expanded(
                           child: ListTile(
-                            title: Text('Company'.tr()),
+                            title: Text('شركة'.tr()),
                             leading: Radio<String>(
                               value: 'Company',
                               groupValue: cubit.selectedClientType,
@@ -355,7 +355,7 @@ class _ClientScreenState extends State<ClientScreen> {
                         ),
                         Expanded(
                           child: ListTile(
-                            title: Text('Indivalal'.tr()),
+                            title: Text('فرد'.tr()),
                             leading: Radio<String>(
                               value: 'Indivalal',
                               groupValue: cubit.selectedClientType,
@@ -381,10 +381,11 @@ class _ClientScreenState extends State<ClientScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "enter_name".tr();
-                        } else if (!RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
-                          // Adjust the regex as needed for language-specific characters
-                          return "ادخل اسم حقيقي";
-                        }
+                        } 
+                        // else if (!RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
+                        //   // Adjust the regex as needed for language-specific characters
+                        //   return "ادخل اسم حقيقي";
+                        // }
                         return null;
                       },
                     ),
@@ -400,10 +401,11 @@ class _ClientScreenState extends State<ClientScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "enter_phone".tr();
-                        } else if (!RegExp(r'^\d{10,15}$').hasMatch(value)) {
-                          // Adjust the regex as needed for the desired phone format
-                          return "من فضلك ادخل رقم صالح";
                         }
+                        //  else if (!RegExp(r'^\d{10,15}$').hasMatch(value)) {
+                        //   // Adjust the regex as needed for the desired phone format
+                        //   return "من فضلك ادخل رقم صالح";
+                        // }
                         return null;
                       },
                     ),
@@ -421,11 +423,12 @@ class _ClientScreenState extends State<ClientScreen> {
                         if (value == null || value.isEmpty) {
                           return null;
                           // return "Please enter your email.";
-                        } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
-                            .hasMatch(value)) {
-                          // Adjust the regex as needed for stricter validation
-                          return "من فضلك ادخل بريد صالح";
                         }
+                        //  else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                        //     .hasMatch(value)) {
+                        //   // Adjust the regex as needed for stricter validation
+                        //   return "من فضلك ادخل بريد صالح";
+                        // }
                         return null;
                       },
                     ),
@@ -455,10 +458,11 @@ class _ClientScreenState extends State<ClientScreen> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "ادخل الرقم الضريبي";
-                              } else if (!RegExp(r'^\d+$').hasMatch(value)) {
-                                // Adjust this regex to enforce length or other specific rules if needed
-                                return "ادخل رقم صالح";
                               }
+                              //  else if (!RegExp(r'^\d+$').hasMatch(value)) {
+                              //   // Adjust this regex to enforce length or other specific rules if needed
+                              //   return "ادخل رقم صالح";
+                              // }
                               return null;
                             },
                           )

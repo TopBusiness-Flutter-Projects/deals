@@ -599,10 +599,10 @@ class ServiceApi {
         isUserOnly
             ? odooUrl +
                 EndPoints.getAllPartners +
-                '?page_size=20&page=$page&query={name,id,phone,image_1920}&filter=[["user_id", "=",$userId]]'
+                '?page_size=20&page=$page&query={name,id,phone,image_1920,property_product_pricelist}&filter=[["user_id", "=",$userId],["state", "=", "approved"]]'
             : odooUrl +
                 EndPoints.getAllPartners +
-                '?page_size=20&page=$page&query={name,id,phone,image_1920}',
+                '?page_size=20&page=$page&query={name,id,phone,image_1920,property_product_pricelist}&filter=[["state", "=", "approved"]]',
         // '?page_size=$pageSize&page=$page&query={name,id,phone,total_overdue,total_due,total_invoiced,credit_to_invoice,sale_order_ids}',
         // 'page_size=$pageSize&page=$page&filter=[["user_id", "=",${authModel.result!.userContext!.uid}]]&query={name,id,phone,total_overdue,total_due,total_invoiced,credit_to_invoice,sale_order_ids}',
         options: Options(
@@ -629,10 +629,10 @@ class ServiceApi {
         isUserOnly
             ? odooUrl +
                 EndPoints.getAllPartners +
-                '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page&filter=[["user_id", "=",$userId]]'
+                '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page&filter=[["user_id", "=",$userId]]'
             : odooUrl +
                 EndPoints.getAllPartners +
-                '?filter=[["name", "=like", "%$name%"]]&query={name,id,phone,image_1920}&page_size=20&page=$page',
+                '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page',
         // 'filter=[["name", "=like", "%$name%"],["user_id", "=",${authModel.result!.userContext!.uid}]]&query={name,id,phone,total_overdue,total_due,total_invoiced,credit_to_invoice,sale_order_ids}&page_size=20&page=$page',
         options: Options(
           headers: {"Cookie": "frontend_lang=en_US;session_id=$sessionId"},
@@ -1425,6 +1425,10 @@ class ServiceApi {
     String? sessionId = await Preferences.instance.getSessionId();
     String odooUrl =
         await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+
     try {
       final response =
           await dio.post(odooUrl + EndPoints.createPartner + 'create',
@@ -1443,8 +1447,9 @@ class ServiceApi {
                 "street": street,
                 "latitude": lat,
                 "longitude": long,
-                "image": image
-                // "user_id": authModel.result!.userContext!.uid
+                "image": image,
+                "user_id": int.parse(userId),
+                if (employeeId != null) "employee_id": employeeId,
               }
             }
           });

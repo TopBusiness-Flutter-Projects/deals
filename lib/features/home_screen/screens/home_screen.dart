@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context, Routes.exchangePermissionRoute);
                                 }),
                             // CardHome(
-                            //     text: "المبيعات اليومية".tr(),
+                            //     text: "التخطيط".tr(),
                             //     image: ImageAssets.dailyorders,
                             //     onPressed: () {
                             //       Navigator.push(context, MaterialPageRoute(

@@ -78,6 +78,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             },
             focusNode: myFocusNode,
             style: getBoldStyle(),
+            // textDirection: TextDirection.ltr,
             onChanged: widget.onChanged,
             validator: widget.validator,
             keyboardType: widget.keyboardType,

@@ -55,8 +55,9 @@ class GetAllPartnersModel {
 class AllPartnerResults {
   dynamic name;
   int? id;
+  dynamic pricListId;
   dynamic phone;
-   dynamic image;
+  dynamic image;
   // dynamic totalDue;
   // dynamic totalInvoiced;
   // dynamic creditToInvoice;
@@ -66,7 +67,8 @@ class AllPartnerResults {
     this.name,
     this.id,
     this.phone,
-     this.image,
+    this.image,
+    this.pricListId,
     // this.totalDue,
     // this.totalInvoiced,
     // this.creditToInvoice,
@@ -78,7 +80,8 @@ class AllPartnerResults {
         name: json["name"],
         id: json["id"],
         phone: json["phone"],
-         image: json["image_1920"],
+        image: json["image_1920"],
+        pricListId: json["property_product_pricelist"],
         // totalDue: json["total_due"],
         // totalInvoiced: json["total_invoiced"],
         // creditToInvoice: json["credit_to_invoice"],
@@ -91,7 +94,8 @@ class AllPartnerResults {
         "name": name,
         "id": id,
         "phone": phone,
-         "image_1920": image,
+        "image_1920": image,
+        "property_product_pricelist": pricListId,
         // "total_due": totalDue,
         // "total_invoiced": totalInvoiced,
         // "credit_to_invoice": creditToInvoice,

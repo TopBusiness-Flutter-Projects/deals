@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:top_sale/core/models/check_employee_model.dart';
@@ -55,8 +56,8 @@ class HomeCubit extends Cubit<HomeState> {
           isEmployeeAdded = true;
           Navigator.pop(context);
           if (r.result!.first.workId != null) {
-            await Preferences.instance.setEmployeePartnerId(
-                r.result!.first.workId.toString());
+            await Preferences.instance
+                .setEmployeePartnerId(r.result!.first.workId.toString());
           }
           // if (r.result!.first.messagePartnerIds!.isNotEmpty) {
           //   await Preferences.instance.setEmployeePartnerId(
@@ -195,4 +196,9 @@ class HomeCubit extends Cubit<HomeState> {
       isAdmin = value.result!.isAdmin ?? false;
     });
   }
+
+  DateTime selectedDate = DateTime.now();
+  // String formattedDate = DateFormat(
+  //     'yyyy-MM-dd',
+  //   ).format(selectedDate);
 }

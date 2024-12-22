@@ -288,7 +288,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 //     ),
                 //   ],
                 // ),
-               
+
                 cubit.searchController.text.isNotEmpty
                     ? Expanded(
                         child: ListView(children: [

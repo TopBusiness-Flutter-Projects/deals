@@ -22,6 +22,7 @@ import '../../direct_sell/cubit/direct_sell_cubit.dart';
 import '../../direct_sell/cubit/direct_sell_state.dart';
 import '../cubit/state.dart';
 import 'custom_basket_item.dart';
+
 class BasketScreen extends StatefulWidget {
   const BasketScreen({
     required this.partner,
@@ -33,6 +34,7 @@ class BasketScreen extends StatefulWidget {
   @override
   State<BasketScreen> createState() => _BasketScreenState();
 }
+
 class _BasketScreenState extends State<BasketScreen> {
   TextEditingController copouneController = TextEditingController();
   @override
@@ -44,6 +46,7 @@ class _BasketScreenState extends State<BasketScreen> {
     context.read<DirectSellCubit>().priceController.clear();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DirectSellCubit, DirectSellState>(
@@ -59,6 +62,20 @@ class _BasketScreenState extends State<BasketScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
+                    print("ddddddddd0 " + "${widget.partner?.pricListId}");
+                    if (widget.partner?.pricListId != null) {
+                      if (widget.partner?.pricListId
+                              .toString() !=
+                          "false") {
+                        context.read<DirectSellCubit>().changePriceList(
+                            int.parse(
+                                widget.partner?.pricListId.toString() ?? "0"));
+                        print("ddddddddd1 " + "${widget.partner?.pricListId}");
+                        print("ddddddddd12 " +
+                            "${context.read<DirectSellCubit>().selectedPriceList}");
+                      }
+                    }
+
                     Navigator.pushNamed(context, Routes.productsRoute,
                         arguments: ["products".tr(), '-1']);
                   },
@@ -183,17 +200,20 @@ class _BasketScreenState extends State<BasketScreen> {
                                   ? Container()
                                   : InkWell(
                                       onTap: () {
-                                        directSellCubit.newAllDiscountController.text =
-                                            '0.0'.toString();
-                                        customShowBottomSheet(context,
-                                            directSellCubit.newAllDiscountController,
+                                        directSellCubit.newAllDiscountController
+                                            .text = '0.0'.toString();
+                                        customShowBottomSheet(
+                                            context,
+                                            directSellCubit
+                                                .newAllDiscountController,
                                             onPressed: () {
                                           if (double.parse(directSellCubit
                                                   .newAllDiscountController.text
                                                   .toString()) <
                                               100) {
-                                            directSellCubit.onChnageAllDiscountOfUnit(
-                                                context);
+                                            directSellCubit
+                                                .onChnageAllDiscountOfUnit(
+                                                    context);
                                           } else {
                                             errorGetBar(
                                                 'discount_validation'.tr());
@@ -253,9 +273,10 @@ class _BasketScreenState extends State<BasketScreen> {
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 10.0),
                                   child: RoundedButton(
-                                    text: directSellCubit.selectedShipping == null
-                                        ? 'اضافة شحن'.tr()
-                                        : 'تغيير الشحن'.tr(),
+                                    text:
+                                        directSellCubit.selectedShipping == null
+                                            ? 'اضافة شحن'.tr()
+                                            : 'تغيير الشحن'.tr(),
                                     onPressed: () {
                                       // context
                                       //     .read<DirectSellCubit>()
@@ -343,8 +364,9 @@ class _BasketScreenState extends State<BasketScreen> {
                                                             isExpanded: true,
                                                             onChanged: (int?
                                                                 newValue) {
-                                                              directSellCubit.changeShipping(
-                                                                  newValue!); // Store the ID in cubit
+                                                              directSellCubit
+                                                                  .changeShipping(
+                                                                      newValue!); // Store the ID in cubit
                                                             },
                                                             items: directSellCubit
                                                                     .getAllShippingModel
@@ -367,8 +389,9 @@ class _BasketScreenState extends State<BasketScreen> {
                                                       ),
                                                       CustomTextField(
                                                         labelText: "السعر",
-                                                        controller: directSellCubit
-                                                            .priceController,
+                                                        controller:
+                                                            directSellCubit
+                                                                .priceController,
                                                         borderRadius: 8,
                                                         keyboardType:
                                                             TextInputType
@@ -384,7 +407,8 @@ class _BasketScreenState extends State<BasketScreen> {
                                                                     .priceController
                                                                     .text
                                                                     .isEmpty ||
-                                                                directSellCubit.selectedShipping ==
+                                                                directSellCubit
+                                                                        .selectedShipping ==
                                                                     null) {
                                                               errorGetBar(
                                                                   "من فضلك اضف المعلومات");
@@ -409,10 +433,10 @@ class _BasketScreenState extends State<BasketScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: RoundedButton(
-                                    text: directSellCubit.selectedCoupune == null
-                                        ? 'اضافة كوبون'.tr()
-                                        : 'تغيير الكوبون'.tr(),
-                                        
+                                    text:
+                                        directSellCubit.selectedCoupune == null
+                                            ? 'اضافة كوبون'.tr()
+                                            : 'تغيير الكوبون'.tr(),
                                     onPressed: () {
                                       // context
                                       //     .read<DirectSellCubit>()
@@ -492,8 +516,9 @@ class _BasketScreenState extends State<BasketScreen> {
                                                             isExpanded: true,
                                                             onChanged: (int?
                                                                 newValue) {
-                                                              directSellCubit.changeCoupone(
-                                                                  newValue!); // Store the ID in cubit
+                                                              directSellCubit
+                                                                  .changeCoupone(
+                                                                      newValue!); // Store the ID in cubit
                                                             },
                                                             items: directSellCubit
                                                                     .getPromotionsModel

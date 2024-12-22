@@ -47,7 +47,7 @@ class ClientsCubit extends Cubit<ClientsState> {
 
   File? profileImage;
   String selectedBase64String = "";
-  String? selectedClientType = "Company";
+  String? selectedClientType = "Indivalal";
   changeClientType(String? value) {
     selectedClientType = value;
     emit(UpdateClientType());

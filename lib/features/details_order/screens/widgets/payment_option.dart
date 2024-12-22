@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:top_sale/core/models/all_journals_model.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/core/models/all_journals_model.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
@@ -177,11 +178,14 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
                             )))
                   ],
                 ),
-                CustomTextFieldWithTitle(
-                  title: "Paid_in_full".tr(),
-                  controller: cubit.moneyController,
-                  hint: "Enter_the_amount".tr(),
-                  keyboardType: TextInputType.text,
+                Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: CustomTextFieldWithTitle(
+                    title: "Paid_in_full".tr(),
+                    controller: cubit.moneyController,
+                    hint: "Enter_the_amount".tr(),
+                    keyboardType: TextInputType.text,
+                  ),
                 ),
                 SizedBox(
                   height: 20.h,
