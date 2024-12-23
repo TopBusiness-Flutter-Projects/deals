@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import 'package:top_sale/features/details_order/cubit/details_orders_cubit.dart';
+import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import '../../../../core/models/order_details_model.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/assets_manager.dart';
@@ -222,7 +223,9 @@ class CardDetailsOrders extends StatelessWidget {
                   ),
                 ),
                 isShowPrice
-                    ? InkWell(
+                    ?
+                    !context.read<HomeCubit>().isDiscountManager ?Container():
+                     InkWell(
                         onTap: onTap,
                         child: Image.asset(
                           ImageAssets.discount,

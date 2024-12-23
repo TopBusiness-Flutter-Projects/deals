@@ -844,6 +844,7 @@ class ServiceApi {
       required String image,
       required String imagePath,
       required String shippingId,
+      required String priceListId,
       required String promotionId,
       required String shippingPrice,
       String? note}) async {
@@ -883,6 +884,8 @@ class ServiceApi {
                 "address": address,
                 if (shippingId.isNotEmpty)
                   "shipping_method_id": int.parse(shippingId),
+                if (priceListId.isNotEmpty)
+                  "price_list_id": int.parse(priceListId),
                 if (shippingPrice.isNotEmpty)
                   "shipping_cost": double.parse(shippingPrice),
                 if (promotionId.isNotEmpty)

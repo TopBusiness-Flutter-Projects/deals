@@ -64,9 +64,7 @@ class _BasketScreenState extends State<BasketScreen> {
                   onTap: () {
                     print("ddddddddd0 " + "${widget.partner?.pricListId}");
                     if (widget.partner?.pricListId != null) {
-                      if (widget.partner?.pricListId
-                              .toString() !=
-                          "false") {
+                      if (widget.partner?.pricListId.toString() != "false") {
                         context.read<DirectSellCubit>().changePriceList(
                             int.parse(
                                 widget.partner?.pricListId.toString() ?? "0"));
@@ -75,9 +73,8 @@ class _BasketScreenState extends State<BasketScreen> {
                             "${context.read<DirectSellCubit>().selectedPriceList}");
                       }
                     }
-
                     Navigator.pushNamed(context, Routes.productsRoute,
-                        arguments: ["products".tr(), '-1']);
+                        arguments: ["products".tr(), '-2']);
                   },
                   child: Container(
                     height: 30.sp,
@@ -198,46 +195,50 @@ class _BasketScreenState extends State<BasketScreen> {
                               ),
                               directSellCubit.basket.isEmpty
                                   ? Container()
-                                  : InkWell(
-                                      onTap: () {
-                                        directSellCubit.newAllDiscountController
-                                            .text = '0.0'.toString();
-                                        customShowBottomSheet(
-                                            context,
+                                  : !context.read<HomeCubit>().isDiscountManager
+                                      ? Container()
+                                      : InkWell(
+                                          onTap: () {
                                             directSellCubit
-                                                .newAllDiscountController,
-                                            onPressed: () {
-                                          if (double.parse(directSellCubit
-                                                  .newAllDiscountController.text
-                                                  .toString()) <
-                                              100) {
-                                            directSellCubit
-                                                .onChnageAllDiscountOfUnit(
-                                                    context);
-                                          } else {
-                                            errorGetBar(
-                                                'discount_validation'.tr());
-                                          }
-                                        });
+                                                .newAllDiscountController
+                                                .text = '0.0'.toString();
+                                            customShowBottomSheet(
+                                                context,
+                                                directSellCubit
+                                                    .newAllDiscountController,
+                                                onPressed: () {
+                                              if (double.parse(directSellCubit
+                                                      .newAllDiscountController
+                                                      .text
+                                                      .toString()) <
+                                                  100) {
+                                                directSellCubit
+                                                    .onChnageAllDiscountOfUnit(
+                                                        context);
+                                              } else {
+                                                errorGetBar(
+                                                    'discount_validation'.tr());
+                                              }
+                                            });
 
-                                        //! add discount
+                                            //! add discount
 
-                                        // customShowBottomSheet(
-                                        //   context,
-                                        //   cubit.controllerPercent,
-                                        //   onPressed: () {
-                                        //     //! set dis count to model
-                                        //     //! cal the new value of price
-                                        //     //! case all discout remove discount of itms first then make all and loop on them
-                                        //     //! clear controller
-                                        //   },
-                                        // );
-                                      },
-                                      child: Image.asset(
-                                        ImageAssets.discount,
-                                        width: getSize(context) / 14,
-                                      ),
-                                    ),
+                                            // customShowBottomSheet(
+                                            //   context,
+                                            //   cubit.controllerPercent,
+                                            //   onPressed: () {
+                                            //     //! set dis count to model
+                                            //     //! cal the new value of price
+                                            //     //! case all discout remove discount of itms first then make all and loop on them
+                                            //     //! clear controller
+                                            //   },
+                                            // );
+                                          },
+                                          child: Image.asset(
+                                            ImageAssets.discount,
+                                            width: getSize(context) / 14,
+                                          ),
+                                        ),
                             ],
                           ),
                         )
@@ -258,7 +259,11 @@ class _BasketScreenState extends State<BasketScreen> {
                           itemCount: directSellCubit.basket.length,
                           itemBuilder: (context, index) {
                             var item = directSellCubit.basket[index];
-                            return CustomBasketItem(item: item);
+                            return CustomBasketItem(
+                              item: item,
+                              isEditable:
+                                  context.read<HomeCubit>().isDiscountManager,
+                            );
                           },
                         ),
                   SizedBox(height: 32.h),

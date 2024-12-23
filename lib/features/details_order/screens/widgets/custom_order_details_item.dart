@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
+import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import '../../../../core/models/order_details_model.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
@@ -99,55 +100,60 @@ class _CustomOrderDetailsShowPriceItemState
                           ),
                           widget.isReturned == true
                               ? SizedBox()
-                              : InkWell(
-                                  onTap: () {
-                                    cubit2.newDiscountController.text =
-                                        widget.item.discount.toString();
-
-                                    customShowBottomSheet(
-                                        context, cubit2.newDiscountController,
-                                        onPressed: () {
-                                      if (double.parse(cubit2
-                                              .newDiscountController.text
-                                              .toString()) <
-                                          100) {
-                                        cubit2.onChnageDiscountOfUnit(
-                                            widget.item, context);
-                                      } else {
-                                        errorGetBar('discount_validation'.tr());
-                                      }
-                                    });
-
-                                    //! add discount
-                                  },
-                                  child: Image.asset(
-                                    ImageAssets.discount,
-                                    width: getSize(context) / 14,
-                                  ),
-                                ),
-                          widget.isReturned == true
-                              ? SizedBox()
-                              : Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.symmetric(
-                                          horizontal: 5.0),
-                                  child: InkWell(
+                              : !context.read<HomeCubit>().isDiscountManager
+                                  ? Container()
+                                  : InkWell(
                                       onTap: () {
-                                        cubit2.newPriceController.text =
-                                            widget.item.priceUnit.toString();
+                                        cubit2.newDiscountController.text =
+                                            widget.item.discount.toString();
 
-                                        customPriceShowBottomSheet(
-                                            context, cubit2.newPriceController,
-                                            () {
-                                          cubit2.onChnagePriceOfUnit(
-                                              widget.item, context);
+                                        customShowBottomSheet(context,
+                                            cubit2.newDiscountController,
+                                            onPressed: () {
+                                          if (double.parse(cubit2
+                                                  .newDiscountController.text
+                                                  .toString()) <
+                                              100) {
+                                            cubit2.onChnageDiscountOfUnit(
+                                                widget.item, context);
+                                          } else {
+                                            errorGetBar(
+                                                'discount_validation'.tr());
+                                          }
                                         });
+
+                                        //! add discount
                                       },
                                       child: Image.asset(
-                                        ImageAssets.edit2Icon,
-                                        width: getSize(context) / 18,
-                                      )),
-                                ),
+                                        ImageAssets.discount,
+                                        width: getSize(context) / 14,
+                                      ),
+                                    ),
+                          widget.isReturned == true
+                              ? SizedBox()
+                              : !context.read<HomeCubit>().isDiscountManager
+                                  ? Container()
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.symmetric(
+                                              horizontal: 5.0),
+                                      child: InkWell(
+                                          onTap: () {
+                                            cubit2.newPriceController.text =
+                                                widget.item.priceUnit
+                                                    .toString();
+
+                                            customPriceShowBottomSheet(context,
+                                                cubit2.newPriceController, () {
+                                              cubit2.onChnagePriceOfUnit(
+                                                  widget.item, context);
+                                            });
+                                          },
+                                          child: Image.asset(
+                                            ImageAssets.edit2Icon,
+                                            width: getSize(context) / 18,
+                                          )),
+                                    ),
                           //! delete Product
                           if (!widget.isReturned)
                             IconButton(
@@ -196,7 +202,6 @@ class _CustomOrderDetailsShowPriceItemState
                                         context, cubit2.newQtyController, () {
                                       cubit2.onChnageProductQuantity(
                                           widget.item, context);
-                                          
                                     });
                                   },
                                   child: Container(

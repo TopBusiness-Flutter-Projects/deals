@@ -42,7 +42,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     context.read<DirectSellCubit>().currentIndex = -1;
 
     /// if catId not -1 or 0 get products by cat id
-    if (widget.catId != '-1' && widget.catId != '0') {
+    if (widget.catId != '-1' && widget.catId != '0'&& widget.catId != '-2') {
       context
           .read<DirectSellCubit>()
           .getAllProductsByCatogrey(id: int.parse(widget.catId));
@@ -88,7 +88,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   widget.catId == '0'
                       ? Navigator.pushNamed(
                           context, Routes.dispensingBasketScreenRoute)
-                      : Navigator.pushNamed(context, Routes.clientsRoute,
+                      : widget.catId == '-2' ?
+                      Navigator.pop(context) :
+                       Navigator.pushNamed(context, Routes.clientsRoute,
                           arguments: ClientsRouteEnum.cart);
                 },
                 child: Padding(
@@ -150,7 +152,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               onChanged: (int? newValue) {
                                 cubit.changePriceList(newValue!);
                                 if (widget.catId != '-1' &&
-                                    widget.catId != '0') {
+                                    widget.catId != '0'&& widget.catId != '-2') {
                                   context
                                       .read<DirectSellCubit>()
                                       .getAllProductsByCatogrey(
@@ -202,7 +204,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 cubit.changeProductsStockType(
                                     newValue!); // Store the ID in cubit
                                 if (widget.catId != '-1' &&
-                                    widget.catId != '0') {
+                                    widget.catId != '0'&& widget.catId != '-2') {
                                   context
                                       .read<DirectSellCubit>()
                                       .getAllProductsByCatogrey(

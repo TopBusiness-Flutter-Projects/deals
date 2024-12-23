@@ -188,12 +188,12 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   String currencyName = '';
-  bool isAdmin = false;
+  bool isDiscountManager = false;
 
   getCurrencyName() {
     Preferences.instance.getUserModel().then((value) {
       currencyName = value.result!.defaultCurrency!.name ?? "";
-      isAdmin = value.result!.isAdmin ?? false;
+      isDiscountManager = value.result!.isDiscountManager ?? false;
     });
   }
 

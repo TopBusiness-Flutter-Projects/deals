@@ -29,6 +29,7 @@ class Result {
   String? username;
   String? partnerDisplayName;
   int? partnerId;
+  bool? isDiscountManager;
 
 
  int? propertyWarehouseId;
@@ -44,6 +45,7 @@ class Result {
     this.isAdmin = false, 
     this.partnerDisplayName,
     this.partnerId,  
+    this.isDiscountManager = false,
  
     this.userCompanies, this.propertyWarehouseId,
         this.defaultCurrency,
@@ -58,6 +60,7 @@ class Result {
         isAdmin: json["is_admin"],
                 username: json["username"],
         partnerDisplayName: json["partner_display_name"],
+        isDiscountManager: json["is_discount_manager"],
         partnerId: json["partner_id"],            
        
         userCompanies: json["user_companies"] == null
@@ -77,6 +80,7 @@ class Result {
 
         "user_companies": userCompanies?.toJson(),
         "property_warehouse_id": propertyWarehouseId,
+        "is_discount_manager": isDiscountManager,
         "default_currency": defaultCurrency?.toJson(),
       };
 }

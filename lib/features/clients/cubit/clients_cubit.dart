@@ -471,8 +471,8 @@ class ClientsCubit extends Cubit<ClientsState> {
       Navigator.pop(context);
       if (r.result != null) {
         if (r.result!.message != null) {
-          // successGetBar(r.result!.message);
-          successGetBar("add_client".tr());
+          successGetBar(r.result!.message);
+
           createOrderModel = r;
           getAllPartnersForReport();
           clientNameController.clear();
@@ -485,9 +485,12 @@ class ClientsCubit extends Cubit<ClientsState> {
           emit(CreateClientLoaded());
           Navigator.pop(context);
         } else {
+          if (r.result!.error != null) {
+            errorGetBar(r.result!.error.toString());
+          } else {
+            errorGetBar("حدث خطأ ما");
+          }
           emit(CreateClientError());
-
-          errorGetBar("حدث خطأ ما");
         }
       }
     }

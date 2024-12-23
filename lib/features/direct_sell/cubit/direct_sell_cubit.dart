@@ -427,6 +427,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
         image: selectedBase64String,
         shippingId: selectedShipping == null ? '' : selectedShipping.toString(),
         promotionId: selectedCoupune == null ? '' : selectedCoupune.toString(),
+        priceListId: selectedPriceList == null ? '' : selectedPriceList.toString(),
         shippingPrice: priceController.text,
         imagePath:
             profileImage == null ? "" : profileImage!.path.split('/').last,
