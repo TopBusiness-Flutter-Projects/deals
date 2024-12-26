@@ -192,7 +192,7 @@ void showCreateAttachmentBottomSheet(
                     children: [
                       GestureDetector(
                         onTap: () {
-                          cubit.showImageSourceDialog(context);
+                          cubit.showAttachImageSourceDialog(context);
                         }, // Use the passed camera function
                         child: Container(
                           height: 150,
@@ -200,7 +200,7 @@ void showCreateAttachmentBottomSheet(
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: cubit.profileImage == null
+                          child: cubit.attachImage == null
                               ? Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -219,7 +219,7 @@ void showCreateAttachmentBottomSheet(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.file(
                                     // Display the image using Image.file
-                                    File(cubit.profileImage!.path),
+                                    File(cubit.attachImage!.path),
                                     errorBuilder:
                                         (context, error, stackTrace) => Center(
                                       child: Padding(
@@ -238,7 +238,7 @@ void showCreateAttachmentBottomSheet(
                       ),
                       IconButton(
                           onPressed: () {
-                            cubit.removeImage();
+                            cubit.removeAttachImage();
                           },
                           icon: CircleAvatar(
                               backgroundColor: AppColors.secondPrimary,

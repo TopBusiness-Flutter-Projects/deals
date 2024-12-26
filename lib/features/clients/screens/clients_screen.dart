@@ -74,6 +74,16 @@ class _ClientScreenState extends State<ClientScreen> {
                   child: GestureDetector(
                     onTap: () {
                       if (cubit.currentLocation != null) {
+                        cubit.clientNameController.clear();
+                        cubit.phoneController.clear();
+                        cubit.emailController.clear();
+                        cubit.addressController.clear();
+                        cubit.vatController.clear();
+                        cubit.profileImage = null;
+
+                        cubit.attachImage = null;
+                        cubit.selectedBase64String = '';
+                        cubit.selectedAttachBase64String = '';
                         _showBottomSheet(context, cubit);
                       } else {
                         cubit.checkAndRequestLocationPermission(context);
@@ -113,7 +123,7 @@ class _ClientScreenState extends State<ClientScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
                 children: [
-                //  if ( context.read<HomeCubit>().isAdmin)
+                  //  if ( context.read<HomeCubit>().isAdmin)
                   Row(
                     children: [
                       Expanded(
@@ -283,6 +293,7 @@ class _ClientScreenState extends State<ClientScreen> {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -298,195 +309,305 @@ class _ClientScreenState extends State<ClientScreen> {
                 bottom: MediaQuery.of(context).viewInsets.bottom +
                     getSize(context) / 20,
               ),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: cubit.formKey,
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: cubit.profileImage == null
-                              ? Image.asset(
-                                  ImageAssets.user,
-                                  height: 100.sp,
-                                  width: 100.sp,
-                                )
-                              : Image.file(
-                                  (File(cubit.profileImage!.path)),
-                                  fit: BoxFit.cover,
-                                  height: 100.h,
-                                  width: 100.h,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: AppColors.red,
+                        size: 30.sp,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: cubit.formKey,
+                        child:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: cubit.profileImage == null
+                                    ? Image.asset(
+                                        ImageAssets.user,
+                                        height: 100.sp,
+                                        width: 100.sp,
+                                      )
+                                    : Image.file(
+                                        (File(cubit.profileImage!.path)),
+                                        fit: BoxFit.cover,
+                                        height: 100.h,
+                                        width: 100.h,
+                                      ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    cubit.showImageSourceDialog(context);
+                                    // cubit.pickImage(ImageSource.gallery);
+                                  },
+                                  child: const Icon(
+                                    Icons.camera_alt,
+                                  ),
                                 ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: InkWell(
-                            onTap: () {
-                              cubit.showImageSourceDialog(context);
-                              // cubit.pickImage(ImageSource.gallery);
-                            },
-                            child: const Icon(
-                              Icons.camera_alt,
-                            ),
+                              )
+                            ],
                           ),
-                        )
-                      ],
-                    ),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ListTile(
-                            title: Text('شركة'.tr()),
-                            leading: Radio<String>(
-                              value: 'Company',
-                              groupValue: cubit.selectedClientType,
-                              onChanged: (value) {
-                                setState(() {
-                                  cubit.changeClientType(value);
-                                });
-                              },
-                            ),
+                          // SizedBox(
+                          //   height: 10.h,
+                          // ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('شركة'.tr()),
+                                  leading: Radio<String>(
+                                    value: 'Company',
+                                    groupValue: cubit.selectedClientType,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        cubit.changeClientType(value);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('فرد'.tr()),
+                                  leading: Radio<String>(
+                                    value: 'Indivalal',
+                                    groupValue: cubit.selectedClientType,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        cubit.changeClientType(value);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: Text('فرد'.tr()),
-                            leading: Radio<String>(
-                              value: 'Indivalal',
-                              groupValue: cubit.selectedClientType,
-                              onChanged: (value) {
-                                setState(() {
-                                  cubit.changeClientType(value);
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
-                    CustomTextFieldWithTitle(
-                      title: "name".tr(),
-                      controller: cubit.clientNameController,
-                      hint: "enter_name".tr(),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "enter_name".tr();
-                        } 
-                        // else if (!RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
-                        //   // Adjust the regex as needed for language-specific characters
-                        //   return "ادخل اسم حقيقي";
-                        // }
-                        return null;
-                      },
-                    ),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
-                    CustomTextFieldWithTitle(
-                      title: "phone".tr(),
-                      controller: cubit.phoneController,
-                      hint: "enter_phone".tr(),
-                      keyboardType: TextInputType.phone,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "enter_phone".tr();
-                        }
-                        //  else if (!RegExp(r'^\d{10,15}$').hasMatch(value)) {
-                        //   // Adjust the regex as needed for the desired phone format
-                        //   return "من فضلك ادخل رقم صالح";
-                        // }
-                        return null;
-                      },
-                    ),
-                    // SizedBox(
-                    //   height: getSize(context) / 30,
-                    // ),
-                    CustomTextFieldWithTitle(
-                      title: "email".tr(),
-                      isRequired: false,
-                      controller: cubit.emailController,
-                      hint: "enter_email".tr(),
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return null;
-                          // return "Please enter your email.";
-                        }
-                        //  else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
-                        //     .hasMatch(value)) {
-                        //   // Adjust the regex as needed for stricter validation
-                        //   return "من فضلك ادخل بريد صالح";
-                        // }
-                        return null;
-                      },
-                    ),
-                    // SizedBox(
-                    //   height: getSize(context) / 30,
-                    // ),
-
-                    CustomTextFieldWithTitle(
-                      title: "address".tr(),
-                      controller: cubit.addressController,
-                      isRequired: false,
-                      hint: "enter_address".tr(),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                    ),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
-
-                    cubit.selectedClientType == 'Company'
-                        ? CustomTextFieldWithTitle(
-                            title: "الرقم الضريبي".tr(),
-                            controller: cubit.vatController,
-                            hint: "الرقم الضريبي".tr(),
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.done,
+                          // SizedBox(
+                          //   height: 10.h,
+                          // ),
+                          CustomTextFieldWithTitle(
+                            title: "name".tr(),
+                            controller: cubit.clientNameController,
+                            hint: "enter_name".tr(),
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "ادخل الرقم الضريبي";
+                                return "enter_name".tr();
                               }
-                              //  else if (!RegExp(r'^\d+$').hasMatch(value)) {
-                              //   // Adjust this regex to enforce length or other specific rules if needed
-                              //   return "ادخل رقم صالح";
+                              // else if (!RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
+                              //   // Adjust the regex as needed for language-specific characters
+                              //   return "ادخل اسم حقيقي";
                               // }
                               return null;
                             },
-                          )
-                        : const SizedBox(),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: getSize(context) / 20,
-                          right: getSize(context) / 20),
-                      child: RoundedButton(
-                        backgroundColor: AppColors.primaryColor,
-                        text: 'confirm'.tr(),
-                        onPressed: () {
-                          if (cubit.formKey.currentState!.validate()) {
-                            print("Validated");
-                            cubit.createClient(context);
-                          } else {
-                            // Handle validation failure
-                            print("Validation failed");
-                          }
-                        },
+                          ),
+                          // SizedBox(
+                          //   height: 10.h,
+                          // ),
+                          CustomTextFieldWithTitle(
+                            title: "phone".tr(),
+                            controller: cubit.phoneController,
+                            hint: "enter_phone".tr(),
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "enter_phone".tr();
+                              }
+                              //  else if (!RegExp(r'^\d{10,15}$').hasMatch(value)) {
+                              //   // Adjust the regex as needed for the desired phone format
+                              //   return "من فضلك ادخل رقم صالح";
+                              // }
+                              return null;
+                            },
+                          ),
+                          // SizedBox(
+                          //   height: getSize(context) / 30,
+                          // ),
+                          CustomTextFieldWithTitle(
+                            title: "email".tr(),
+                            isRequired: false,
+                            controller: cubit.emailController,
+                            hint: "enter_email".tr(),
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return null;
+                                // return "Please enter your email.";
+                              }
+                              //  else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                              //     .hasMatch(value)) {
+                              //   // Adjust the regex as needed for stricter validation
+                              //   return "من فضلك ادخل بريد صالح";
+                              // }
+                              return null;
+                            },
+                          ),
+                          // SizedBox(
+                          //   height: getSize(context) / 30,
+                          // ),
+
+                          CustomTextFieldWithTitle(
+                            title: "address".tr(),
+                            controller: cubit.addressController,
+                            isRequired: false,
+                            hint: "enter_address".tr(),
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                          ),
+                          // SizedBox(
+                          //   height: 10.h,
+                          // ),
+
+                          cubit.selectedClientType == 'Company'
+                              ? CustomTextFieldWithTitle(
+                                  title: "الرقم الضريبي".tr(),
+                                  controller: cubit.vatController,
+                                  hint: "الرقم الضريبي".tr(),
+                                  keyboardType: TextInputType.number,
+                                  textInputAction: TextInputAction.done,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "ادخل الرقم الضريبي";
+                                    }
+                                    //  else if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                    //   // Adjust this regex to enforce length or other specific rules if needed
+                                    //   return "ادخل رقم صالح";
+                                    // }
+                                    return null;
+                                  },
+                                )
+                              : const SizedBox(),
+                          Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: Text(
+                                "مرفقات",
+                                style: TextStyle(
+                                  fontFamily: AppStrings.fontFamily,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    cubit.showAttachImageSourceDialog(context);
+                                  }, // Use the passed camera function
+                                  child: Container(
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: cubit.attachImage == null
+                                        ? Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                    Icons.cloud_upload_outlined,
+                                                    size: 40,
+                                                    color: AppColors.primary),
+                                                SizedBox(height: 5.sp),
+                                                const Text(
+                                                  '  ارفع الصورة أو الملف',
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image.file(
+                                              // Display the image using Image.file
+                                              File(cubit.attachImage!.path),
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Image.asset(
+                                                    ImageAssets.pdfImage,
+                                                    color: AppColors.primary,
+                                                  ),
+                                                ),
+                                              ),
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      cubit.removeAttachImage();
+                                    },
+                                    icon: CircleAvatar(
+                                        backgroundColor:
+                                            AppColors.secondPrimary,
+                                        child: Icon(
+                                          Icons.close_rounded,
+                                          color: Colors.white,
+                                          size: 30,
+                                        )))
+                              ],
+                            ),
+                          ),
+                        ]),
                       ),
                     ),
-                  ]),
-                ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: getSize(context) / 20,
+                        right: getSize(context) / 20),
+                    child: RoundedButton(
+                      backgroundColor: AppColors.primaryColor,
+                      text: 'confirm'.tr(),
+                      onPressed: () {
+                        if (cubit.formKey.currentState!.validate()) {
+                          print("Validated");
+                          cubit.createClient(context);
+                        } else {
+                          // Handle validation failure
+                          print("Validation failed");
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             );
           },

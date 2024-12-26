@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     context.read<DirectSellCubit>().getCategries();
+    context.read<HomeCubit>(). getCurrencyName();
     context.read<DirectSellCubit>().getAllPricelists();
     context.read<AttendanceAndDepartureCubit>().getIp();
     // TODO: implement initState

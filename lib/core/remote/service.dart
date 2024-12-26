@@ -838,6 +838,7 @@ class ServiceApi {
       {required int partnerId,
       required String warehouseId,
       required List<ProductModelData> products,
+      required List<PromotionModel> promotionIds,
       required double lat,
       required double long,
       required String address,
@@ -866,7 +867,7 @@ class ServiceApi {
                 "discount": product.discount
               })
           .toList();
-
+      List<int> promotions = promotionIds.map((e) => e.id!).toList();
       final response = await dio.post(odooUrl + EndPoints.createQuotation,
           options: Options(
             headers: {"Cookie": "session_id=$sessionId"},
@@ -882,6 +883,7 @@ class ServiceApi {
                 "latitude": lat,
                 "longitude": long,
                 "address": address,
+                if (promotionIds.isNotEmpty) "promotion_ids": promotions,
                 if (shippingId.isNotEmpty)
                   "shipping_method_id": int.parse(shippingId),
                 if (priceListId.isNotEmpty)
@@ -1417,10 +1419,12 @@ class ServiceApi {
   Future<Either<Failure, CreateOrderModel>> createPartner({
     required String name,
     required String mobile,
+      required String image,
+      required String imagePath,
     required String email,
     required String street,
     required bool isCompany,
-    required String image,
+    required String profileImage,
     String? vat,
     required double lat,
     required double long,
@@ -1450,7 +1454,9 @@ class ServiceApi {
                 "street": street,
                 "latitude": lat,
                 "longitude": long,
-                "image": image,
+                "image": profileImage,
+                  if (image.isNotEmpty) "attachment": image,
+                if (image.isNotEmpty) "filename": imagePath,
                 "user_id": int.parse(userId),
                 if (employeeId != null) "employee_id": employeeId,
               }

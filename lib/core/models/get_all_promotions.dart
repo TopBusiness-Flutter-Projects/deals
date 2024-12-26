@@ -10,7 +10,7 @@ String getPromotionsModelToJson(GetPromotionsModel data) => json.encode(data.toJ
 
 class GetPromotionsModel {
     int? count;
-    List<Result>? result;
+    List<PromotionModel>? result;
 
     GetPromotionsModel({
         this.count,
@@ -19,7 +19,7 @@ class GetPromotionsModel {
 
     factory GetPromotionsModel.fromJson(Map<String, dynamic> json) => GetPromotionsModel(
         count: json["count"],
-        result: json["result"] == null ? [] : List<Result>.from(json["result"]!.map((x) => Result.fromJson(x))),
+        result: json["result"] == null ? [] : List<PromotionModel>.from(json["result"]!.map((x) => PromotionModel.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -28,18 +28,18 @@ class GetPromotionsModel {
     };
 }
 
-class Result {
+class PromotionModel {
     int? id;
     dynamic name;
     dynamic programType;
 
-    Result({
+    PromotionModel({
         this.id,
         this.name,
         this.programType,
     });
 
-    factory Result.fromJson(Map<String, dynamic> json) => Result(
+    factory PromotionModel.fromJson(Map<String, dynamic> json) => PromotionModel(
         id: json["id"],
         name: json["name"],
         programType: json["program_type"],

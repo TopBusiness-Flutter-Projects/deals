@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
+import 'package:top_sale/core/models/get_all_promotions.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
@@ -41,9 +42,24 @@ class _BasketScreenState extends State<BasketScreen> {
   void initState() {
     context.read<DirectSellCubit>().getAllShipping();
     context.read<DirectSellCubit>().getAllPromotions();
-    context.read<DirectSellCubit>().selectedCoupune = null;
+    context.read<DirectSellCubit>().getAllPromotions2();
+    context.read<DirectSellCubit>().selectedPromotion = null;
     context.read<DirectSellCubit>().selectedShipping = null;
     context.read<DirectSellCubit>().priceController.clear();
+    // if (context.read<DirectSellCubit>().basket.isEmpty) {
+    //   if (widget.partner?.pricListId != null) {
+    //     if (widget.partner?.pricListId.toString() != "false") {
+    //       context.read<DirectSellCubit>().changePriceList(
+    //           int.parse(widget.partner?.pricListId.toString() ?? "0"));
+    //       print("ddddddddd1 " + "${widget.partner?.pricListId}");
+    //       print("ddddddddd12 " +
+    //           "${context.read<DirectSellCubit>().selectedPriceList}");
+    //     }
+    //   }
+    //   Navigator.pushNamed(context, Routes.productsRoute,
+    //       arguments: ["products".tr(), '-2']);
+    // }
+
     super.initState();
   }
 
@@ -438,10 +454,10 @@ class _BasketScreenState extends State<BasketScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: RoundedButton(
-                                    text:
-                                        directSellCubit.selectedCoupune == null
-                                            ? 'اضافة كوبون'.tr()
-                                            : 'تغيير الكوبون'.tr(),
+                                    text: directSellCubit
+                                            .selectedPromotionsIds.isEmpty
+                                        ? 'اضافة كوبون'.tr()
+                                        : 'تعديل الكوبونات'.tr(),
                                     onPressed: () {
                                       // context
                                       //     .read<DirectSellCubit>()
@@ -472,7 +488,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                             context
                                                                 .read<
                                                                     DirectSellCubit>()
-                                                                .selectedCoupune = null;
+                                                                .selectedPromotion = null;
                                                           });
                                                         },
                                                         child:
@@ -482,8 +498,6 @@ class _BasketScreenState extends State<BasketScreen> {
                                                 content: SizedBox(
                                                   width: getSize(context),
                                                   child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
                                                     children: [
                                                       Container(
                                                         padding: EdgeInsets
@@ -505,9 +519,9 @@ class _BasketScreenState extends State<BasketScreen> {
                                                           child: DropdownButton<
                                                               int>(
                                                             value: directSellCubit
-                                                                .selectedCoupune, // This will store the ID (not the name)
+                                                                .selectedPromotion, // This will store the ID (not the name)
                                                             hint: Text(
-                                                              'اختر الكوبون '
+                                                              'اضافة كوبون '
                                                                   .tr(),
                                                               style: const TextStyle(
                                                                   color: Colors
@@ -522,8 +536,33 @@ class _BasketScreenState extends State<BasketScreen> {
                                                             onChanged: (int?
                                                                 newValue) {
                                                               directSellCubit
-                                                                  .changeCoupone(
+                                                                  .changePromotion(
                                                                       newValue!); // Store the ID in cubit
+                                                              if (newValue !=
+                                                                  null) {
+                                                                if (directSellCubit
+                                                                    .selectedPromotionsIds
+                                                                    .any((user) =>
+                                                                        user.id ==
+                                                                        newValue)) {
+                                                                  errorGetBar(
+                                                                      "الكوبون موجود بالفعل");
+                                                                } else {
+                                                                  print(
+                                                                      ':::::: remove from wrong button');
+                                                                  directSellCubit
+                                                                      .addOrRemoveUser(
+                                                                    directSellCubit
+                                                                            .getPromotionsModel
+                                                                            ?.result
+                                                                            ?.where((element) =>
+                                                                                element.id ==
+                                                                                newValue)
+                                                                            .first ??
+                                                                        PromotionModel(),
+                                                                  );
+                                                                }
+                                                              }
                                                             },
                                                             items: directSellCubit
                                                                     .getPromotionsModel
@@ -544,21 +583,44 @@ class _BasketScreenState extends State<BasketScreen> {
                                                           ),
                                                         ),
                                                       ),
+                                                      Expanded(
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Wrap(
+                                                                  children: directSellCubit
+                                                                      .selectedPromotionsIds
+                                                                      .map((promotion) => Padding(
+                                                                          padding: const EdgeInsets.all(8.0),
+                                                                          child: Chip(
+                                                                              label: Text(promotion.name ?? ''),
+                                                                              onDeleted: () {
+                                                                                directSellCubit.addOrRemoveUser(promotion);
+                                                                              })))
+                                                                      .toList()),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
                                                       const SizedBox(
                                                         height: 10,
                                                       ),
                                                       CustomButton(
-                                                          title: "اضافة",
+                                                          title: "تم",
                                                           onTap: () {
-                                                            if (directSellCubit
-                                                                    .selectedCoupune ==
-                                                                null) {
-                                                              errorGetBar(
-                                                                  "من فضلك اضف الكوبون");
-                                                            } else {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            }
+                                                            // if (directSellCubit
+                                                            //         .selectedPromotion ==
+                                                            //     null) {
+                                                            //   errorGetBar(
+                                                            //       "من فضلك اضف الكوبون");
+                                                            // } else {
+                                                            Navigator.pop(
+                                                                context);
+                                                            // }
                                                           })
                                                     ],
                                                   ),

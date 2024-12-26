@@ -8,6 +8,7 @@ import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_state.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/custom_product_section.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/scanner.dart';
+import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import '../../../config/routes/app_routes.dart';
 import 'package:top_sale/core/utils/circle_progress.dart';
 
@@ -42,7 +43,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     context.read<DirectSellCubit>().currentIndex = -1;
 
     /// if catId not -1 or 0 get products by cat id
-    if (widget.catId != '-1' && widget.catId != '0'&& widget.catId != '-2') {
+    if (widget.catId != '-1' && widget.catId != '0' && widget.catId != '-2') {
       context
           .read<DirectSellCubit>()
           .getAllProductsByCatogrey(id: int.parse(widget.catId));
@@ -88,10 +89,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   widget.catId == '0'
                       ? Navigator.pushNamed(
                           context, Routes.dispensingBasketScreenRoute)
-                      : widget.catId == '-2' ?
-                      Navigator.pop(context) :
-                       Navigator.pushNamed(context, Routes.clientsRoute,
-                          arguments: ClientsRouteEnum.cart);
+                      : widget.catId == '-2'
+                          ? Navigator.pop(context)
+                          : Navigator.pushNamed(context, Routes.clientsRoute,
+                              arguments: ClientsRouteEnum.cart);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -128,112 +129,155 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
               child: Column(children: [
                 const CustomSearchWidget(),
+                SizedBox(
+                  height: 10,
+                ),
                 if (widget.catId != '0')
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<int>(
-                              value: cubit
-                                  .selectedPriceList, // This will store the ID (not the name)
-                              hint: Text(
-                                'قائمة الأسعار'.tr(),
-                                style: const TextStyle(color: Colors.grey),
+                  IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        if (context.read<HomeCubit>().ispriceListManager) ...[
+                          Expanded(
+                            child: Container(
+                              padding:
+                                  EdgeInsets.symmetric(horizontal: 12.0.sp),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(color: Colors.grey),
                               ),
-                              icon: const Icon(Icons.arrow_drop_down,
-                                  color: Colors.grey),
-                              isExpanded: true,
-                              onChanged: (int? newValue) {
-                                cubit.changePriceList(newValue!);
-                                if (widget.catId != '-1' &&
-                                    widget.catId != '0'&& widget.catId != '-2') {
-                                  context
-                                      .read<DirectSellCubit>()
-                                      .getAllProductsByCatogrey(
-                                          id: int.parse(widget.catId));
-                                } else {
-                                  context
-                                      .read<DirectSellCubit>()
-                                      .getAllProducts();
-                                  context
-                                          .read<DirectSellCubit>()
-                                          .currentIndex ==
-                                      -1;
-                                } // Store the ID in cubit
-                              },
-                              items: cubit.getAllPriceListtsModel?.pricelists
-                                      ?.map<DropdownMenuItem<int>>(
-                                          (resultItem) {
-                                    return DropdownMenuItem<int>(
-                                      value: resultItem.pricelistId,
-                                      child: Text(resultItem.pricelistName ??
-                                          ''), // Display the name
-                                    );
-                                  }).toList() ??
-                                  [],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: cubit
-                                  .selectedProducsStockType, // This will store the ID (not the name)
-                              hint: Text(
-                                'اختر المخزن '.tr(),
-                                style: const TextStyle(color: Colors.grey),
-                              ),
-                              icon: const Icon(Icons.arrow_drop_down,
-                                  color: Colors.grey),
-                              isExpanded: true,
-                              onChanged: (String? newValue) {
-                                cubit.changeProductsStockType(
-                                    newValue!); // Store the ID in cubit
-                                if (widget.catId != '-1' &&
-                                    widget.catId != '0'&& widget.catId != '-2') {
-                                  context
-                                      .read<DirectSellCubit>()
-                                      .getAllProductsByCatogrey(
-                                          id: int.parse(widget.catId));
-                                } else {
-                                  context
-                                      .read<DirectSellCubit>()
-                                      .getAllProducts();
-                                  context
-                                          .read<DirectSellCubit>()
-                                          .currentIndex ==
-                                      -1;
-                                }
-                              },
-                              items: [
-                                DropdownMenuItem<String>(
-                                  value: 'stock',
-                                  child: Text('المخزن '.tr()),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<int>(
+                                  value: cubit
+                                      .selectedPriceList, // This will store the ID (not the name)
+                                  hint: Text(
+                                    'قائمة الأسعار'.tr(),
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                  icon: const Icon(Icons.arrow_drop_down,
+                                      color: Colors.grey),
+                                  isExpanded: true,
+                                  onChanged: (int? newValue) {
+                                    if (context
+                                        .read<HomeCubit>()
+                                        .ispriceListManager) {
+                                      cubit.changePriceList(newValue!);
+                                      if (widget.catId != '-1' &&
+                                          widget.catId != '0' &&
+                                          widget.catId != '-2') {
+                                        context
+                                            .read<DirectSellCubit>()
+                                            .getAllProductsByCatogrey(
+                                                id: int.parse(widget.catId));
+                                      } else {
+                                        context
+                                            .read<DirectSellCubit>()
+                                            .getAllProducts();
+                                        context
+                                                .read<DirectSellCubit>()
+                                                .currentIndex ==
+                                            -1;
+                                      } // Store the ID in cubit
+                                    }
+                                  },
+                                  items: cubit
+                                          .getAllPriceListtsModel?.pricelists
+                                          ?.map<DropdownMenuItem<int>>(
+                                              (resultItem) {
+                                        return DropdownMenuItem<int>(
+                                          value: resultItem.pricelistId,
+                                          child: Text(
+                                              resultItem.pricelistName ??
+                                                  '',
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp),), // Display the name
+                                        );
+                                      }).toList() ??
+                                      [],
                                 ),
-                                DropdownMenuItem<String>(
-                                  value: 'nonStock',
-                                  child: Text('الكل'.tr()),
-                                )
-                              ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                        ] else if (cubit.selectedPriceList != null) ...[
+                          Expanded(
+                              child: Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 12.0.sp),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      cubit.getAllPriceListtsModel?.pricelists
+                                              ?.firstWhere((element) =>
+                                                  element.pricelistId ==
+                                                  cubit.selectedPriceList)
+                                              .pricelistName ??
+                                          '',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    ),
+                                  ))),
+                          SizedBox(width: 10),
+                        ],
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: cubit
+                                    .selectedProducsStockType, // This will store the ID (not the name)
+                                hint: Text(
+                                  'اختر المخزن '.tr(),
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                                icon: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.grey),
+                                isExpanded: true,
+                                onChanged: (String? newValue) {
+                                  cubit.changeProductsStockType(
+                                      newValue!); // Store the ID in cubit
+                                  if (widget.catId != '-1' &&
+                                      widget.catId != '0' &&
+                                      widget.catId != '-2') {
+                                    context
+                                        .read<DirectSellCubit>()
+                                        .getAllProductsByCatogrey(
+                                            id: int.parse(widget.catId));
+                                  } else {
+                                    context
+                                        .read<DirectSellCubit>()
+                                        .getAllProducts();
+                                    context
+                                            .read<DirectSellCubit>()
+                                            .currentIndex ==
+                                        -1;
+                                  }
+                                },
+                                items: [
+                                  DropdownMenuItem<String>(
+                                    value: 'stock',
+                                    child: Text('المخزن '.tr(),
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp),),
+                                  ),
+                                  DropdownMenuItem<String>(
+                                    value: 'nonStock',
+                                    child: Text('الكل'.tr(),
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp),),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 SizedBox(
                   height: 10,

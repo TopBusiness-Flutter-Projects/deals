@@ -189,12 +189,19 @@ class HomeCubit extends Cubit<HomeState> {
 
   String currencyName = '';
   bool isDiscountManager = false;
+  bool ispriceListManager = false;
 
   getCurrencyName() {
     Preferences.instance.getUserModel().then((value) {
       currencyName = value.result!.defaultCurrency!.name ?? "";
       isDiscountManager = value.result!.isDiscountManager ?? false;
+      ispriceListManager = value.result!.isPriceListManager ?? false;
     });
+     emit(GetCurrencyNameLoaded());
+    debugPrint("currency name : $currencyName");
+    debugPrint("isDiscountManager : $isDiscountManager");
+    debugPrint("ispriceListManager : $ispriceListManager");
+   
   }
 
   DateTime selectedDate = DateTime.now();

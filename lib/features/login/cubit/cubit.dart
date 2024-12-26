@@ -66,6 +66,10 @@ class LoginCubit extends Cubit<LoginState> {
       if (r.result != null) {
         authModel = r;
         print("rrrrrrrrrrrrrrrrrr");
+        print("rrrrrrrrrrrrrrrrrr warehouse ${r.result!.propertyWarehouseId}");
+        print("rrrrrrrrrrrrrrrrrr admin ${r.result!.isAdmin}");
+        print("rrrrrrrrrrrrrrrrrr discount ${r.result!.isDiscountManager}");
+        print("rrrrrrrrrrrrrrrrrr pricelist ${r.result!.isPriceListManager}");
 
         String sessionId = isVisitor
             ? await api.getSessionId(

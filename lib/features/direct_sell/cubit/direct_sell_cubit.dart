@@ -319,14 +319,14 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     }
   }
 
-  File? profileImage;
-  String selectedBase64String = "";
-  removeImage() {
-    profileImage = null;
+  File? attachImage;
+  String selectedAttachBase64String = "";
+  removeAttachImage() {
+    attachImage = null;
     emit(FileRemovedSuccessfully());
   }
 
-  void showImageSourceDialog(
+  void showAttachImageSourceDialog(
     BuildContext context,
   ) async {
     showDialog(
@@ -340,7 +340,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                pickFile(context, true);
+                pickAttachFile(context, true);
               },
               child: Text(
                 'gallery'.tr(),
@@ -350,7 +350,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
             ),
             TextButton(
               onPressed: () async {
-                pickImage(context, false);
+                pickattachImage(context, false);
                 // var status = await Permission.camera.status;
                 // if (status.isDenied ||
                 //     status.isRestricted ||
@@ -379,13 +379,13 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     );
   }
 
-  Future pickImage(BuildContext context, bool isGallery) async {
+  Future pickattachImage(BuildContext context, bool isGallery) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
         source: isGallery ? ImageSource.gallery : ImageSource.camera);
     if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
-      selectedBase64String = await fileToBase64String(pickedFile.path);
+      attachImage = File(pickedFile.path);
+      selectedAttachBase64String = await fileToBase64String(pickedFile.path);
       emit(UpdateProfileImagePicked()); // Emit state for image picked
       Navigator.pop(context);
     } else {
@@ -393,12 +393,12 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     }
   }
 
-  Future pickFile(BuildContext context, bool isGallery) async {
+  Future pickAttachFile(BuildContext context, bool isGallery) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickMedia();
     if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
-      selectedBase64String = await fileToBase64String(pickedFile.path);
+      attachImage = File(pickedFile.path);
+      selectedAttachBase64String = await fileToBase64String(pickedFile.path);
       emit(UpdateProfileImagePicked()); // Emit state for image picked
       Navigator.pop(context);
     } else {
@@ -424,13 +424,15 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     emit(LoadingCreateQuotation());
     final result = await api.createQuotation(
         note: note,
-        image: selectedBase64String,
+        image: selectedAttachBase64String,
+        promotionIds: selectedPromotionsIds,
         shippingId: selectedShipping == null ? '' : selectedShipping.toString(),
-        promotionId: selectedCoupune == null ? '' : selectedCoupune.toString(),
-        priceListId: selectedPriceList == null ? '' : selectedPriceList.toString(),
+        promotionId:
+            selectedPromotion == null ? '' : selectedPromotion.toString(),
+        priceListId:
+            selectedPriceList == null ? '' : selectedPriceList.toString(),
         shippingPrice: priceController.text,
-        imagePath:
-            profileImage == null ? "" : profileImage!.path.split('/').last,
+        imagePath: attachImage == null ? "" : attachImage!.path.split('/').last,
         partnerId: partnerId,
         products: basket,
         warehouseId: warehouseId,
@@ -451,8 +453,8 @@ class DirectSellCubit extends Cubit<DirectSellState> {
         createOrderModel = r;
         successGetBar('Success Create Quotation');
         debugPrint("Success Create Quotation");
-        profileImage = null;
-        selectedBase64String = '';
+        attachImage = null;
+        selectedAttachBase64String = '';
 
         getOrderFromId(context, createOrderModel!.result!.orderId!);
 
@@ -662,14 +664,47 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       (failure) => emit(GetAllJournalsErrorState()),
       (r) {
         getPromotionsModel = r;
+
         emit(GetAllJournalsLoadedState());
       },
     );
   }
 
-  int? selectedCoupune;
-  void changeCoupone(int selectedPayment) {
-    selectedCoupune = selectedPayment;
+  GetPromotionsModel? getPromotionsModel2;
+  void getAllPromotions2() async {
+    emit(GetAllJournalsLoadingState());
+    final result = await api.getAllPromotions();
+    result.fold(
+      (failure) => emit(GetAllJournalsErrorState()),
+      (r) {
+        if (r.result != null) {
+          if (r.result!.isNotEmpty) {
+            selectedPromotionsIds = r.result ?? [];
+            // promotionss = r.result!;
+          }
+        }
+        emit(GetAllJournalsLoadedState());
+      },
+    );
+  }
+
+  List<PromotionModel> selectedPromotionsIds = [];
+  // List<PromotionModel> promotionss = [];
+  void addOrRemoveUser(PromotionModel promotionModel) {
+    if (selectedPromotionsIds.contains(promotionModel)) {
+      selectedPromotionsIds.remove(promotionModel);
+    } else {
+      selectedPromotionsIds.add(promotionModel);
+    }
+
+    print(
+        '::::::::::${selectedPromotionsIds.length}:::::::::${getPromotionsModel?.result?.length}');
+    emit(ChangeJournalStatee());
+  }
+
+  int? selectedPromotion;
+  void changePromotion(int selectedPayment) {
+    selectedPromotion = selectedPayment;
     emit(ChangeJournalStatee());
   }
 

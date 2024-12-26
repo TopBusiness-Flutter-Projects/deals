@@ -129,6 +129,93 @@ class ClientsCubit extends Cubit<ClientsState> {
     return base64String;
   }
 
+  File? attachImage;
+  String selectedAttachBase64String = "";
+  removeAttachImage() {
+    attachImage = null;
+    emit(FileRemovedSuccessfully());
+  }
+
+  void showAttachImageSourceDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'select_image'.tr(),
+            style: getMediumStyle(),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                pickAttachFile(context, true);
+              },
+              child: Text(
+                'gallery'.tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                pickattachImage(context, false);
+                // var status = await Permission.camera.status;
+                // if (status.isDenied ||
+                //     status.isRestricted ||
+                //     status.isPermanentlyDenied) {
+                //   if (await Permission.camera.request().isGranted) {
+                //     pickImage(context, false);
+                //   } else {
+                //     errorGetBar(
+                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
+                //   }
+
+                //   await Permission.camera.request();
+                // } else {
+                //   pickImage(context, false);
+                // }
+              },
+              child: Text(
+                "camera".tr(),
+                style:
+                    getRegularStyle(fontSize: 12.sp, color: AppColors.primary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future pickattachImage(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: isGallery ? ImageSource.gallery : ImageSource.camera);
+    if (pickedFile != null) {
+      attachImage = File(pickedFile.path);
+      selectedAttachBase64String = await fileToBase64String(pickedFile.path);
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+      Navigator.pop(context);
+    } else {
+      emit(UpdateProfileError());
+    }
+  }
+
+  Future pickAttachFile(BuildContext context, bool isGallery) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickMedia();
+    if (pickedFile != null) {
+      attachImage = File(pickedFile.path);
+      selectedAttachBase64String = await fileToBase64String(pickedFile.path);
+      emit(UpdateProfileImagePicked()); // Emit state for image picked
+      Navigator.pop(context);
+    } else {
+      emit(UpdateProfileError());
+    }
+  }
+
   List<String> Images = [
     ImageAssets.addressIcon,
     ImageAssets.invoiceIcon,
@@ -451,7 +538,9 @@ class ClientsCubit extends Cubit<ClientsState> {
     AppWidget.createProgressDialog(context, "جاري التحميل");
     emit(CreateClientLoading());
     final result = await api.createPartner(
-        image: selectedBase64String,
+        profileImage: selectedBase64String,
+        image: selectedAttachBase64String,
+        imagePath: attachImage == null ? "" : attachImage!.path.split('/').last,
         name: clientNameController.text,
         mobile: phoneController.text,
         street: addressController.text.isEmpty

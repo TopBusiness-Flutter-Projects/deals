@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_state.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/custom_category_section.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/custom_product_section.dart';
 import 'package:top_sale/features/direct_sell/screens/widgets/scanner.dart';
+import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/models/category_model.dart';
 import '../../../core/utils/app_colors.dart';
@@ -97,109 +99,161 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                               child: Column(
                                 children: [
                                   const CustomSearchWidget(),
-                                  // SizedBox(height: 25.h),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 12.0.sp),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            border:
-                                                Border.all(color: Colors.grey),
-                                          ),
-                                          child: DropdownButtonHideUnderline(
-                                            child: DropdownButton<int>(
-                                              value: cubit
-                                                  .selectedPriceList, // This will store the ID (not the name)
-                                              hint: Text(
-                                                'قائمة الأسعار'.tr(),
-                                                style: const TextStyle(
+                                  SizedBox(height: 10.h),
+                                  IntrinsicHeight(
+                                    child: Row(
+                                      children: [
+                                        if (context
+                                            .read<HomeCubit>()
+                                            .ispriceListManager) ...[
+                                          Expanded(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0.sp),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                border: Border.all(
                                                     color: Colors.grey),
                                               ),
-                                              icon: const Icon(
-                                                  Icons.arrow_drop_down,
-                                                  color: Colors.grey),
-                                              isExpanded: true,
-                                              onChanged: (int? newValue) {
-                                                cubit
-                                                    .changePriceList(newValue!);
-                                                context
-                                                    .read<DirectSellCubit>()
-                                                    .getAllProducts(
-                                                        isHome:
-                                                            true); // Store the ID in cubit
-                                              },
-                                              items: cubit
-                                                      .getAllPriceListtsModel
-                                                      ?.pricelists
-                                                      ?.map<
-                                                              DropdownMenuItem<
-                                                                  int>>(
-                                                          (resultItem) {
-                                                    return DropdownMenuItem<
-                                                        int>(
-                                                      value: resultItem
-                                                          .pricelistId,
-                                                      child: Text(resultItem
-                                                              .pricelistName ??
-                                                          ''), // Display the name
-                                                    );
-                                                  }).toList() ??
-                                                  [],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Expanded(
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 12.0.sp),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            border:
-                                                Border.all(color: Colors.grey),
-                                          ),
-                                          child: DropdownButtonHideUnderline(
-                                            child: DropdownButton<String>(
-                                              value: cubit
-                                                  .selectedProducsStockType, // This will store the ID (not the name)
-                                              hint: Text(
-                                                'اختر المخزن '.tr(),
-                                                style: const TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                              icon: const Icon(
-                                                  Icons.arrow_drop_down,
-                                                  color: Colors.grey),
-                                              isExpanded: true,
-                                              onChanged: (String? newValue) {
-                                                cubit.changeProductsStockType(
-                                                    newValue!); // Store the ID in cubit
-                                                context
-                                                    .read<DirectSellCubit>()
-                                                    .getAllProducts(
-                                                        isHome: true);
-                                              },
-                                              items: [
-                                                DropdownMenuItem<String>(
-                                                  value: 'stock',
-                                                  child: Text('المخزن '.tr()),
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                child: DropdownButton<int>(
+                                                  value: cubit
+                                                      .selectedPriceList, // This will store the ID (not the name)
+                                                  hint: Text(
+                                                    'قائمة الأسعار'.tr(),
+                                                    style: const TextStyle(
+                                                        color: Colors.grey),
+                                                  ),
+                                                  icon: const Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.grey),
+                                                  isExpanded: true,
+
+                                                  onChanged: (int? newValue) {
+                                                    if (context
+                                                        .read<HomeCubit>()
+                                                        .ispriceListManager) {
+                                                      cubit.changePriceList(
+                                                          newValue!);
+                                                      context
+                                                          .read<
+                                                              DirectSellCubit>()
+                                                          .getAllProducts(
+                                                              isHome:
+                                                                  true); // Store the ID in cubit
+                                                    }
+                                                  },
+                                                  items: cubit
+                                                          .getAllPriceListtsModel
+                                                          ?.pricelists
+                                                          ?.map<
+                                                                  DropdownMenuItem<
+                                                                      int>>(
+                                                              (resultItem) {
+                                                        return DropdownMenuItem<
+                                                            int>(
+                                                          value: resultItem
+                                                              .pricelistId,
+                                                          child: Text(resultItem
+                                                                  .pricelistName ??
+                                                              '',
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp),), // Display the name
+                                                        );
+                                                      }).toList() ??
+                                                      [],
                                                 ),
-                                                DropdownMenuItem<String>(
-                                                  value: 'nonStock',
-                                                  child: Text('الكل'.tr()),
-                                                )
-                                              ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10)
+                                        ] else if (cubit.selectedPriceList !=
+                                            null) ...[
+                                          Expanded(
+                                              child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 12.0.sp),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                        color: Colors.grey),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      cubit.getAllPriceListtsModel
+                                                              ?.pricelists
+                                                              ?.firstWhere((element) =>
+                                                                  element
+                                                                      .pricelistId ==
+                                                                  cubit
+                                                                      .selectedPriceList)
+                                                              .pricelistName ??
+                                                          '',
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp),
+                                                    ),
+                                                  ))),
+                                          SizedBox(width: 10),
+                                        ],
+                                        Expanded(
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 12.0.sp),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              border: Border.all(
+                                                  color: Colors.grey),
+                                            ),
+                                            child: DropdownButtonHideUnderline(
+                                              child: DropdownButton<String>(
+                                                value: cubit
+                                                    .selectedProducsStockType, // This will store the ID (not the name)
+                                                hint: Text(
+                                                  'اختر المخزن '.tr(),
+                                                  style: const TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                                icon: const Icon(
+                                                    Icons.arrow_drop_down,
+                                                    color: Colors.grey),
+                                                isExpanded: true,
+                                                onChanged: (String? newValue) {
+                                                  cubit.changeProductsStockType(
+                                                      newValue!); // Store the ID in cubit
+                                                  context
+                                                      .read<DirectSellCubit>()
+                                                      .getAllProducts(
+                                                          isHome: true);
+                                                },
+                                                items: [
+                                                  DropdownMenuItem<String>(
+                                                    value: 'stock',
+                                                    child: Text(
+                                                      'المخزن '.tr(),
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp),
+                                                    ),
+                                                  ),
+                                                  DropdownMenuItem<String>(
+                                                    value: 'nonStock',
+                                                    child: Text(
+                                                      'الكل'.tr(),
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 10,

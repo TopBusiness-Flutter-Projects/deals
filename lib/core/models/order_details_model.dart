@@ -228,7 +228,7 @@ class OrderLine {
         oldQty: int.parse(double.parse(json["product_uom_qty"].toString())
             .round()
             .toString()),
-        priceUnit: json["price_total"],
+        priceUnit: json["price_unit"],
         priceTotal: json["price_total"],
         discount: json["discount"],
         priceSubtotal: json["price_total"],

@@ -42,4 +42,5 @@ class DisposeMapState extends ClientsState {}
 class FailGetCarId extends ClientsState {}
 class SuccessGetCarId extends ClientsState {}
 class UpdateFilters extends ClientsState {}
+class FileRemovedSuccessfully extends ClientsState {}
 
