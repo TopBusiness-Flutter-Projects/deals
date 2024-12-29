@@ -44,9 +44,12 @@ class LoginCubit extends Cubit<LoginState> {
       required String baseUrl,
       required String database,
       required bool isEmployeeType,
+      bool isSplash = false,
       required bool isVisitor}) async {
     emit(LoadingLoginState());
-    AppWidget.createProgressDialog(context, 'انتظر');
+    if (!isSplash) {
+      AppWidget.createProgressDialog(context, 'انتظر');
+    }
     final response = isVisitor
         ? await api.login(
             phoneOrMail: AppStrings.demoUserName,
@@ -59,8 +62,13 @@ class LoginCubit extends Cubit<LoginState> {
             baseUrl: baseUrl,
             database: database);
     response.fold((l) {
-      Navigator.pop(context);
-      errorGetBar(l.message ?? '');
+      if (!isSplash) {
+        Navigator.pop(context);
+        errorGetBar(l.message ?? '');
+      } else {
+        Navigator.pushReplacementNamed(context, Routes.loginRoute);
+      }
+
       emit(FailureLoginState());
     }, (r) async {
       if (r.result != null) {
@@ -93,11 +101,13 @@ class LoginCubit extends Cubit<LoginState> {
             await Preferences.instance.setUserName(phoneOrMail);
             await Preferences.instance.setUserPass(password);
           }
-
           await Preferences.instance.setOdooUrl(baseUrl);
           await Preferences.instance.setDataBaseName(database);
         }
-        Navigator.pop(context);
+        if (!isSplash) {
+                  Navigator.pop(context);
+
+        }
         Preferences.instance.setUserId(r.result!.userContext!.uid.toString());
         Preferences.instance.setUserModel(r);
         print("wwwwwwwwwwwwww ${r.result!.propertyWarehouseId}");
@@ -112,6 +122,42 @@ class LoginCubit extends Cubit<LoginState> {
       } else {
         errorGetBar("حدث خطأ ما");
         Navigator.pop(context);
+      }
+    });
+  }
+  auth(
+      {required String phoneOrMail,
+      required String password,
+      required String baseUrl,
+      required String database,
+     }) async {
+    emit(LoadingLoginState());
+    
+   
+    final response =await api.login(
+            phoneOrMail: phoneOrMail,
+            password: password,
+            baseUrl: baseUrl,
+            database: database);
+    response.fold((l) {
+
+      emit(FailureLoginState());
+    }, (r) async {
+      if (r.result != null) {
+        authModel = r;
+        debugPrint("rrrrrrrrrrrrrrrrrr");
+        debugPrint("rrrrrrrrrrrrrrrrrr warehouse ${r.result!.propertyWarehouseId}");
+        debugPrint("rrrrrrrrrrrrrrrrrr admin ${r.result!.isAdmin}");
+        debugPrint("rrrrrrrrrrrrrrrrrr discount ${r.result!.isDiscountManager}");
+        debugPrint("rrrrrrrrrrrrrrrrrr pricelist ${r.result!.isPriceListManager}");
+        emit(SuccessLoginState());     
+        Preferences.instance.setUserId(r.result!.userContext!.uid.toString());
+        Preferences.instance.setUserModel(r);
+        print("wwwwwwwwwwwwww ${r.result!.propertyWarehouseId}");
+
+      } else {
+           emit(FailureLoginState());
+       
       }
     });
   }

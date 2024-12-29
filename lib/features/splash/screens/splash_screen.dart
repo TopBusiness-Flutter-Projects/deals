@@ -182,11 +182,11 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
-                  Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                   context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
-
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.mainRoute , (route) => false);
+                  context.read<DeleveryOrdersCubit>().getDraftOrders();
+                  context.read<TasksCubit>().changeIndex("01_in_progress");
                 } else {
-                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.loginRoute , (route) => false);
                 }
               }
             } else {
@@ -200,11 +200,20 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
-                  Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                   context.read<DeleveryOrdersCubit>().getDraftOrders();
-                   context.read<TasksCubit>().changeIndex("01_in_progress");
+                                    Navigator.pushNamedAndRemoveUntil(context, Routes.mainRoute , (route) => false);
+
+                  context.read<LoginCubit>().auth(
+                    phoneOrMail:
+                        await Preferences.instance.getMasterUserName() ?? '',
+                    password:
+                        await Preferences.instance.getMasterUserPass() ?? '',
+                    baseUrl: await Preferences.instance.getOdooUrl() ?? '',
+                    database:
+                        await Preferences.instance.getDataBaseName() ?? '');
+                  context.read<DeleveryOrdersCubit>().getDraftOrders();
+                  context.read<TasksCubit>().changeIndex("01_in_progress");
                 } else {
-                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.loginRoute , (route) => false);
                 }
               } else if (await Preferences.instance.getUserName() == null ||
                   await Preferences.instance.getUserPass() == null) {
@@ -221,11 +230,20 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
-                  Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                   context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
+                                    Navigator.pushNamedAndRemoveUntil(context, Routes.mainRoute , (route) => false);
 
+                  context.read<LoginCubit>().auth(
+                      phoneOrMail:
+                          await Preferences.instance.getUserName() ?? '',
+                      password: await Preferences.instance.getUserPass() ?? '',
+                      baseUrl: await Preferences.instance.getOdooUrl() ?? '',
+                      database:
+                          await Preferences.instance.getDataBaseName() ?? '');
+
+                  context.read<DeleveryOrdersCubit>().getDraftOrders();
+                  context.read<TasksCubit>().changeIndex("01_in_progress");
                 } else {
-                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.loginRoute , (route) => false);
                 }
               }
             }
@@ -251,72 +269,72 @@ class _SplashScreenState extends State<SplashScreen>
     }
   }
 
-  Future<void> _getStoreUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool('onBoarding') == true) {
-      if (await Preferences.instance.getDataBaseName() == null ||
-          await Preferences.instance.getOdooUrl() == null) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          Routes.registerScreen,
-          (route) => false,
-        );
-      } else {
-        if (await Preferences.instance.getEmployeeId() == null) {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            Routes.loginRoute,
-            (route) => false,
-          );
-        } else {
-          if (await Preferences.instance.getMasterUserName() == null ||
-              await Preferences.instance.getMasterUserPass() == null) {
-            if (await Preferences.instance.getUserName() == null ||
-                await Preferences.instance.getUserPass() == null) {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                Routes.loginRoute,
-                (route) => false,
-              );
-            } else {
-              String session = await context.read<LoginCubit>().setSessionId(
-                  phoneOrMail: await Preferences.instance.getUserName() ?? '',
-                  password: await Preferences.instance.getUserPass() ?? '',
-                  baseUrl: await Preferences.instance.getOdooUrl() ?? '',
-                  database: await Preferences.instance.getDataBaseName() ?? '');
-              if (session != "error") {
-                Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                 context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
+  // Future<void> _getStoreUser() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   if (prefs.getBool('onBoarding') == true) {
+  //     if (await Preferences.instance.getDataBaseName() == null ||
+  //         await Preferences.instance.getOdooUrl() == null) {
+  //       Navigator.pushNamedAndRemoveUntil(
+  //         context,
+  //         Routes.registerScreen,
+  //         (route) => false,
+  //       );
+  //     } else {
+  //       if (await Preferences.instance.getEmployeeId() == null) {
+  //         Navigator.pushNamedAndRemoveUntil(
+  //           context,
+  //           Routes.loginRoute,
+  //           (route) => false,
+  //         );
+  //       } else {
+  //         if (await Preferences.instance.getMasterUserName() == null ||
+  //             await Preferences.instance.getMasterUserPass() == null) {
+  //           if (await Preferences.instance.getUserName() == null ||
+  //               await Preferences.instance.getUserPass() == null) {
+  //             Navigator.pushNamedAndRemoveUntil(
+  //               context,
+  //               Routes.loginRoute,
+  //               (route) => false,
+  //             );
+  //           } else {
+  //             String session = await context.read<LoginCubit>().setSessionId(
+  //                 phoneOrMail: await Preferences.instance.getUserName() ?? '',
+  //                 password: await Preferences.instance.getUserPass() ?? '',
+  //                 baseUrl: await Preferences.instance.getOdooUrl() ?? '',
+  //                 database: await Preferences.instance.getDataBaseName() ?? '');
+  //             if (session != "error") {
+  //               Navigator.pushReplacementNamed(context, Routes.mainRoute);
+  //                context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
 
-              } else {
-                Navigator.pushReplacementNamed(context, Routes.loginRoute);
-              }
-            }
-          } else {
-            String session = await context.read<LoginCubit>().setSessionId(
-                phoneOrMail:
-                    await Preferences.instance.getMasterUserName() ?? '',
-                password: await Preferences.instance.getMasterUserPass() ?? '',
-                baseUrl: await Preferences.instance.getOdooUrl() ?? '',
-                database: await Preferences.instance.getDataBaseName() ?? '');
-            if (session != "error") {
-              Navigator.pushReplacementNamed(context, Routes.mainRoute);
-               context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
+  //             } else {
+  //               Navigator.pushReplacementNamed(context, Routes.loginRoute);
+  //             }
+  //           }
+  //         } else {
+  //           String session = await context.read<LoginCubit>().setSessionId(
+  //               phoneOrMail:
+  //                   await Preferences.instance.getMasterUserName() ?? '',
+  //               password: await Preferences.instance.getMasterUserPass() ?? '',
+  //               baseUrl: await Preferences.instance.getOdooUrl() ?? '',
+  //               database: await Preferences.instance.getDataBaseName() ?? '');
+  //           if (session != "error") {
+  //             Navigator.pushReplacementNamed(context, Routes.mainRoute);
+  //              context.read<DeleveryOrdersCubit>().getDraftOrders();                   context.read<TasksCubit>().changeIndex("01_in_progress");
 
-            } else {
-              Navigator.pushReplacementNamed(context, Routes.loginRoute);
-            }
-          }
-        }
-      }
-    } else {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        Routes.onboardingPageScreenRoute,
-        (route) => false,
-      );
-    }
-  }
+  //           } else {
+  //             Navigator.pushReplacementNamed(context, Routes.loginRoute);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     Navigator.pushNamedAndRemoveUntil(
+  //       context,
+  //       Routes.onboardingPageScreenRoute,
+  //       (route) => false,
+  //     );
+  //   }
+  // }
 
   // void navigateToHome() async {
   //   Future.delayed(
