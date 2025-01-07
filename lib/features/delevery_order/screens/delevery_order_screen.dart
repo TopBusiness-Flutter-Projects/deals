@@ -121,7 +121,7 @@ class _DeleveryOrderScreenState extends State<DeleveryOrderScreen> {
         width: getSize(context) / 3.5,
         decoration: BoxDecoration(
           color:
-              cubit.currentIndex == index ? AppColors.orange : AppColors.gray1,
+              cubit.currentIndex == index ? AppColors.secondry : AppColors.gray1,
           borderRadius: BorderRadius.circular(getSize(context) / 20),
         ),
         child: Center(

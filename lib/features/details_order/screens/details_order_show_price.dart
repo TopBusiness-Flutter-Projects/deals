@@ -35,13 +35,12 @@ class DetailsOrderShowPrice extends StatefulWidget {
 }
 
 class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
- 
   @override
   void initState() {
     context
         .read<DetailsOrdersCubit>()
         .getDetailsOrders(orderId: widget.orderModel.id ?? -1);
-   
+
     super.initState();
   }
 
@@ -228,33 +227,12 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                                         ),
                                       ),
                                     ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      AppColors.orange),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.print,
-                                      color: AppColors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 5.w,
-                                    ),
-                                    Text('عرض السعر',
-                                        style: TextStyle(
-                                          color: AppColors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.sp,
-                                        )),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  if (cubit.getDetailsOrdersModel!.id != null) {
+                                     Expanded(
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: InkWell(
+                                                onTap: () {
+                                                 if (cubit.getDetailsOrdersModel!.id != null) {
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
                                         return PdfViewerPage(
@@ -265,10 +243,51 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                                       },
                                     ));
                                   }
-                                },
-                              ),
-                            ),
-                          ),
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color:
+                                                            AppColors.secondry,
+                                                        width: 1.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.print,
+                                                        color:
+                                                            AppColors.secondry,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5.w,
+                                                      ),
+                                                      AutoSizeText(
+                                                        'عرض السعر',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16.sp,
+                                                            color: AppColors
+                                                                .secondry),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                            
+                                                ),
+                                          ))
+                          
                         ],
                       ),
                 Container(
@@ -305,22 +324,22 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                                   children: [
                                     AutoSizeText('show_price'.tr(),
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: AppColors.secondry,
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w600)),
                                     AutoSizeText('new'.tr(),
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: AppColors.secondry,
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w600)),
                                     AutoSizeText('delivered'.tr(),
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: AppColors.secondry,
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w600)),
                                     AutoSizeText('complete'.tr(),
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: AppColors.secondry,
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w600)),
                                   ],
@@ -334,7 +353,8 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                               FlutterStepIndicator(
                                 division: 3,
                                 height: 28.h,
-                                positiveColor: AppColors.orange,
+                                positiveColor: AppColors.secondry,
+                                progressColor: AppColors.secondry,
                                 negativeColor:
                                     const Color.fromRGBO(213, 213, 213, 1),
                                 list: cubit.list,

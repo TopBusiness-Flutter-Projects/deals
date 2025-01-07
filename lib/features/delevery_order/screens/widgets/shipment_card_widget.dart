@@ -75,24 +75,24 @@ class ShipmentCardWidget extends StatelessWidget {
                         vertical:
                             4.0.sp), // Adjust the padding values as needed(),
                     decoration: BoxDecoration(
-                        color: order.state == "sale" &&
-                                order.invoiceStatus == "to invoice" &&
-                                (order.deliveryStatus == "done" ||
-                                order.deliveryStatus == "full")
-                            ? AppColors.blue.withOpacity(0.5)
-                            : order.state == "sale" &&
-                                    order.invoiceStatus == "invoiced" &&
-                                   ( order.deliveryStatus == "done" ||
-                                    order.deliveryStatus == "full")
-                                ? AppColors.green.withOpacity(0.5)
-                                : order.state == "sale" &&
-                                        order.invoiceStatus == "to invoice" &&
-                                       ( order.deliveryStatus == "assigned" ||
-                                        order.deliveryStatus == "pending")
-                                    ? AppColors.orange.withOpacity(0.5)
-                                    : order.state == "cancel"
-                                        ? AppColors.red.withOpacity(0.5)
-                                        : Colors.transparent,
+                        // color: order.state == "sale" &&
+                        //         order.invoiceStatus == "to invoice" &&
+                        //         (order.deliveryStatus == "done" ||
+                        //             order.deliveryStatus == "full")
+                        //     ? AppColors.blue.withOpacity(0.5)
+                        //     : order.state == "sale" &&
+                        //             order.invoiceStatus == "invoiced" &&
+                        //             (order.deliveryStatus == "done" ||
+                        //                 order.deliveryStatus == "full")
+                        //         ? AppColors.green.withOpacity(0.5)
+                        //         : order.state == "sale" &&
+                        //                 order.invoiceStatus == "to invoice" &&
+                        //                 (order.deliveryStatus == "assigned" ||
+                        //                     order.deliveryStatus == "pending")
+                        //             ? AppColors.orange.withOpacity(0.5)
+                        //             : order.state == "cancel"
+                        //                 ? AppColors.red.withOpacity(0.5)
+                        //                 : Colors.transparent,
                         borderRadius:
                             BorderRadius.circular(getSize(context) / 20)),
                     child: Center(
@@ -100,18 +100,18 @@ class ShipmentCardWidget extends StatelessWidget {
                       maxLines: 1,
                       order.state == "sale" &&
                               order.invoiceStatus == "to invoice" &&
-                         ( order.deliveryStatus == "full"||
-                              order.deliveryStatus == "done")
+                              (order.deliveryStatus == "full" ||
+                                  order.deliveryStatus == "done")
                           ? "delivered".tr()
                           : order.state.toString() == "sale" &&
                                   order.invoiceStatus == "invoiced" &&
                                   (order.deliveryStatus == "full" ||
-                                  order.deliveryStatus == "done")
+                                      order.deliveryStatus == "done")
                               ? "complete".tr()
                               : order.state == "sale" &&
                                       order.invoiceStatus == "to invoice" &&
-                                     ( order.deliveryStatus == "assigned" ||
-                                      order.deliveryStatus == "pending")
+                                      (order.deliveryStatus == "assigned" ||
+                                          order.deliveryStatus == "pending")
                                   ? "new".tr()
                                   : order.state == "draft"
                                       ? "show_price".tr()
@@ -122,22 +122,22 @@ class ShipmentCardWidget extends StatelessWidget {
                         fontSize: 15.sp,
                         color: order.state == "sale" &&
                                 order.invoiceStatus == "to invoice" &&
-                               ( order.deliveryStatus == "done" ||
-                                order.deliveryStatus == "full")
+                                (order.deliveryStatus == "done" ||
+                                    order.deliveryStatus == "full")
                             ? AppColors.blue
                             : order.state == "sale" &&
                                     order.invoiceStatus == "invoiced" &&
-                                    (order.deliveryStatus == "done"||
-                                    order.deliveryStatus == "full")
+                                    (order.deliveryStatus == "done" ||
+                                        order.deliveryStatus == "full")
                                 ? AppColors.green
                                 : order.state == "sale" &&
                                         order.invoiceStatus == "to invoice" &&
-                                        (order.deliveryStatus == "assigned"||
-                                        order.deliveryStatus == "pending")
-                                    ? AppColors.orange
+                                        (order.deliveryStatus == "assigned" ||
+                                            order.deliveryStatus == "pending")
+                                    ? AppColors.secondry
                                     : order.state == "cancel"
                                         ? AppColors.red
-                                        : AppColors.orange,
+                                        : AppColors.secondry,
                       ),
                     )))
               ],
@@ -153,6 +153,7 @@ class ShipmentCardWidget extends StatelessWidget {
                     children: [
                       Image.asset(
                         ImageAssets.dateIcon,
+                        color: AppColors.secondry,
                         fit: BoxFit.contain,
                         width: getSize(context) / 14,
                         height: getSize(context) / 14,

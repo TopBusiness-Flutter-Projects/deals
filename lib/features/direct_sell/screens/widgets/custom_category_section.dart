@@ -27,7 +27,7 @@ class CustomCategorySection extends StatelessWidget {
             Text(
               "categories".tr(),
               style:
-                  getBoldStyle(color: AppColors.secondPrimary, fontSize: 20.sp),
+                  getBoldStyle(color: AppColors.secondry, fontSize: 20.sp),
             ),
             GestureDetector(
                 onTap: () {

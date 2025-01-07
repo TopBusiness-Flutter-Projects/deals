@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
-import 'package:top_sale/core/utils/app_fonts.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/core/utils/app_fonts.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'package:top_sale/core/widgets/decode_image.dart';
 import 'package:top_sale/features/Itinerary/cubit/cubit.dart';
@@ -28,6 +29,7 @@ class _ItineraryScreenState extends State<ItineraryScreen> {
     context.read<ItineraryCubit>().getEmployeeData();
     super.initState();
   }
+
   @override
   void dispose() {
     // Dispose the controller if you have one
@@ -167,7 +169,7 @@ class _ToggleSwitchWithLabelState extends State<ToggleSwitchWithLabel> {
                       child: Text(
                         cubit.carDetailsModel!.name.toString(),
                         style: TextStyle(
-                            color: AppColors.orangeThirdPrimary,
+                            color: AppColors.secondry,
                             fontWeight: FontWeight.bold,
                             fontSize: 18.sp),
                       ),
@@ -203,7 +205,7 @@ class _ToggleSwitchWithLabelState extends State<ToggleSwitchWithLabel> {
 
                       cubit.changeTrackingState();
                     },
-                    activeColor: AppColors.orangeThirdPrimary,
+                    activeColor: AppColors.secondry,
                   ),
                 ],
               ),

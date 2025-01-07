@@ -6,7 +6,8 @@ import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_strings.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/core/widgets/decode_image.dart';
-import 'package:top_sale/features/clients/screens/widgets/custom_row_profile_client.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/features/clients/screens/widgets/custom_row_profile_client.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import '../../../config/routes/app_routes.dart';
 import '../cubit/clients_cubit.dart';
@@ -126,7 +127,7 @@ class _ProfileClientState extends State<ProfileClient> {
                   child: Text(cubit.partnerModel?.phone.toString() ?? "",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          color: AppColors.orange,
+                          color: AppColors.secondry,
                           fontSize: 16.sp,
                           fontFamily: AppStrings.fontFamily)),
                 ),

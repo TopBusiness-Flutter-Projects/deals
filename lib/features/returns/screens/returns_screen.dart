@@ -80,8 +80,8 @@ class _ReturnsScreenState extends State<ReturnsScreen> {
                       ? Center(child: Text("no_data".tr()))
                       : Expanded(
                           child: ListView.builder(
-                              itemCount: cubit.returnOrderModel?.result
-                                      ?.data?.length ??
+                              itemCount: cubit
+                                      .returnOrderModel?.result?.data?.length ??
                                   0,
                               itemBuilder: (context, index) {
                                 return Column(
@@ -99,13 +99,11 @@ class _ReturnsScreenState extends State<ReturnsScreen> {
                                             boxShadow: [
                                               BoxShadow(
                                                 blurStyle: BlurStyle.outer,
-                                                color: Colors.black.withOpacity(
-                                                    0.1),
-                                                spreadRadius:
-                                                    1,
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 1,
                                                 blurRadius: 4,
-                                                offset: const Offset(0,
-                                                    1),
+                                                offset: const Offset(0, 1),
                                               ),
                                             ],
                                             color: AppColors.white,
@@ -123,68 +121,124 @@ class _ReturnsScreenState extends State<ReturnsScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-
                                                   Row(
                                                     children: [
-                                                      Icon(Icons.person, color: AppColors.gray2, size: 20.sp,),
-                                                      SizedBox(width: 5.sp,),
+                                                      Icon(
+                                                        Icons.person,
+                                                        color:
+                                                            AppColors.secondry,
+                                                        size: 20.sp,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5.sp,
+                                                      ),
                                                       AutoSizeText(
-                                                        cubit.returnOrderModel?.result?.data?.elementAt(index).employeeName ?? "",
+                                                        cubit.returnOrderModel
+                                                                ?.result?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .employeeName ??
+                                                            "",
                                                         style: getBoldStyle(
-                                                            color: AppColors.black,
+                                                            color:
+                                                                AppColors.black,
                                                             fontSize: 14.sp),
                                                       ),
                                                     ],
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5,
+                                                            right: 5,
+                                                            top: 2,
+                                                            bottom: 2),
                                                     child: AutoSizeText(
-                                                        cubit.returnOrderModel?.result?.data?.elementAt(index).date.toString().substring(0,10) ?? "",
+                                                        cubit.returnOrderModel
+                                                                ?.result?.data
+                                                                ?.elementAt(
+                                                                    index)
+                                                                .date
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 10) ??
+                                                            "",
                                                         style: getBoldStyle(
                                                             color:
-                                                            AppColors.black,
+                                                                AppColors.black,
                                                             fontSize: 14.sp)),
                                                   ),
-
                                                 ],
                                               ),
-                                              SizedBox(height: 10.sp,),
+                                              SizedBox(
+                                                height: 10.sp,
+                                              ),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   AutoSizeText(
-                                                    cubit.returnOrderModel?.result?.data?.elementAt(index).name ?? "",
+                                                    cubit.returnOrderModel
+                                                            ?.result?.data
+                                                            ?.elementAt(index)
+                                                            .name ??
+                                                        "",
                                                     style: getBoldStyle(
                                                         color: AppColors.black,
                                                         fontSize: 14.sp),
                                                   ),
                                                   AutoSizeText(
-                                                      cubit.returnOrderModel?.result?.data?.elementAt(index).amountTotal?.toStringAsFixed(0) +"  ${context.read<HomeCubit>().currencyName}",
+                                                    cubit.returnOrderModel
+                                                            ?.result?.data
+                                                            ?.elementAt(index)
+                                                            .amountTotal
+                                                            ?.toStringAsFixed(
+                                                                0) +
+                                                        "  ${context.read<HomeCubit>().currencyName}",
                                                     style: getBoldStyle(
                                                         color: AppColors.blue,
                                                         fontSize: 14.sp),
                                                   ),
-
                                                 ],
                                               ),
-                                              SizedBox(height: 10.sp,),
+                                              SizedBox(
+                                                height: 10.sp,
+                                              ),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  Text(cubit.returnOrderModel?.result?.data?.elementAt(index).status!.toString() == "false" ? "":cubit.returnOrderModel?.result?.data?.elementAt(index).status,style:getMediumStyle()),
-                              //                   GestureDetector(
-                              // onTap: () {
-                               
-                              //   Navigator.push(context, MaterialPageRoute(
-                              //     builder: (context) {
-                              //       return PdfViewerPage(
-                              //         baseUrl: EndPoints.printInvoice +
-                              //         (cubit.returnOrderModel?.result?.data?.elementAt(index).id.toString() ?? ""),
-                              //       );
-                              //     },
-                              //   ));
-                              // },
-                              // child: SvgPicture.asset(ImageAssets.printIcon)),
+                                                  Text(
+                                                      cubit.returnOrderModel
+                                                                  ?.result?.data
+                                                                  ?.elementAt(
+                                                                      index)
+                                                                  .status!
+                                                                  .toString() ==
+                                                              "false"
+                                                          ? ""
+                                                          : cubit
+                                                              .returnOrderModel
+                                                              ?.result
+                                                              ?.data
+                                                              ?.elementAt(index)
+                                                              .status,
+                                                      style: getMediumStyle()),
+                                                  //                   GestureDetector(
+                                                  // onTap: () {
+
+                                                  //   Navigator.push(context, MaterialPageRoute(
+                                                  //     builder: (context) {
+                                                  //       return PdfViewerPage(
+                                                  //         baseUrl: EndPoints.printInvoice +
+                                                  //         (cubit.returnOrderModel?.result?.data?.elementAt(index).id.toString() ?? ""),
+                                                  //       );
+                                                  //     },
+                                                  //   ));
+                                                  // },
+                                                  // child: SvgPicture.asset(ImageAssets.printIcon)),
                                                 ],
                                               )
                                             ],

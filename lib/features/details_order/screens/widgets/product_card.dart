@@ -63,7 +63,7 @@ class ProductCard extends StatelessWidget {
                         Text('عدد : $number',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: AppColors.orange,
+                              color: AppColors.secondry,
                               fontSize: getSize(context) / 28,
                             )),
                       ],
@@ -76,7 +76,7 @@ class ProductCard extends StatelessWidget {
               '$price ${order.currencyId?.name ?? ''} ',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.orange,
+                color: AppColors.secondry,
                 fontSize: getSize(context) / 28,
               ),
               //  textDirection: TextDirection!.RTL,

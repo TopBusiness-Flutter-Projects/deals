@@ -243,7 +243,6 @@ Future<String?> getEmployeePartnerId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? employeeId = preferences.getString('employeePartnerId');
     return employeeId;
- 
   }
 
 
@@ -277,5 +276,15 @@ Future<String?> getEmployeePartnerId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     int? employeeId = preferences.getInt('employeeIdWareHouse');
     return employeeId;
+  }
+    Future<bool> getIsVisitor() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool isVisitor = preferences.getBool('isVisitor') ?? false;
+    return isVisitor;
+  }
+   Future<void> setIsVisitor(bool isVisitor) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('isVisitor', isVisitor);
+    print("isVisitor = $isVisitor");
   }
 }

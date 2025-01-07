@@ -20,6 +20,7 @@ class ImageAssets {
   static const String profileBack = '$imagePath/profile_client_back.png';
   static const String noNotificationIcon = '$imagePath/no_notification.png';
   static const String dateIcon = '$imagePath/timetable-icon.png';
+  static const String odoo = '$imagePath/odoo.png';
   static const String user = '$imagePath/default_user.png';
   static const String userPayment = '$imagePath/user.png';
   static const String directSale = '$imagePath/direct_sale.png';
@@ -29,7 +30,6 @@ class ImageAssets {
   static const String profileIconPng = '$imagePath/profile_icon.png';
   static const String clients = '$imagePath/clients.png';
   static const String contactUs = '$imagePath/contactUs.png';
-  static const String qolasaImage = '$imagePath/qolasa.png';
   static const String discount = '$imagePath/discount.png';
   static const String backgroundProduct = '$imagePath/background_product.png';
   static const String notificationIconPage = '$imagePath/notification_icon.png';

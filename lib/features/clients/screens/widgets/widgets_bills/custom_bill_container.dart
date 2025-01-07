@@ -108,7 +108,9 @@ class CustomBillContainer extends StatelessWidget {
                                   },
                                 ));
                               },
-                              child: SvgPicture.asset(ImageAssets.printIcon)),
+                              child: SvgPicture.asset(
+                                ImageAssets.printIcon,
+                              )),
                         ],
                       ),
                     ],

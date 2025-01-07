@@ -66,7 +66,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                   ),
                 )
               : cubit.holidaysModel.timeOffRequests!.length == 0
-                  ? Center(child: Text("No holidays".tr()))
+                  ? Center(child: Text("لا يوجد اجالات".tr()))
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: cubit.holidaysModel.timeOffRequests!.length,

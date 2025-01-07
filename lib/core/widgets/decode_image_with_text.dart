@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 
 class CustomDecodedImageWithText extends StatelessWidget {
@@ -72,6 +72,7 @@ class CustomDecodedImageWithText extends StatelessWidget {
                 children: [
                   Image.asset(
                     ImageAssets.backgroundProduct,
+                 color:    AppColors.primary,
                     height: height,
                     width: width,
                   ),

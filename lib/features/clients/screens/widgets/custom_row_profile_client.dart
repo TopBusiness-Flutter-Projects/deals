@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 
 import '../../../../core/utils/app_strings.dart';
@@ -35,6 +36,7 @@ class CustomROW extends StatelessWidget {
                   children: [
                     Image.asset(
                       image!,
+                      color: AppColors.secondry,
                       width: 35.w,
                       height: 35.h,
                     ),

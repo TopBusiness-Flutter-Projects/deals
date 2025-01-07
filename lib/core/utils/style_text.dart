@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'app_colors.dart';
-
 class TextStyles {
     static TextStyle size18FontWidget400BlackWithOpacity4 = TextStyle(
       fontSize: 18.sp,

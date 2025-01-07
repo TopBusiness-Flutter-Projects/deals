@@ -535,9 +535,9 @@ class _BasketScreenState extends State<BasketScreen> {
                                                             isExpanded: true,
                                                             onChanged: (int?
                                                                 newValue) {
-                                                              directSellCubit
-                                                                  .changePromotion(
-                                                                      newValue!); // Store the ID in cubit
+                                                              // directSellCubit
+                                                              //     .changePromotion(
+                                                              //         newValue!); // Store the ID in cubit
                                                               if (newValue !=
                                                                   null) {
                                                                 if (directSellCubit

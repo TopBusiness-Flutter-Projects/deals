@@ -10,7 +10,10 @@ class AppWidget{
             backgroundColor: AppColors.white,
             content: Row(
               children: [
-                const CircularProgressIndicator(),
+                 CircularProgressIndicator(
+                  color: AppColors.primary,
+
+                ),
                 const SizedBox(
                   width: 16.0,
                 ),

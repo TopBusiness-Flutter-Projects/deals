@@ -40,10 +40,10 @@ class CustomCategoryWidget extends StatelessWidget {
                 height: getheightSize(context) / 12,
                 width: getheightSize(context) / 12,
                 decoration: BoxDecoration(
-                    color: AppColors.orangeThirdPrimary,
+                    color: AppColors.secondry,
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: AppColors.orangeThirdPrimary, width: 1.8)),
+                        color: AppColors.secondry, width: 1.8)),
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(1000),
                     child: image == "false"

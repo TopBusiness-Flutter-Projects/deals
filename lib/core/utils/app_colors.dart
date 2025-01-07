@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'hex_color.dart';
 
 class AppColors {
-  static Color primary = HexColor('#1E487F');
+  static Color primary = HexColor('#A05A8C');
   static Color primaryText = HexColor('#373737');
+  static Color primaryColor = HexColor('#A05A8C');
   static Color secondPrimary = HexColor('#1E487F');
-  static Color orangeThirdPrimary = HexColor('#FF9201');
+  static Color blue = HexColor('#A05A8C');
+   static Color orange = HexColor('#1E487F');
+   static Color secondry = HexColor('#734A68');
+  static Color orangeThirdPrimary = HexColor('#8F8F8F');
   static Color blueLiteColor = HexColor('#00B3DC');
   static Color blueTextColor = HexColor('#5663FF');
   static Color grayTextColor = HexColor('#6E7FAA');
@@ -15,15 +19,8 @@ class AppColors {
   static Color scaffoldColor = HexColor('#F5F5F5');
   static Color avatarColor = HexColor('#96B2B5');
   static Color purpelColor = HexColor('#9C45E0');
-
-
-
-
-
   static Color primaryHint = HexColor('#B2B2B2');
   static Color primaryGrey = HexColor('#525252');
-
-
   static Color hint = Colors.grey;
   static Color blackLite = Colors.black54;
   static Color error = Colors.red;
@@ -34,23 +31,22 @@ class AppColors {
   static Color grayLite = Colors.grey[700]!;
   static Color gray1 = HexColor('#D3D3D3');
   static Color gray2 = HexColor('#225862');
-  // static Color gray6 = HexColor('#A7A7A7');
-  // static Color gray7 = HexColor('#A0A1A0');
+
   static Color red = HexColor('#FF0000');
   static Color blue3 = const Color(0xff3646ff);
   static Color greyColor = const Color(0xffB2B2B2);
-  static Color primaryColor = const Color(0xff1E487F);
+
   static Color grey2Color = const Color(0xffEFEFEF);
   static Color yellowColor = const Color(0xffFF9201);
   static Color bink = HexColor('#FF9F9F');
   static Color purple1 = HexColor('#854AA4');
   static Color purple1light = HexColor('#E3D2FE');
-  static Color blue = HexColor('#1E487F');
+
   static Color blue1 = HexColor('#CBDFF8');
   static Color blue2 = HexColor('#8290F8');
   static Color blue4 = const Color(0xff3E3F68);
   static Color bluelight = HexColor('#D7EAF9');
-  static Color orange = HexColor('#FE7C04');
+ 
   static Color orangeLight = HexColor('#FF9201');
   static Color orangelight = HexColor('#FFEAD7');
   static Color green = HexColor('#01880A');

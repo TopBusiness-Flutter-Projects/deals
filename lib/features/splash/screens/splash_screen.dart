@@ -200,8 +200,8 @@ class _SplashScreenState extends State<SplashScreen>
                     database:
                         await Preferences.instance.getDataBaseName() ?? '');
                 if (session != "error") {
-                                    Navigator.pushNamedAndRemoveUntil(context, Routes.mainRoute , (route) => false);
-
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.mainRoute , (route) => false);
+                  
                   context.read<LoginCubit>().auth(
                     phoneOrMail:
                         await Preferences.instance.getMasterUserName() ?? '',

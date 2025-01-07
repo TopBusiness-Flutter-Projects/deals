@@ -104,11 +104,11 @@ class _MainScreenState extends State<MainScreen> {
                             'assets/images/home1.png',
                             width: getSize(context) / 22,
                             color: cubit.currentIndex == 0
-                                ? AppColors.orange
+                                ? AppColors.primaryColor
                                 : Colors.black,
                           ),
                           title: Text('home'.tr()),
-                          selectedColor: AppColors.orange,
+                          selectedColor: AppColors.primaryColor,
                         ),
 
                         /// Likes
@@ -117,11 +117,11 @@ class _MainScreenState extends State<MainScreen> {
                             'assets/images/basket1.png',
                             width: getSize(context) / 22,
                             color: cubit.currentIndex == 1
-                                ? AppColors.orange
+                                ? AppColors.primaryColor
                                 : Colors.black,
                           ),
                           title: Text('basket'.tr()),
-                          selectedColor: AppColors.orange,
+                          selectedColor: AppColors.primaryColor,
                         ),
 
                         /// Search
@@ -130,11 +130,11 @@ class _MainScreenState extends State<MainScreen> {
                             'assets/images/hr1.png',
                             width: getSize(context) / 22,
                             color: cubit.currentIndex == 2
-                                ? AppColors.orange
+                                ? AppColors.primaryColor
                                 : Colors.black,
                           ),
                           title: Text('hr'.tr()),
-                          selectedColor: AppColors.orange,
+                          selectedColor: AppColors.primaryColor,
                         ),
 
                         /// Profile
@@ -143,11 +143,11 @@ class _MainScreenState extends State<MainScreen> {
                             'assets/images/menu1.png',
                             width: getSize(context) / 22,
                             color: cubit.currentIndex == 3
-                                ? AppColors.orange
+                                ? AppColors.primaryColor
                                 : Colors.black,
                           ),
                           title: Text('menu'.tr()),
-                          selectedColor: AppColors.orange,
+                          selectedColor: AppColors.primaryColor,
                         ),
                       ],
                       backgroundColor: Colors.white70,

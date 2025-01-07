@@ -85,6 +85,7 @@ class CustomPaymentContainer extends StatelessWidget {
                         children: [
                           Image.asset(
                             ImageAssets.userPayment,
+                            color: AppColors.secondry,
                             width: 30.w,
                             height: 30.w,
                           ),

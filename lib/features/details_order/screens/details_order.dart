@@ -108,12 +108,11 @@ class _DetailsOrderState extends State<DetailsOrder> {
                     icon: Text("return_order".tr(),
                         style: TextStyle(
                           fontFamily: AppStrings.fontFamily,
-                          color: AppColors.secondPrimary,
+                          color: AppColors.primary,
                           fontWeight: FontWeight.w700,
                           fontSize: 18.sp,
                         )))
           ],
-          
           backgroundColor: AppColors.white,
           centerTitle: false,
           leading: IconButton(
@@ -291,16 +290,23 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                 child: InkWell(
                                                     onTap: () {
                                                       Navigator.pop(context);
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                        builder: (context) {
-                                                          return PdfViewerPage(
-                                                            baseUrl:
-                                                                '${EndPoints.printPayment}${cubit.getDetailsOrdersModel!.payments![0].paymentId.toString()}',
-                                                          );
-                                                          // return PaymentWebViewScreen(url: "",);
-                                                        },
-                                                      ));
+                                                      _showPaymentBottomSheet(
+                                                          context,
+                                                          paymentId: cubit
+                                                              .getDetailsOrdersModel!
+                                                              .payments![0]
+                                                              .paymentId
+                                                              .toString());
+                                                      // Navigator.push(context,
+                                                      //     MaterialPageRoute(
+                                                      //   builder: (context) {
+                                                      //     return PdfViewerPage(
+                                                      //       baseUrl:
+                                                      //           '${EndPoints.printPayment}${cubit.getDetailsOrdersModel!.payments![0].paymentId.toString()}',
+                                                      //     );
+                                                      //     // return PaymentWebViewScreen(url: "",);
+                                                      //   },
+                                                      // ));
                                                     },
                                                     child: Text(
                                                         "طباعة سند القبض")),
@@ -415,40 +421,10 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                   ),
                                                 ),
                                           Expanded(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: ElevatedButton(
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          AppColors.orange),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.print,
-                                                      color: AppColors.white,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5.w,
-                                                    ),
-                                                    AutoSizeText(
-                                                      'delivery_order'.tr(),
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 16.sp,
-                                                          color:
-                                                              AppColors.white),
-                                                    ),
-                                                  ],
-                                                ),
-                                                onPressed: () {
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: InkWell(
+                                                onTap: () {
                                                   setState(() {
                                                     if (cubit
                                                         .getDetailsOrdersModel!
@@ -467,9 +443,47 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                     }
                                                   });
                                                 },
-                                              ),
-                                            ),
-                                          ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color:
+                                                            AppColors.secondry,
+                                                        width: 1.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.print,
+                                                        color:
+                                                            AppColors.secondry,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5.w,
+                                                      ),
+                                                      AutoSizeText(
+                                                        'delivery_order'.tr(),
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16.sp,
+                                                            color: AppColors
+                                                                .secondry),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                          ))
                                         ],
                                       )
                                     :
@@ -513,50 +527,17 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                             });
                                                           },
                                                           backgroundColor:
-                                                              AppColors.blue,
+                                                              AppColors
+                                                                  .secondry,
                                                         ),
                                                       ),
                                                     ),
                                               Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(AppColors
-                                                                  .orange),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.print,
-                                                          color:
-                                                              AppColors.white,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5.w,
-                                                        ),
-                                                        Text(
-                                                          'order_sales'.tr(),
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 16.sp,
-                                                              color: AppColors
-                                                                  .white),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    onPressed: () {
+                                                  child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: InkWell(
+                                                    onTap: () {
                                                       setState(() {
                                                         if (cubit
                                                                 .getDetailsOrdersModel!
@@ -576,9 +557,49 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                         }
                                                       });
                                                     },
-                                                  ),
-                                                ),
-                                              ),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: AppColors
+                                                                .secondry,
+                                                            width: 1.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
+                                                      ),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 8.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.print,
+                                                            color: AppColors
+                                                                .secondry,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5.w,
+                                                          ),
+                                                          AutoSizeText(
+                                                            'order_sales'.tr(),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 16.sp,
+                                                                color: AppColors
+                                                                    .secondry),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ))
                                             ],
                                           )
                                         : widget.orderModel.state == 'sale' &&
@@ -652,45 +673,12 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                       : const Expanded(
                                                           child: SizedBox()),
                                                   Expanded(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10.0),
-                                                      child: ElevatedButton(
-                                                        style: ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all(AppColors
-                                                                      .orange),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Icon(
-                                                              Icons.print,
-                                                              color: AppColors
-                                                                  .white,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5.w,
-                                                            ),
-                                                            Text('invoice'.tr(),
-                                                                style:
-                                                                    TextStyle(
-                                                                  color:
-                                                                      AppColors
-                                                                          .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                        onPressed: () {
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10.0),
+                                                    child: InkWell(
+                                                        onTap: () {
                                                           _showInvoicesBottomSheet(
                                                               context,
                                                               invoiceId: cubit
@@ -699,9 +687,54 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                                                   .invoiceId
                                                                   .toString());
                                                         },
-                                                      ),
-                                                    ),
-                                                  ),
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: AppColors
+                                                                    .secondry,
+                                                                width: 1.5),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        30),
+                                                          ),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  vertical:
+                                                                      8.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Icon(
+                                                                Icons.print,
+                                                                color: AppColors
+                                                                    .secondry,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 5.w,
+                                                              ),
+                                                              AutoSizeText(
+                                                                'invoice'.tr(),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    color: AppColors
+                                                                        .secondry),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )),
+                                                  ))
                                                 ],
                                               )
                                             :
@@ -752,22 +785,22 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                       children: [
                                         AutoSizeText('show_price'.tr(),
                                             style: TextStyle(
-                                                color: Colors.grey,
+                                                color: AppColors.secondry,
                                                 fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600)),
                                         AutoSizeText('new'.tr(),
                                             style: TextStyle(
-                                                color: Colors.grey,
+                                                color: AppColors.secondry,
                                                 fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600)),
                                         AutoSizeText('delivered'.tr(),
                                             style: TextStyle(
-                                                color: Colors.grey,
+                                                color: AppColors.secondry,
                                                 fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600)),
                                         AutoSizeText('complete'.tr(),
                                             style: TextStyle(
-                                                color: Colors.grey,
+                                                color: AppColors.secondry,
                                                 fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600)),
                                       ],
@@ -779,7 +812,8 @@ class _DetailsOrderState extends State<DetailsOrder> {
                                   FlutterStepIndicator(
                                     division: 3,
                                     height: 28.h,
-                                    positiveColor: AppColors.orange,
+                                    positiveColor: AppColors.secondry,
+                                    progressColor: AppColors.secondry,
                                     negativeColor:
                                         const Color.fromRGBO(213, 213, 213, 1),
                                     list: cubit.list,
@@ -885,6 +919,120 @@ void _showInvoicesBottomSheet(
                       builder: (context) {
                         return PdfViewerPage(
                           baseUrl: '${EndPoints.printposInvoice}${invoiceId}',
+                        );
+                        // return PaymentWebViewScreen(url: "",);
+                      },
+                    ));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.w, left: 10.w),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          ImageAssets.receiptIcon,
+                          height: 35.h,
+                        ),
+                        SizedBox(width: 20.w),
+                        Text(
+                          "طباعة (RECIPT)".tr(),
+                          style: TextStyle(
+                            // color: AppColors.primary,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+}
+
+void _showPaymentBottomSheet(
+  BuildContext context, {
+  required String paymentId,
+}) {
+  showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: getSize(context) / 20,
+            right: getSize(context) / 20,
+            top: getSize(context) / 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom +
+                getSize(context) / 20,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "طباعة الفاتورة".tr(),
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return PdfViewerPage(
+                          baseUrl: '${EndPoints.printPayment}${paymentId}',
+                        );
+                        // return PaymentWebViewScreen(url: "",);
+                      },
+                    ));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.w, left: 10.w),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          ImageAssets.invoicedIcon,
+                          height: 35.h,
+                        ),
+                        SizedBox(width: 20.w),
+                        Text(
+                          "طباعة (A4)".tr(),
+                          style: TextStyle(
+                            // color: AppColors.primary,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return PdfViewerPage(
+                          baseUrl: '${EndPoints.printPosPayment}${paymentId}',
                         );
                         // return PaymentWebViewScreen(url: "",);
                       },

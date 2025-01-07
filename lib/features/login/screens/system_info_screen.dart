@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:top_sale/core/preferences/preferences.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_strings.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
@@ -21,6 +22,13 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+@override
+  void initState() {
+Preferences.instance.setIsVisitor(false);
+ Preferences.instance.removeEmployeeIdNumber();
+ Preferences.instance.removeEmployeeId();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
@@ -89,37 +97,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           baseUrl: cubit.odooLinkController.text,
                           database: cubit.dbNumberController.text);
                     } else {
-                    
                       errorGetBar("من فضلك املأ الحقول");
                       print('Form is Not valid');
                     }
                   }),
-          
-           Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            // InkWell(
-                            //     onTap: () {
-                            //       Navigator.pushNamed(
-                            //           context, Routes.registerScreen);
-                            //     },
-                            //     child: Text('login'.tr())),
-                            InkWell(
-                                onTap: () {
-                                  cubit.login(context,
-                                      isVisitor: true,
-                                      isEmployeeType: false,
-                                      phoneOrMail: "",
-                                      password: "",
-                                      baseUrl: "",
-                                      database: "");
-                                },
-                                child: Text('try_the_app'.tr(),
-                                    style: TextStyle(
-                                        color: AppColors.orangeThirdPrimary)))
-                          ])),  ]),
+              Padding(
+                  padding: const EdgeInsets.only(top: 15.0, bottom: 20.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // InkWell(
+                        //     onTap: () {
+                        //       Navigator.pushNamed(
+                        //           context, Routes.registerScreen);
+                        //     },
+                        //     child: Text('login'.tr())),
+                        InkWell(
+                            onTap: () {
+                              cubit.login(context,
+                                  isVisitor: true,
+                                  isEmployeeType: false,
+                                  phoneOrMail: "",
+                                  password: "",
+                                  baseUrl: "",
+                                  database: "");
+                            },
+                            child: Text('try_the_app'.tr(),
+                                style: TextStyle(
+                                    color: AppColors.orangeThirdPrimary))),
+                      ])),
+            ]),
           )));
     });
   }

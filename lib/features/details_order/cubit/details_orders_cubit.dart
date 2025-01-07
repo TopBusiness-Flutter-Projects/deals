@@ -554,6 +554,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
         } else {
           errorGetBar((r.result!.error ?? "error".tr()));
         }
+      }else{
+        errorGetBar(( "error".tr()));
       }
       //  updateOrderModel = r;
       // successGetBar('Success Update Quotation');

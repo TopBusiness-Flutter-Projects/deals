@@ -31,8 +31,7 @@ class ContactUsScreen extends StatelessWidget {
                 ImageAssets.topBusinessLogo,
                 scale: 4,
               ),
-              SizedBox(height: getSize(context) / 40),
-              SizedBox(height: getSize(context) / 40),
+              SizedBox(height: 60.h),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -63,7 +62,11 @@ class ContactUsScreen extends StatelessWidget {
                       }
                     },
                     child: ListTile(
-                      leading: Image.asset(cubit.Images[index],width: 25.w,height: 25.h,),
+                      leading: Image.asset(
+                        cubit.Images[index],
+                        width: 25.w,
+                        height: 25.h,
+                      ),
                       title: Text(
                         cubit.Texts[index],
                         style: TextStyle(
@@ -77,7 +80,21 @@ class ContactUsScreen extends StatelessWidget {
                 itemCount: 3,
               ),
               SizedBox(
-                height: 100.h,
+                height: 70.h,
+              ),
+              InkWell(
+                onTap: () {
+                  cubit.launchURL(
+                    "https://www.odoo.com/partners/top-business-1314088?grade_id=2&country_id=64",
+                  );
+                },
+                child: Image.asset(
+                  ImageAssets.odoo,
+                  scale: 4,
+                ),
+              ),
+              SizedBox(
+                height: 70.h,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,7 +108,11 @@ class ContactUsScreen extends StatelessWidget {
                   // ),
                   GestureDetector(
                       onTap: () => cubit.launchURL(cubit.links['web']!),
-                      child: Image.asset(ImageAssets.webIcon,height: 40.h,width: 40.w,)),
+                      child: Image.asset(
+                        ImageAssets.webIcon,
+                        height: 40.h,
+                        width: 40.w,
+                      )),
                   SizedBox(
                     width: 4.w,
                   ),
@@ -109,7 +130,11 @@ class ContactUsScreen extends StatelessWidget {
                   // ),
                   GestureDetector(
                       onTap: () => cubit.launchURL(cubit.links['facebook']!),
-                      child: Image.asset(ImageAssets.facebookIcon,height: 40.h,width: 40.w,)),
+                      child: Image.asset(
+                        ImageAssets.facebookIcon,
+                        height: 40.h,
+                        width: 40.w,
+                      )),
                 ],
               )
             ],

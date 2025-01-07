@@ -55,9 +55,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   _scrollListener() {
     if (scrollController.position.maxScrollExtent == scrollController.offset) {
+      print('bottom');
+      print(context.read<DirectSellCubit>().allProductsModel.result!.page);
       //! pagination
       if (context.read<DirectSellCubit>().allProductsModel.result!.page !=
-          null) {
+              null &&
+          context.read<DirectSellCubit>().allProductsModel.result!.page <
+              context
+                  .read<DirectSellCubit>()
+                  .allProductsModel
+                  .result!
+                  .totalPages) {
         context.read<DirectSellCubit>().getAllProducts(
             isGetMore: true,
             pageId:
@@ -186,10 +194,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                         return DropdownMenuItem<int>(
                                           value: resultItem.pricelistId,
                                           child: Text(
-                                              resultItem.pricelistName ??
-                                                  '',
-                                                      style: TextStyle(
-                                                          fontSize: 16.sp),), // Display the name
+                                            resultItem.pricelistName ?? '',
+                                            style: TextStyle(fontSize: 16.sp),
+                                          ), // Display the name
                                         );
                                       }).toList() ??
                                       [],
@@ -261,15 +268,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 items: [
                                   DropdownMenuItem<String>(
                                     value: 'stock',
-                                    child: Text('المخزن '.tr(),
-                                                      style: TextStyle(
-                                                          fontSize: 16.sp),),
+                                    child: Text(
+                                      'المخزن '.tr(),
+                                      style: TextStyle(fontSize: 16.sp),
+                                    ),
                                   ),
                                   DropdownMenuItem<String>(
                                     value: 'nonStock',
-                                    child: Text('الكل'.tr(),
-                                                      style: TextStyle(
-                                                          fontSize: 16.sp),),
+                                    child: Text(
+                                      'الكل'.tr(),
+                                      style: TextStyle(fontSize: 16.sp),
+                                    ),
                                   )
                                 ],
                               ),
@@ -418,6 +427,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   children: [
                                     Image.asset(
                                       ImageAssets.nodata,
+                                      color: AppColors.secondry,
                                       width: getSize(context) / 8,
                                     ),
                                     Text("no_data".tr()),
@@ -477,7 +487,7 @@ class CustomCategoryText extends StatelessWidget {
           text,
           style: getMediumStyle(
               fontSize: 18.sp,
-              color: isSelected ? AppColors.red : AppColors.primaryText),
+              color: isSelected ? AppColors.primary : AppColors.primaryText),
         ),
         // IntrinsicHeight(
         //   child: Container(

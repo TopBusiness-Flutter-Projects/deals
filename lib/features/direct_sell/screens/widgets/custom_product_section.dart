@@ -45,7 +45,7 @@ class _CustomProductSectionState extends State<CustomProductSection> {
                         child: Text(
                           "products".tr(),
                           style: getBoldStyle(
-                              color: AppColors.secondPrimary, fontSize: 20.sp),
+                              color: AppColors.secondry, fontSize: 20.sp),
                         ),
                       ),
                       GestureDetector(

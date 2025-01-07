@@ -103,15 +103,15 @@ class LoginCubit extends Cubit<LoginState> {
           }
           await Preferences.instance.setOdooUrl(baseUrl);
           await Preferences.instance.setDataBaseName(database);
+        } else {
+          Preferences.instance.setIsVisitor(true);
         }
         if (!isSplash) {
-                  Navigator.pop(context);
-
+          Navigator.pop(context);
         }
         Preferences.instance.setUserId(r.result!.userContext!.uid.toString());
         Preferences.instance.setUserModel(r);
         print("wwwwwwwwwwwwww ${r.result!.propertyWarehouseId}");
-
         if (isEmployeeType) {
           //  isEmplyee = true;
           Navigator.pushNamed(context, Routes.loginRoute);
@@ -125,39 +125,46 @@ class LoginCubit extends Cubit<LoginState> {
       }
     });
   }
-  auth(
-      {required String phoneOrMail,
-      required String password,
-      required String baseUrl,
-      required String database,
-     }) async {
-    emit(LoadingLoginState());
-    
-   
-    final response =await api.login(
-            phoneOrMail: phoneOrMail,
-            password: password,
-            baseUrl: baseUrl,
-            database: database);
-    response.fold((l) {
 
+  auth({
+    required String phoneOrMail,
+    required String password,
+    required String baseUrl,
+    required String database,
+  }) async {
+    emit(LoadingLoginState());
+
+    final response = await api.login(
+        phoneOrMail: phoneOrMail,
+        password: password,
+        baseUrl: baseUrl,
+        database: database);
+    response.fold((l) {
       emit(FailureLoginState());
     }, (r) async {
       if (r.result != null) {
         authModel = r;
         debugPrint("rrrrrrrrrrrrrrrrrr");
-        debugPrint("rrrrrrrrrrrrrrrrrr warehouse ${r.result!.propertyWarehouseId}");
+        debugPrint(
+            "rrrrrrrrrrrrrrrrrr warehouse ${r.result!.propertyWarehouseId}");
         debugPrint("rrrrrrrrrrrrrrrrrr admin ${r.result!.isAdmin}");
-        debugPrint("rrrrrrrrrrrrrrrrrr discount ${r.result!.isDiscountManager}");
-        debugPrint("rrrrrrrrrrrrrrrrrr pricelist ${r.result!.isPriceListManager}");
-        emit(SuccessLoginState());     
+        debugPrint(
+            "rrrrrrrrrrrrrrrrrr discount ${r.result!.isDiscountManager}");
+        debugPrint(
+            "rrrrrrrrrrrrrrrrrr pricelist ${r.result!.isPriceListManager}");
+        String sessionId = await api.getSessionId(
+            phone: phoneOrMail,
+            password: password,
+            baseUrl: baseUrl,
+            database: database);
+        emit(SuccessLoginState());
+        await Preferences.instance.setSessionId(sessionId);
+        emit(SuccessLoginState());
         Preferences.instance.setUserId(r.result!.userContext!.uid.toString());
         Preferences.instance.setUserModel(r);
         print("wwwwwwwwwwwwww ${r.result!.propertyWarehouseId}");
-
       } else {
-           emit(FailureLoginState());
-       
+        emit(FailureLoginState());
       }
     });
   }

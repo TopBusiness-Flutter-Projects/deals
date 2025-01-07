@@ -36,7 +36,7 @@ class _MenuScreenWidgetState extends State<MenuScreenWidget> {
       child: Stack(
         children: [
           Scaffold(
-            backgroundColor: AppColors.blue,
+            backgroundColor: AppColors.secondry,
             body: SafeArea(
               child:
                   BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
@@ -64,19 +64,16 @@ class _MenuScreenWidgetState extends State<MenuScreenWidget> {
                             padding: EdgeInsets.only(
                               left: lang == 'ar' ? getSize(context) / 5 : 0,
                             ),
-                            child:Text(
-                                context
-                                        .read<HomeCubit>()
-                                        .nameOfUser
-                                        .toString() ??
-                                    "",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: AppColors.white,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold),
-                              )),
+                            child: Text(
+                              context.read<HomeCubit>().nameOfUser.toString() ??
+                                  "",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold),
+                            )),
                         SizedBox(height: getSize(context) / 4),
                       ],
                     ),
@@ -198,16 +195,16 @@ class _MenuScreenWidgetState extends State<MenuScreenWidget> {
                           decoration: BoxDecoration(
                             borderRadius:
                                 BorderRadius.circular(getSize(context) / 6.2),
-                            color: AppColors.orangeThirdPrimary,
+                            color: AppColors.primary,
                           ),
                           child: Center(
                             child: Icon(
                               Icons.arrow_back
-                              
+
                               // lang == 'ar'
                               //     ? Icons.arrow_back
                               //     : Icons.arrow_forward
-                                  ,
+                              ,
                               color: AppColors.white,
                             ),
                           ),

@@ -151,6 +151,7 @@ class _CustomOrderDetailsShowPriceItemState
                                           },
                                           child: Image.asset(
                                             ImageAssets.edit2Icon,
+                                            color: AppColors.secondry,
                                             width: getSize(context) / 18,
                                           )),
                                     ),

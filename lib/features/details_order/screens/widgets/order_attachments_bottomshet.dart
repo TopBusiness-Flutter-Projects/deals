@@ -105,7 +105,7 @@ void showCancelAttachmentBottomSheet(
                             cubit.removeImage();
                           },
                           icon: CircleAvatar(
-                              backgroundColor: AppColors.secondPrimary,
+                              backgroundColor: AppColors.primary,
                               child: Icon(
                                 Icons.close_rounded,
                                 color: Colors.white,
@@ -241,7 +241,7 @@ void showCreateAttachmentBottomSheet(
                             cubit.removeAttachImage();
                           },
                           icon: CircleAvatar(
-                              backgroundColor: AppColors.secondPrimary,
+                              backgroundColor: AppColors.primary,
                               child: Icon(
                                 Icons.close_rounded,
                                 color: Colors.white,

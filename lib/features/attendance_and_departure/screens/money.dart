@@ -122,7 +122,7 @@ class _MoneyScreenState extends State<MoneyScreen> {
                                             .toString()
                                             .substring(0, 11),
                                         style: TextStyle(
-                                          color: AppColors.orange,
+                                          color: AppColors.secondry,
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
                                         ),

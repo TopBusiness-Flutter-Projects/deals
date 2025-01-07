@@ -102,7 +102,8 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     response.fold((l) {
       emit(ErrorProduct());
     }, (right) async {
-      print("sucess cubit");
+      print("sucess cubit + ${right.result?.page ?? "null"}");
+      print("sucess cubit + ${right.result?.limit.toString()}");
       if (isHome) {
         homeProductsModel = right;
         updateUserOrderedQuantities(homeProductsModel);
@@ -114,9 +115,10 @@ class DirectSellCubit extends Cubit<DirectSellState> {
                 ...allProductsModel.result!.products!,
                 ...right.result!.products!
               ],
+              page: right.result!.page,
+              totalPages: right.result!.totalPages,
             ),
           );
-
           updateUserOrderedQuantities(allProductsModel);
         } else {
           allProductsModel = right;

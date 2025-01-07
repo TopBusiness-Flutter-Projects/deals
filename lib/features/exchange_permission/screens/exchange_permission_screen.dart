@@ -147,7 +147,7 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
                                                             "",
                                                         style: getBoldStyle(
                                                             color: AppColors
-                                                                .orange,
+                                                                .secondry,
                                                             fontSize: 14.sp),
                                                       ),
                                                       Container(
@@ -177,7 +177,7 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
                                                                 ""),
                                                             style: getBoldStyle(
                                                                 color: AppColors
-                                                                    .orange,
+                                                                    .secondry,
                                                                 fontSize:
                                                                     14.sp),
                                                           ),

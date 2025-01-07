@@ -125,6 +125,7 @@ class CardDetailsOrders extends StatelessWidget {
                     children: [
                       Image.asset(
                         ImageAssets.dateIcon,
+                          color: AppColors.secondry,
                         fit: BoxFit.contain,
                         width: getSize(context) / 14,
                         height: getSize(context) / 14,

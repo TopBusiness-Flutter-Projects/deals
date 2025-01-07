@@ -24,7 +24,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
     final _formKey = GlobalKey<FormState>();
-
+@override
+  void initState() {
+Preferences.instance.setIsVisitor(false);
+ Preferences.instance.removeEmployeeIdNumber();
+ Preferences.instance.removeEmployeeId();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
@@ -191,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                      
                       }),
                   Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
+                  padding: const EdgeInsets.only(top: 15.0, bottom: 20.0),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

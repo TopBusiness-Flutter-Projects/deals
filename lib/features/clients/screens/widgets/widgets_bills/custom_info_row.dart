@@ -11,8 +11,6 @@ import 'package:top_sale/features/home_screen/cubit/cubit.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 
-
-
 class CustomInfoRow extends StatelessWidget {
   const CustomInfoRow({
     super.key,
@@ -26,6 +24,8 @@ class CustomInfoRow extends StatelessWidget {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SvgPicture.asset(
         path,
+        color: AppColors.primary,
+
         // width: 24.w,
         // height: 24.w,
       ),
@@ -58,6 +58,7 @@ class TotalRow extends StatelessWidget {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SvgPicture.asset(
         path,
+        color: AppColors.primary,
         // width: 22.w,
         // height: 22.w,
       ),
@@ -99,7 +100,8 @@ class TotalRow extends StatelessWidget {
 class OrderStatusRow extends StatelessWidget {
   const OrderStatusRow({
     super.key,
-    required this.isCurrent, required this.withPrice,
+    required this.isCurrent,
+    required this.withPrice,
   });
 
   final bool isCurrent;
@@ -117,7 +119,8 @@ class OrderStatusRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                isCurrent ? ImageAssets.moneyIcon: ImageAssets.moneyIcon,
+                isCurrent ? ImageAssets.moneyIcon : ImageAssets.moneyIcon,
+                color: AppColors.secondry,
                 width: 22.w,
                 height: 22.w,
               ),
@@ -126,24 +129,18 @@ class OrderStatusRow extends StatelessWidget {
               ),
               Flexible(
                 child: Text(
-
-withPrice ?
+                  withPrice
+                      ?
 // the service is with offerd price
 
-
-
-
-                  isCurrent
-                      ? "waitingTechniciansAccept".tr()
-                      : "techniciansArrive".tr()
-                      
-                      :// the service is without offerd price
-                      
                       isCurrent
-                      ? "waitingInspectionFromTechnicians".tr()
-                      : "inspectionDone".tr()
-                      
-                      ,
+                          ? "waitingTechniciansAccept".tr()
+                          : "techniciansArrive".tr()
+                      : // the service is without offerd price
+
+                      isCurrent
+                          ? "waitingInspectionFromTechnicians".tr()
+                          : "inspectionDone".tr(),
                   style: getRegularStyle(
                     color: AppColors.secondPrimary,
                   ),

@@ -55,7 +55,9 @@ class CustomProductWidget extends StatelessWidget {
                                     child: Stack(
                                     children: [
                                       Image.asset(
-                                          ImageAssets.backgroundProduct),
+                                        ImageAssets.backgroundProduct,
+                                        color: AppColors.primary,
+                                      ),
                                       Text(
                                           product.name!.length > 5
                                               ? product.name!.substring(0, 4)
@@ -66,9 +68,9 @@ class CustomProductWidget extends StatelessWidget {
                                     ],
                                   ))
                                 :
-                               // Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYHcZPvy01X61yORcPE1zIvf7xnqkxS0-b8g&s")
-                                 CustomDecodedImageWithText(
-                                   // context: context,
+                                // Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYHcZPvy01X61yORcPE1zIvf7xnqkxS0-b8g&s")
+                                CustomDecodedImageWithText(
+                                    // context: context,
                                     character: product.name!
                                         .trimLeft() // Remove only leading whitespace
                                         .substring(
@@ -77,12 +79,9 @@ class CustomProductWidget extends StatelessWidget {
                                                 ? 4
                                                 : product.name!.length)
                                         .toString(),
-                                   // base64String: AppStrings.base64image,
-                                     base64String: product.image1920,
-                                  
-                                  )
-                                  )
-                                  ,
+                                    // base64String: AppStrings.base64image,
+                                    base64String: product.image1920,
+                                  )),
                       ),
                       SizedBox(
                         height: 8.h,
@@ -204,7 +203,7 @@ class CustomProductWidget extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(getSize(context) / 44),
-                  color: AppColors.orange,
+                  color: AppColors.secondry,
                 ),
                 child: Text(
                   product.stockQuantity.toInt().toString(),

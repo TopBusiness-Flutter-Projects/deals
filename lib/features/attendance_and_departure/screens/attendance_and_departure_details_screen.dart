@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:top_sale/core/utils/app_colors.dart';import 'package:top_sale/core/utils/circle_progress.dart';
+import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
@@ -351,7 +352,7 @@ class AttendanceInfoRow extends StatelessWidget {
               value,
               style: TextStyle(
                   fontSize: 16.sp,
-                  color: isBold ? AppColors.secondPrimary : Colors.grey[700],
+                  color: isBold ? AppColors.secondry : Colors.grey[700],
                   fontWeight: isBold ? FontWeight.bold : FontWeight.w500),
             ),
           ],

@@ -113,6 +113,7 @@ class AdvanceAndSalariesWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
                           images[index],
+                          color: AppColors.secondry,
                         ),
                       )),
                   SizedBox(

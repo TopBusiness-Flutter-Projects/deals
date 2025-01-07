@@ -169,7 +169,7 @@ class CustomSlalesCard extends StatelessWidget {
                                 salesOrder?.state == "sale" &&
                                     salesOrder?.invoiceStatus == "to invoice" &&
                                     salesOrder?.delivery_status == "full"
-                                    ? AppColors.blue
+                                    ? AppColors.secondPrimary
                                     : salesOrder?.state == "sale" &&
                                     salesOrder?.invoiceStatus == "invoiced" &&
                                     salesOrder?.delivery_status == "full"
@@ -197,6 +197,7 @@ class CustomSlalesCard extends StatelessWidget {
                     children: [
                       Image.asset(
                         ImageAssets.dateIcon,
+                        color: AppColors.secondry,
                         fit: BoxFit.contain,
                         width: getSize(context) / 14,
                         height: getSize(context) / 14,

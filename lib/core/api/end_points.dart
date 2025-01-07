@@ -45,6 +45,7 @@ class EndPoints {
   static String printOrder = '/report/pdf/sale.report_saleorder/';
   static String printPicking = '/report/pdf/stock.report_picking/';
   static String printPayment = '/report/pdf/account.report_payment_receipt/';
+  static String printPosPayment = '/report/pdf/top_rest_api.top_payment_receipt/';
   static String printInvoice =
       '/report/pdf/account.report_invoice_with_payments/';
   static String printposInvoice =

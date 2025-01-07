@@ -43,19 +43,18 @@ class _CustomSearchWidgetState extends State<CustomSearchWidget> {
                 labelText: "search_product".tr(),
                 suffixIcon: GestureDetector(
                   onTap: () {
-                    
                     cubit.clearSearchText();
                   },
                   child: Icon(
                     Icons.close,
                     size: 35,
-                    color: AppColors.gray2,
+                    color: AppColors.secondry,
                   ),
                 ),
                 prefixIcon: Icon(
                   Icons.search_rounded,
                   size: 35,
-                  color: AppColors.gray2,
+                  color: AppColors.secondry,
                 ),
               ),
             ),
@@ -142,7 +141,7 @@ class Scanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: AppColors.secondPrimary,
+          color: AppColors.secondry,
           borderRadius: BorderRadius.all(Radius.circular(12))),
       child: Padding(
         padding: EdgeInsets.all(15.0.w),

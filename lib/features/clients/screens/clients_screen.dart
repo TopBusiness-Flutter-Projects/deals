@@ -123,7 +123,7 @@ class _ClientScreenState extends State<ClientScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
                 children: [
-                  //  if ( context.read<HomeCubit>().isAdmin)
+                    if ( context.read<HomeCubit>().isAdmin)
                   Row(
                     children: [
                       Expanded(
@@ -576,7 +576,7 @@ class _ClientScreenState extends State<ClientScreen> {
                                     },
                                     icon: CircleAvatar(
                                         backgroundColor:
-                                            AppColors.secondPrimary,
+                                            AppColors.primary,
                                         child: Icon(
                                           Icons.close_rounded,
                                           color: Colors.white,
