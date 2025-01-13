@@ -66,7 +66,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                   ),
                 )
               : cubit.holidaysModel.timeOffRequests!.length == 0
-                  ? Center(child: Text("لا يوجد اجالات".tr()))
+                  ? Center(child: Text("no_data".tr()))
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: cubit.holidaysModel.timeOffRequests!.length,
@@ -136,10 +136,10 @@ class HolidayRequestCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurStyle: BlurStyle.outer,
-            color: Colors.black.withOpacity(0.1), // لون الظل مع تقليل الشفافية
-            spreadRadius: 1, // مدى انتشار الظل
-            blurRadius: 4, // مدى نعومة الظل
-            offset: const Offset(0, 1), // الاتجاه الأفقي والرأسي للظل
+            color: Colors.black.withOpacity(0.1), 
+            spreadRadius: 1, 
+            blurRadius: 4, 
+            offset: const Offset(0, 1), 
           ),
         ],
       ),
@@ -166,7 +166,7 @@ class HolidayRequestCard extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              '$leaveType من $startDate الى $endDate',
+              '$leaveType ${"from".tr()} $startDate ${"to".tr()} $endDate',
               style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
             ),
             Column(

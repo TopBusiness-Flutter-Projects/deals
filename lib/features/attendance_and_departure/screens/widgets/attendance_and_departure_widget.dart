@@ -34,7 +34,7 @@ class _ContainerTimesFromUserInHomeScreenState
                 child: CustomLoadingIndicator(),
               ),
             )
-          : cubit.getLastAttendanceModel!.lastAttendance == null // لا يوجد ظهور
+          : cubit.getLastAttendanceModel!.lastAttendance == null 
               ? Padding(
                   padding: EdgeInsets.only(
                       top: 20.sp, left: 20.sp, right: 20.sp, bottom: 20.sp),
@@ -45,11 +45,11 @@ class _ContainerTimesFromUserInHomeScreenState
                         BoxShadow(
                           blurStyle: BlurStyle.outer,
                           color: Colors.black
-                              .withOpacity(0.1), // لون الظل مع تقليل الشفافية
-                          spreadRadius: 2, // مدى انتشار الظل
-                          blurRadius: 4, // مدى نعومة الظل
+                              .withOpacity(0.1), 
+                          spreadRadius: 2, 
+                          blurRadius: 4,
                           offset:
-                              const Offset(0, 1), // الاتجاه الأفقي والرأسي للظل
+                              const Offset(0, 1), 
                         ),
                       ],
                     ),
@@ -121,16 +121,7 @@ class _ContainerTimesFromUserInHomeScreenState
                                         children: [
                                           Text(
                                             "00:00",
-                                            // cubit
-                                            //             .getLastAttendanceModel!
-                                            //             .lastAttendance!
-                                            //             .checkIn ==
-                                            //         null
-                                            //     ? ""
-                                            //     : cubit.getLastAttendanceModel!
-                                            //         .lastAttendance!.checkIn!
-                                            //         .toString()
-                                            //         .substring(11, 16),
+                                          
                                             style: TextStyle(
                                               fontSize: 20.0.sp,
                                               color: AppColors.gray,
@@ -146,18 +137,7 @@ class _ContainerTimesFromUserInHomeScreenState
                                         children: [
                                           Text(
                                             "00:00",
-                                            // cubit
-                                            //             .getLastAttendanceModel!
-                                            //             .lastAttendance!
-                                            //             .workedHours ==
-                                            //         null
-                                            //     ? "00:00"
-                                            //     : cubit
-                                            //         .getLastAttendanceModel!
-                                            //         .lastAttendance!
-                                            //         .workedHours!
-                                            //         .toString(),
-                                            // .toStringAsFixed(0),
+                                           
                                             style: TextStyle(
                                               fontSize: 20.0.sp,
                                               color: AppColors.gray,
@@ -173,16 +153,7 @@ class _ContainerTimesFromUserInHomeScreenState
                                         children: [
                                           Text(
                                             "00:00",
-                                            // cubit
-                                            //             .getLastAttendanceModel!
-                                            //             .lastAttendance!
-                                            //             .checkOut ==
-                                            //         null
-                                            //     ? ""
-                                            //     : cubit.getLastAttendanceModel!
-                                            //         .lastAttendance!.checkOut!
-                                            //         .toString()
-                                            //         .substring(11, 16),
+                                          
                                             style: TextStyle(
                                               fontSize: 20.0.sp,
                                               color: AppColors.gray,
@@ -244,25 +215,16 @@ class _ContainerTimesFromUserInHomeScreenState
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color:
-                                        //  cubit.getLastAttendanceModel!
-                                        //             .lastAttendance!.status
-                                        //             .toString() ==
-                                        //         "check-out"
-                                        //     ?
+                                     
                                         AppColors.black
-                                    // :
-                                    // AppColors.secondPrimary
+                                
                                     ,
                                   ),
                                   child: Center(
                                     child: Text(
-                                      // cubit.getLastAttendanceModel!
-                                      //             .lastAttendance!.status
-                                      //             .toString() ==
-                                      //         "check-out"
-                                      //     ?
+                                  
                                       'attendance'.tr()
-                                      // : 'leave'.tr()
+                                    
                                       ,
                                       style: TextStyle(
                                           color: AppColors.white,
@@ -291,11 +253,11 @@ class _ContainerTimesFromUserInHomeScreenState
                         BoxShadow(
                           blurStyle: BlurStyle.outer,
                           color: Colors.black
-                              .withOpacity(0.1), // لون الظل مع تقليل الشفافية
-                          spreadRadius: 2, // مدى انتشار الظل
-                          blurRadius: 4, // مدى نعومة الظل
+                              .withOpacity(0.1),
+                          spreadRadius: 2, 
+                          blurRadius: 4,
                           offset:
-                              const Offset(0, 1), // الاتجاه الأفقي والرأسي للظل
+                              const Offset(0, 1), 
                         ),
                       ],
                     ),
@@ -305,7 +267,7 @@ class _ContainerTimesFromUserInHomeScreenState
                           Container(
                             margin: EdgeInsets.only(top: 15.h),
                             child: Table(
-                              // defaultColumnWidth: const FixedColumnWidth(110.0),
+                       
                               children: [
                                 TableRow(
                                   decoration: BoxDecoration(
@@ -401,7 +363,7 @@ class _ContainerTimesFromUserInHomeScreenState
                                                     .lastAttendance!
                                                     .workedHours!
                                                     .toString(),
-                                            // .toStringAsFixed(0),
+                                      
                                             style: TextStyle(
                                               fontSize: 20.0.sp,
                                               color: AppColors.gray,

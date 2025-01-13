@@ -73,7 +73,7 @@ class CustomTotalPriceDue extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "المستحقات".tr(),
+                  "dues".tr(),
                   style: getBoldStyle(),
                 ),
                 Text(
@@ -86,7 +86,7 @@ class CustomTotalPriceDue extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "حالة الدفع".tr(),
+                  "payment_status".tr(),
                   style: getBoldStyle(),
                 ),
                 Text(

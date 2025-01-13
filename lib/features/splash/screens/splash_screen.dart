@@ -435,7 +435,7 @@ class _SplashScreenState extends State<SplashScreen>
                     size: 40.sp,
                   ),
                   Text(
-                    'اعادة المحاولة',
+                    "retry",
                     style: TextStyle(
                         fontSize: 18.sp,
                         color: AppColors.primaryHint,

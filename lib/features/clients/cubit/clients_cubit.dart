@@ -78,21 +78,7 @@ class ClientsCubit extends Cubit<ClientsState> {
             TextButton(
               onPressed: () async {
                 pickImage(context, false);
-                // var status = await Permission.camera.status;
-                // if (status.isDenied ||
-                //     status.isRestricted ||
-                //     status.isPermanentlyDenied) {
-                //   if (await Permission.camera.request().isGranted) {
-                //     pickImage(context, false);
-                //   } else {
-                //     errorGetBar(
-                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
-                //   }
-
-                //   await Permission.camera.request();
-                // } else {
-                //   pickImage(context, false);
-                // }
+               
               },
               child: Text(
                 "camera".tr(),
@@ -161,21 +147,7 @@ class ClientsCubit extends Cubit<ClientsState> {
             TextButton(
               onPressed: () async {
                 pickattachImage(context, false);
-                // var status = await Permission.camera.status;
-                // if (status.isDenied ||
-                //     status.isRestricted ||
-                //     status.isPermanentlyDenied) {
-                //   if (await Permission.camera.request().isGranted) {
-                //     pickImage(context, false);
-                //   } else {
-                //     errorGetBar(
-                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
-                //   }
-
-                //   await Permission.camera.request();
-                // } else {
-                //   pickImage(context, false);
-                // }
+               
               },
               child: Text(
                 "camera".tr(),
@@ -535,7 +507,8 @@ class ClientsCubit extends Cubit<ClientsState> {
     String? address,
     String? vat,
   }) async {
-    AppWidget.createProgressDialog(context, "جاري التحميل");
+         AppWidget.createProgressDialog(context);
+
     emit(CreateClientLoading());
     final result = await api.createPartner(
         profileImage: selectedBase64String,
@@ -553,7 +526,7 @@ class ClientsCubit extends Cubit<ClientsState> {
         long: double.parse(currentLocation?.longitude.toString() ?? ""));
     result.fold((l) {
       Navigator.pop(context);
-      errorGetBar("حدث خطأ ما");
+      errorGetBar("error".tr());
 
       emit(CreateClientError());
     }, (r) {
@@ -577,7 +550,7 @@ class ClientsCubit extends Cubit<ClientsState> {
           if (r.result!.error != null) {
             errorGetBar(r.result!.error.toString());
           } else {
-            errorGetBar("حدث خطأ ما");
+            errorGetBar("error".tr());
           }
           emit(CreateClientError());
         }
@@ -630,7 +603,7 @@ class ClientsCubit extends Cubit<ClientsState> {
 
         if (r.result != null) {
           if (r.result.toString() == "true") {
-            successGetBar("تم تحديث الموقع بنجاح");
+            successGetBar("location_changed".tr());
             getPartenerDetails(id: id);
           }
         }
@@ -645,7 +618,8 @@ class ClientsCubit extends Cubit<ClientsState> {
     required int id,
   }) async {
     emit(ProfileClientLoading());
-    AppWidget.createProgressDialog(context, "جاري التحميل");
+          AppWidget.createProgressDialog(context);
+
     final result = await api.updatePartenerDetails(
       image1920: selectedBase64String,
       name: nameController.text,
@@ -664,7 +638,7 @@ class ClientsCubit extends Cubit<ClientsState> {
 
         if (r.result != null) {
           if (r.result.toString() == "true") {
-            successGetBar("تم تحديث البيانات بنجاح");
+            successGetBar( "data_updated".tr());
             getPartenerDetails(id: id);
             nameController.clear();
             phoneController.clear();

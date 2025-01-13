@@ -52,24 +52,15 @@ class NotificationWidget extends StatelessWidget {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      // cubit.notificationModel
-                      //         ?.data?[index].title
-                      //         ?.toString() ??
+                     
                       "طلب جديد",
                       style:getBoldStyle(fontweight: FontWeight.w700,fontSize: 16.sp,color:AppColors.secondPrimary),
                       maxLines: 1,
-                      // TextStyle(
-                      //     color: AppColors.primary,
-                      //     fontWeight:
-                      //         FontWeight.bold,
-                      //     fontSize: 16.sp
-                      // ),
+                     
                     ),
                     Flexible(
                       child: Text(
-                        // cubit.notificationModel
-                        //         ?.data?[index].body
-                        //         ?.toString() ??
+                     
                           'تم اضافة طلب جديد للتوصيل يمكنك الاطلاع عليه فى الطالبات الحالية'.tr(),
                           overflow:
                           TextOverflow.ellipsis,

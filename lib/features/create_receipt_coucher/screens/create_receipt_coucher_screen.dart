@@ -73,11 +73,10 @@ class _CreateReceiptCoucherScreenState
                                                   size: 40,
                                                   color: AppColors.primary),
                                               SizedBox(height: 5.sp),
-                                              const Text(
-                                                '  ارفع الصورة أو الملف',
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
+                                              Text(
+                                        "upload_pic_or_file".tr(),
+                                        style: const TextStyle(color: Colors.grey),
+                                      ),
                                             ],
                                           ),
                                         )
@@ -223,41 +222,7 @@ class _CreateReceiptCoucherScreenState
                             ),
                           ),
                         ),
-                  //  Container(
-                  //     padding: EdgeInsets.symmetric(horizontal: 12.0.sp),
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(8.0),
-                  //       border: Border.all(color: Colors.grey),
-                  //     ),
-                  //     child: DropdownButtonHideUnderline(
-                  //       child: DropdownButton<int>(
-                  //         value: cubit.selectedPaymentMethod!,
-                  //         hint: Text(
-                  //           'choose_payment_method'.tr(),
-                  //           style: const TextStyle(color: Colors.grey),
-                  //         ),
-                  //         icon: const Icon(Icons.arrow_drop_down,
-                  //             color: Colors.grey),
-                  //         isExpanded: true,
-                  //         onChanged: (int? newValue) {
-                  //           setState(() {
-                  //             cubit.selectedPaymentMethod =
-                  //                 newValue; // تخزين الـ ID في cubit
-                  //           });
-                  //         },
-                  //         items: cubit.getAllJournalsModel?.result
-                  //                 ?.map<DropdownMenuItem<int>>(
-                  //                     (resultItem) {
-                  //               return DropdownMenuItem<int>(
-                  //                 value: resultItem.id,
-                  //                 child: Text(resultItem.displayName ??
-                  //                     ''), // عرض الاسم
-                  //               );
-                  //             }).toList() ??
-                  //             [],
-                  //       ),
-                  //     ),
-                  //   )
+              
                 ],
               ),
             ),
@@ -267,7 +232,7 @@ class _CreateReceiptCoucherScreenState
             CustomTextFieldWithTitle(
               validator: (value) {
                 if (value!.isEmpty) {
-                  return "ادخل الملغ المدفوع ".tr();
+                  return "enter_money".tr();
                 }
                 return null;
               },
@@ -279,7 +244,7 @@ class _CreateReceiptCoucherScreenState
             CustomTextFieldWithTitle(
               validator: (value) {
                 if (value!.isEmpty) {
-                  return "ادخل البيان ".tr();
+                  return "enter_statement".tr();
                 }
                 return null;
               },
@@ -304,7 +269,7 @@ class _CreateReceiptCoucherScreenState
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('يرجى ملء جميع الحقول المطلوبة'.tr()),
+                      content: Text("please_enter_fields".tr()),
                       backgroundColor: Colors.red,
                     ),
                   );

@@ -1,13 +1,18 @@
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:top_sale/core/preferences/preferences.dart';
+import 'package:top_sale/core/utils/app_strings.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
+import 'package:top_sale/core/utils/restart_app_class.dart';
 import 'package:top_sale/core/widgets/decode_image.dart';
 import 'package:top_sale/features/home_screen/cubit/cubit.dart';
+import 'package:top_sale/features/main/screens/main_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/utils/app_colors.dart';
@@ -87,9 +92,38 @@ class _MenuScreenWidgetState extends State<MenuScreenWidget> {
                     MenuListTileWidget(
                       iconPath: ImageAssets.editIcon,
                       onclick: () {
-                        Navigator.pushNamed(context, Routes.tasksRoute);
+                        context.read<HomeCubit>().isEmployeeAdded
+                            ? Navigator.pushNamed(context, Routes.tasksRoute)
+                            : showEmployeeBottomSheet(
+                                context, context.read<HomeCubit>(), false);
                       },
                       title: 'tasks'.tr(),
+                    ),
+                    MenuListTileWidget(
+                      iconPath: ImageAssets.languageIcon,
+                      onclick: () async {
+                         if (EasyLocalization.of(context)!
+                                              .locale
+                                              .languageCode ==
+                                          'ar') {
+                                        EasyLocalization.of(context)!
+                                            .setLocale(Locale('en', ''));
+                                        Preferences.instance
+                                            .savedLang(AppStrings.englishCode);
+                                        Preferences.instance.getSavedLang();
+                                        HotRestartController.performHotRestart(
+                                            context);
+                                      } else {
+                                        EasyLocalization.of(context)!
+                                            .setLocale(Locale('ar', ''));
+                                        Preferences.instance
+                                            .savedLang(AppStrings.arabicCode);
+                                        Preferences.instance.getSavedLang();
+                                        HotRestartController.performHotRestart(
+                                            context);
+                                      }
+                      },
+                      title: 'lang'.tr(),
                     ),
                     MenuListTileWidget(
                       iconPath: ImageAssets.shareIcon,

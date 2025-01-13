@@ -218,7 +218,7 @@ class AppRoutes {
         List<String> categoryName = settings.arguments as List<String>;
         // if catId = -1 or 0 get all products
         // else get products by cat id
-        // if catId = 0 the basket icon go to اذن الصرف screen , else go to client screen
+        // if catId = 0 the basket icon go to expenses screen , else go to client screen
         // categoryName  => AppBar title
         return MaterialPageRoute(
           builder: (context) => ProductsScreen(

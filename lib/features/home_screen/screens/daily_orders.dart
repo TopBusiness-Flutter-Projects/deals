@@ -31,7 +31,7 @@ class _DailyOrdersState extends State<DailyOrders> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        title: Text('التخطيط'.tr()),
+        title: Text("planninig".tr()),
         centerTitle: false,
         titleTextStyle: getBoldStyle(
           fontSize: 20.sp,

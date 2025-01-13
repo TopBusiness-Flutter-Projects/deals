@@ -25,8 +25,8 @@ class NotificationDialog extends StatelessWidget {
             ),
           ),
           // const SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-          Padding(
-            padding: const EdgeInsets.symmetric(
+          const Padding(
+            padding: EdgeInsets.symmetric(
                 horizontal: 10),
             child: Text(
              // notificationModel?.title ?? '',
@@ -38,8 +38,8 @@ class NotificationDialog extends StatelessWidget {
               ),
             ),
 
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
             child: Text(
               "ديي النوتيفيكشن",
              // notificationModel?.body ?? '',

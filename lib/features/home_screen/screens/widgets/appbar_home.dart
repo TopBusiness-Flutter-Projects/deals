@@ -55,41 +55,41 @@ class _AppbarHomeState extends State<AppbarHome> {
               ],
             ),
           ),
-          SizedBox(
-            height: 20.sp,
-            child: Stack(
-              children: [
-                //
+          // SizedBox(
+          //   height: 20.sp,
+          //   child: Stack(
+          //     children: [
+          //       //
 
-                GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.notificationRoute);
-                    },
-                    child: Icon(
-                      Icons.notifications_none,
-                      size: 25.sp,
-                      color: AppColors.black,
-                    )),
-                Positioned(
-                  width: 13.sp,
-                  height: 13.sp,
-                  child: Container(
-                    width: 10.sp,
-                    height: 10.sp,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(50.sp),
-                    ),
-                    child: Center(
-                        child: Text(
-                      "1",
-                      style: TextStyle(fontSize: 10.sp, color: AppColors.white),
-                    )),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          //       GestureDetector(
+          //           onTap: () {
+          //             Navigator.pushNamed(context, Routes.notificationRoute);
+          //           },
+          //           child: Icon(
+          //             Icons.notifications_none,
+          //             size: 25.sp,
+          //             color: AppColors.black,
+          //           )),
+          //       Positioned(
+          //         width: 13.sp,
+          //         height: 13.sp,
+          //         child: Container(
+          //           width: 10.sp,
+          //           height: 10.sp,
+          //           decoration: BoxDecoration(
+          //             color: AppColors.primaryColor,
+          //             borderRadius: BorderRadius.circular(50.sp),
+          //           ),
+          //           child: Center(
+          //               child: Text(
+          //             "1",
+          //             style: TextStyle(fontSize: 10.sp, color: AppColors.white),
+          //           )),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       );
     });

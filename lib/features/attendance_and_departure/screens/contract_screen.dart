@@ -55,14 +55,14 @@ class _ContractScreenState extends State<ContractScreen> {
                 child: CustomLoadingIndicator(),
               )
             : cubit.contractDetails!.contractDetails == null
-                ? Text("لا يوجد معلومات")
+                ? Text("no_data".tr())
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 20.h),
                       Text(
-                        "رقم العقد/ ${cubit.contractDetails?.contractDetails?.displayName}",
+                        "${"contract_number".tr()} ${cubit.contractDetails?.contractDetails?.displayName}",
                         style: getBoldStyle(color: AppColors.primary),
                       ),
                       SizedBox(height: 20.h),

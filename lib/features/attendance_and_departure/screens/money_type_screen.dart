@@ -31,7 +31,6 @@ class _MoneyTypeScreenState extends State<MoneyTypeScreen> {
     super.initState();
   }
 
-  List<String> titles = ["بنزين العربية", "صيانة العربية", ""];
 
   @override
   Widget build(BuildContext context) {
@@ -168,8 +167,8 @@ void _showBottomSheet(
                                       Icon(Icons.cloud_upload_outlined,
                                           size: 40, color: AppColors.primary),
                                       SizedBox(height: 5.sp),
-                                      const Text(
-                                        '  ارفع الصورة أو الملف',
+                                       Text(
+                                        "upload_pic_or_file".tr(),
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ],

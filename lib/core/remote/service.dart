@@ -1137,7 +1137,7 @@ class ServiceApi {
     }
   }
 
-  //confirm delivery  تاكيد الاستلام اللي جاي من جديدة
+  //confirm delivery  
   Future<Either<Failure, CreateOrderModel>> confirmDelivery({
     required int pickingId,
   }) async {
@@ -1159,7 +1159,7 @@ class ServiceApi {
     }
   }
 
-  //create and validate invoice انشاء فاتورة
+  //create and validate invoice
   Future<Either<Failure, CreateOrderModel>> createAndValidateInvoice({
     required int orderId,
   }) async {
@@ -1181,7 +1181,7 @@ class ServiceApi {
     }
   }
 
-  // الدفع
+  // payment
   Future<Either<Failure, CreateOrderModel>> registerPayment(
       {required int invoiceId,
       required int journalId,
@@ -1204,7 +1204,7 @@ class ServiceApi {
               if (image.isNotEmpty) "attachment": image,
               if (image.isNotEmpty) "filename": imagePath,
 
-              "payment_method_id": 1, // ثابت
+              "payment_method_id": 1, // default
               "amount": amount
             }
           });
@@ -1285,7 +1285,7 @@ class ServiceApi {
     }
   }
 
-  // الدفع
+  // payment
   Future<Either<Failure, CreateOrderModel>> partnerPayment(
       {required int partnerId,
       required int journalId,

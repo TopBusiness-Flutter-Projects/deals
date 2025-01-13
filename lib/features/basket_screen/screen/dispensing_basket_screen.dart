@@ -77,7 +77,7 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, Routes.productsRoute,
-                        arguments: ["انشاء اذن الصرف", '0']);
+                        arguments: ["create_expense".tr(), '0']);
                   },
                   child: Container(
                     height: 30.sp,
@@ -136,31 +136,11 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                           )
                         ],
                       ),
-                    // Row(
-                    //   children: [
-                    //     Flexible(
-                    //       flex: 1,
-                    //       child: CheckboxListTile(
-                    //         title: Text('هدية ؟',
-                    //             style: getBoldStyle(fontSize: 20.sp)),
-                    //         value: cubit.isGiftt,
-                    //         onChanged: (value) {
-                    //           cubit.changeIsGift(value!);
-                    //         },
-                    //       ),
-                    //     ),
-                    //     Flexible(
-                    //       flex: 1,
-                    //       child: SizedBox(
-                    //         width: 80.w,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                   
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.h),
                       child: Text(
-                        "من",
+                        "from".tr(),
                         style: getMediumStyle(),
                       ),
                     ),
@@ -213,7 +193,7 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.h),
                         child: Text(
-                          "الي",
+                          "to".tr(),
                           style: getMediumStyle(),
                         ),
                       ),
@@ -261,7 +241,7 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                       height: 20.h,
                     ),
                     cubit2.basket.isEmpty
-                        ? Center(child: Text("لا يوجد منتجات في السلة"))
+                        ? Center(child: Text("basket_embty".tr()))
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
@@ -282,7 +262,7 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                         : cubit2.basket.isEmpty
                             ? Container()
                             : CustomButton(
-                                title: 'تأكيد اذن الصرف',
+                                title: "expense_sure".tr(),
                                 onTap: () {
                                   cubit.profileImage = null;
                                   cubit.selectedBase64String = '';
@@ -293,11 +273,11 @@ class _DispensingBasketScreenState extends State<DispensingBasketScreen> {
                                     if (cubit.selectedFromWareHouseId == null ||
                                         cubit.selectedToWareHouseId == null) {
                                       errorGetBar(
-                                          'يرجى تحديد المستودع و المستودع الخاص بك');
+                                          "please_select_index".tr());
                                     } else if (cubit.selectedFromWareHouseId ==
                                         cubit.selectedToWareHouseId) {
                                       errorGetBar(
-                                          'لا يمكنك اذن صرف من المستودع الخاص بك');
+                                         "you_cannot_expense".tr());
                                     } else {
                                       showAttachmentBottomSheet(context);
                                     }

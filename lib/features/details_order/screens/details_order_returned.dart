@@ -38,7 +38,7 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
     //     .read<DetailsOrdersCubit>()
     //     .getDetailsOrders(orderId: widget.orderModel.id ?? -1);
     context.read<DetailsOrdersCubit>().changePage(
-        // تم السليم
+        // Delivered 
         widget.orderModel.state == 'sale' &&
                 widget.orderModel.invoiceStatus == 'to invoice' &&
                 widget.orderModel.deliveryStatus == 'full'
@@ -85,7 +85,7 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
             listener: (context, state) {
           if (state is ConfirmDeliveryLoadedState) {
             setState(() {
-              // تم السليم
+              // Dellivered 
               widget.orderModel.state = 'sale';
               widget.orderModel.invoiceStatus = 'to invoice';
               widget.orderModel.deliveryStatus = 'full';
@@ -93,7 +93,7 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
             cubit.changePage(2);
           }
           if (state is CreateAndValidateInvoiceLoadedState) {
-            // مكتملة
+            // complete
             setState(() {
               widget.orderModel.state = 'sale';
               widget.orderModel.invoiceStatus = 'invoiced';
@@ -211,7 +211,7 @@ class _DetailsOrderReturnsState extends State<DetailsOrderReturns> {
                                   //         [])
                                 ),
                               
-                                //     تم التسليييييييييييييم
+                                //     Delivered
                                  Row(
                                         children: [
                                           Expanded(

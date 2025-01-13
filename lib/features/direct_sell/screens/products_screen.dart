@@ -158,7 +158,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   value: cubit
                                       .selectedPriceList, // This will store the ID (not the name)
                                   hint: Text(
-                                    'قائمة الأسعار'.tr(),
+                                    "price_list".tr(),
                                     style: const TextStyle(color: Colors.grey),
                                   ),
                                   icon: const Icon(Icons.arrow_drop_down,
@@ -239,7 +239,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 value: cubit
                                     .selectedProducsStockType, // This will store the ID (not the name)
                                 hint: Text(
-                                  'اختر المخزن '.tr(),
+                                  "select_warehouse".tr(),
                                   style: const TextStyle(color: Colors.grey),
                                 ),
                                 icon: const Icon(Icons.arrow_drop_down,
@@ -269,14 +269,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   DropdownMenuItem<String>(
                                     value: 'stock',
                                     child: Text(
-                                      'المخزن '.tr(),
+                                      "warehouse".tr(),
                                       style: TextStyle(fontSize: 16.sp),
                                     ),
                                   ),
                                   DropdownMenuItem<String>(
                                     value: 'nonStock',
                                     child: Text(
-                                      'الكل'.tr(),
+                                      'all'.tr(),
                                       style: TextStyle(fontSize: 16.sp),
                                     ),
                                   )
@@ -291,59 +291,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: ListTile(
-                //         title: Text('المخزون'.tr()),
-                //         leading: Radio<String>(
-                //           value: 'stock',
-                //           groupValue: cubit.selectedProducsStockType,
-                //           onChanged: (value) {
-                //             // setState(() {
-                //             cubit.changeProductsStockType(value!);
-                //             if (widget.catId != '-1' && widget.catId != '0') {
-                //               context
-                //                   .read<DirectSellCubit>()
-                //                   .getAllProductsByCatogrey(
-                //                       id: int.parse(widget.catId));
-                //             } else {
-                //               context.read<DirectSellCubit>().getAllProducts();
-                //               context.read<DirectSellCubit>().currentIndex ==
-                //                   -1;
-                //             }
-                //             // });
-                //           },
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: ListTile(
-                //         title: Text('الكل'.tr()),
-                //         leading: Radio<String>(
-                //           value: 'nonStock',
-                //           groupValue: cubit.selectedProducsStockType,
-                //           onChanged: (value) {
-                //             // setState(() {
-                //             cubit.changeProductsStockType(value!);
-                //             if (widget.catId != '-1' && widget.catId != '0') {
-                //               context
-                //                   .read<DirectSellCubit>()
-                //                   .getAllProductsByCatogrey(
-                //                       id: int.parse(widget.catId));
-                //             } else {
-                //               context.read<DirectSellCubit>().getAllProducts();
-                //               context.read<DirectSellCubit>().currentIndex ==
-                //                   -1;
-                //             }
-                //             // });
-                //           },
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-
+              
                 cubit.searchController.text.isNotEmpty
                     ? Expanded(
                         child: ListView(children: [
@@ -364,7 +312,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               height: 15.h,
                             ),
                             if (widget.categoryName == "products".tr() ||
-                                widget.categoryName == "انشاء اذن الصرف")
+                                widget.categoryName == "create_expense".tr())
                               cubit.catogriesModel == null
                                   ? SizedBox(
                                       height: 2,

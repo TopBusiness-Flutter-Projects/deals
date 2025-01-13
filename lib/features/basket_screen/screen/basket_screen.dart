@@ -268,7 +268,7 @@ class _BasketScreenState extends State<BasketScreen> {
                     height: getSize(context) / 16,
                   ),
                   directSellCubit.basket.isEmpty
-                      ? Center(child: Text("لا يوجد منتجات في السلة"))
+                      ? Center(child: Text("basket_embty".tr()))
                       : ListView.builder(
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
@@ -296,8 +296,8 @@ class _BasketScreenState extends State<BasketScreen> {
                                   child: RoundedButton(
                                     text:
                                         directSellCubit.selectedShipping == null
-                                            ? 'اضافة شحن'.tr()
-                                            : 'تغيير الشحن'.tr(),
+                                            ? "add_charge".tr()
+                                            : "change_charge".tr(),
                                     onPressed: () {
                                       // context
                                       //     .read<DirectSellCubit>()
@@ -320,7 +320,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                           .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      'اضافة شحن'.tr(),
+                                                      "add_charge".tr(),
                                                       style: getMediumStyle(),
                                                     ),
                                                     GestureDetector(
@@ -371,7 +371,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                             value: directSellCubit
                                                                 .selectedShipping, // This will store the ID (not the name)
                                                             hint: Text(
-                                                              'اختر طريقة الشحن'
+                                                             "select_charge"
                                                                   .tr(),
                                                               style: const TextStyle(
                                                                   color: Colors
@@ -409,7 +409,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                         ),
                                                       ),
                                                       CustomTextField(
-                                                        labelText: "السعر",
+                                                        labelText: "price".tr(),
                                                         controller:
                                                             directSellCubit
                                                                 .priceController,
@@ -422,7 +422,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                         height: 10,
                                                       ),
                                                       CustomButton(
-                                                          title: "اضافة",
+                                                          title: "add".tr(),
                                                           onTap: () {
                                                             if (directSellCubit
                                                                     .priceController
@@ -432,7 +432,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                                         .selectedShipping ==
                                                                     null) {
                                                               errorGetBar(
-                                                                  "من فضلك اضف المعلومات");
+                                                                  "please_enter_data".tr());
                                                             } else {
                                                               Navigator.pop(
                                                                   context);
@@ -456,8 +456,8 @@ class _BasketScreenState extends State<BasketScreen> {
                                   child: RoundedButton(
                                     text: directSellCubit
                                             .selectedPromotionsIds.isEmpty
-                                        ? 'اضافة كوبون'.tr()
-                                        : 'تعديل الكوبونات'.tr(),
+                                        ? "add_copoune".tr()
+                                        : "edit_copoune".tr(),
                                     onPressed: () {
                                       // context
                                       //     .read<DirectSellCubit>()
@@ -477,7 +477,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                           .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      'اضافة الكوبون'.tr(),
+                                                      "add_copoune".tr(),
                                                       style: getMediumStyle(),
                                                     ),
                                                     GestureDetector(
@@ -521,8 +521,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                             value: directSellCubit
                                                                 .selectedPromotion, // This will store the ID (not the name)
                                                             hint: Text(
-                                                              'اضافة كوبون '
-                                                                  .tr(),
+"add_copoune"                                                                  .tr(),
                                                               style: const TextStyle(
                                                                   color: Colors
                                                                       .grey),
@@ -546,7 +545,7 @@ class _BasketScreenState extends State<BasketScreen> {
                                                                         user.id ==
                                                                         newValue)) {
                                                                   errorGetBar(
-                                                                      "الكوبون موجود بالفعل");
+                                                                     "copoune_exist".tr());
                                                                 } else {
                                                                   print(
                                                                       ':::::: remove from wrong button');
@@ -610,14 +609,9 @@ class _BasketScreenState extends State<BasketScreen> {
                                                         height: 10,
                                                       ),
                                                       CustomButton(
-                                                          title: "تم",
+                                                          title: "done".tr(),
                                                           onTap: () {
-                                                            // if (directSellCubit
-                                                            //         .selectedPromotion ==
-                                                            //     null) {
-                                                            //   errorGetBar(
-                                                            //       "من فضلك اضف الكوبون");
-                                                            // } else {
+                                                           
                                                             Navigator.pop(
                                                                 context);
                                                             // }

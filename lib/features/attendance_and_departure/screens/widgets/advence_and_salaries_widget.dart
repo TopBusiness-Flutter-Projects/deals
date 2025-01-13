@@ -14,14 +14,14 @@ class AdvanceAndSalariesWidget extends StatelessWidget {
     "attendance_and_departure".tr(),
     "monthly_salaries".tr(),
     "available_holidays".tr(),
-    "المصروفات".tr()
+    "expenses".tr()
   ];
   List<String> subTitles = [
     "",
     "",
     "months".tr(),
     "Holidays".tr(),
-    "مصروفات".tr()
+    "expenses".tr()
   ];
   List<String> images = [
     ImageAssets.documentIcon,
@@ -79,10 +79,10 @@ class AdvanceAndSalariesWidget extends StatelessWidget {
                 BoxShadow(
                   blurStyle: BlurStyle.outer,
                   color: Colors.black
-                      .withOpacity(0.1), // لون الظل مع تقليل الشفافية
-                  spreadRadius: 1, // مدى انتشار الظل
-                  blurRadius: 4, // مدى نعومة الظل
-                  offset: const Offset(0, 1), // الاتجاه الأفقي والرأسي للظل
+                      .withOpacity(0.1),
+                  spreadRadius: 1, 
+                  blurRadius: 4, 
+                  offset: const Offset(0, 1), 
                 ),
               ],
             ),
@@ -101,11 +101,11 @@ class AdvanceAndSalariesWidget extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(
-                                0.1), // لون الظل مع تقليل الشفافية
-                            spreadRadius: 1, // مدى انتشار الظل
-                            blurRadius: 1, // مدى نعومة الظل
+                                0.1), 
+                            spreadRadius: 1, 
+                            blurRadius: 1, 
                             offset: const Offset(
-                                0, 1), // الاتجاه الأفقي والرأسي للظل
+                                0, 1),
                           ),
                         ],
                       ),

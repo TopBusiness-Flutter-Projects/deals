@@ -59,7 +59,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     color: cubit.stateOrder == "01_in_progress"
                         ? AppColors.primary
                         : AppColors.primary.withOpacity(0.4),
-                    title: "المهام الجديدة",
+                    title: "new_tasks".tr(),
                   ),
                 ),
                 Expanded(
@@ -68,7 +68,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     color: cubit.stateOrder == "1_done"
                         ? AppColors.primary
                         : AppColors.primary.withOpacity(0.4),
-                    title: "المهام المكتملة",
+                    title:  "complete_tasks".tr(),
                   ),
                 ),
               ],
@@ -79,7 +79,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   )
                 : (cubit.allTasksModel.tasks == [])
                     ? Center(
-                        child: Text("لا يوجد مهام",
+                        child: Text("no_tasks".tr(),
                             style: TextStyles.size14FontWidget400Black),
                       )
                     : Expanded(
@@ -123,7 +123,7 @@ class _TasksScreenState extends State<TasksScreen> {
     return GestureDetector(
       onTap: () {
         cubit.changeIndex(
-            title == "المهام الجديدة" ? "01_in_progress" : "1_done");
+            title == "new_tasks".tr() ? "01_in_progress" : "1_done");
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0.sp, vertical: 10.0.sp),
@@ -161,10 +161,10 @@ class TaskCard extends StatelessWidget {
             BoxShadow(
               blurStyle: BlurStyle.outer,
               color:
-                  Colors.black.withOpacity(0.1), // لون الظل مع تقليل الشفافية
-              spreadRadius: 1, // مدى انتشار الظل
-              blurRadius: 4, // مدى نعومة الظل
-              offset: const Offset(0, 1), // الاتجاه الأفقي والرأسي للظل
+                  Colors.black.withOpacity(0.1), 
+              spreadRadius: 1, 
+              blurRadius: 4, 
+              offset: const Offset(0, 1), 
             ),
           ],
         ),
@@ -229,7 +229,7 @@ class TaskCard extends StatelessWidget {
                   RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                      text: "وقت التسليم: ",
+                      text:  "delivery_time:".tr(),
                       style: TextStyles.size14FontWidget400Black
                           .copyWith(color: AppColors.gray),
                     ),
@@ -245,6 +245,7 @@ class TaskCard extends StatelessWidget {
                       ? Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 16.0.sp, vertical: 3.0.sp),
+                          // ignore: sort_child_properties_last
                           child: GestureDetector(
                             onTap: () {
                               cubit.updateState(
@@ -253,7 +254,7 @@ class TaskCard extends StatelessWidget {
                                       .allTasksModel.tasks![index].taskId!);
                             },
                             child: Text(
-                              "تم",
+                              "done".tr(),
                               style: TextStyles.size16FontWidget400Gray
                                   .copyWith(color: AppColors.white),
                             ),
@@ -298,7 +299,7 @@ void showAddTasksBottomSheet(BuildContext context, TasksCubit cubit) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DatePickerField(
-                title: "موعد التسليم",
+                title:  "delivery_time".tr(),
                 onTab: () {
                   cubit.onSelectedDate(context);
                 },

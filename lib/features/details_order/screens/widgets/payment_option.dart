@@ -111,8 +111,7 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                    "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.invoices?.first.amountDue ?? 0} ",
-                    // "اجمالى الفاتورة :  ${cubit.getDetailsOrdersModel?.amountTotal ?? 0} ",
+                    "${"total_invoice".tr()}${cubit.getDetailsOrdersModel?.invoices?.first.amountDue ?? 0} ",
                     style: TextStyle(fontSize: getSize(context) / 20)),
                 SizedBox(
                   height: 20.h,
@@ -137,10 +136,10 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
                                     Icon(Icons.cloud_upload_outlined,
                                         size: 40, color: AppColors.primary),
                                     SizedBox(height: 5.sp),
-                                    const Text(
-                                      '  ارفع الصورة أو الملف',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
+                                  Text(
+                                        "upload_pic_or_file".tr(),
+                                        style: const TextStyle(color: Colors.grey),
+                                      ),
                                   ],
                                 ),
                               )
@@ -217,7 +216,7 @@ void _showBottomSheet(BuildContext context, DetailsOrdersCubit cubit,
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('يرجى ملء جميع الحقول المطلوبة'.tr()),
+                            content: Text("please_enter_fields".tr()),
                             backgroundColor: Colors.red,
                           ),
                         );

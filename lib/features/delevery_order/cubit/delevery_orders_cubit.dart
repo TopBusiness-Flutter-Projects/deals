@@ -26,20 +26,20 @@ class DeleveryOrdersCubit extends Cubit<DeleveryOrdersState> {
     emit(DeleveryOrdersIndexChanged());
   }
 
-  List<OrderModel> completeOrders = []; // الطلبات السابقة
-  List<OrderModel> currentOrders = []; // الطلبات الحالية كلها
-  List<OrderModel> draftOrders = []; // طلبات عرض السعر
-  List<OrderModel> newOrders = []; // pending   الطلبات الجديدة
-  List<OrderModel> deliveredOrders = []; // تم التسليم
-  List<OrderModel> canceledOrders = []; // الطلبات الملغية
+  List<OrderModel> completeOrders = []; 
+  List<OrderModel> currentOrders = []; 
+  List<OrderModel> draftOrders = [];
+  List<OrderModel> newOrders = []; // pending 
+  List<OrderModel> deliveredOrders = []; 
+  List<OrderModel> canceledOrders = []; 
   GetOrdersModel getOrdersModel = GetOrdersModel();
   Future<void> getOrders() async {
     emit(OrdersLoadingState());
-    completeOrders = []; // الطلبات السابقة
-    currentOrders = []; // الطلبات الحالية كلها
-    draftOrders = []; // طلبات عرض السعر
-    newOrders = []; // pending   الطلبات الجديدة
-    deliveredOrders = []; // تم التسليم
+    completeOrders = []; 
+    currentOrders = []; 
+    draftOrders = []; 
+    newOrders = []; 
+    deliveredOrders = []; 
     canceledOrders = [];
     final result = await api.getOrders();
     result.fold(

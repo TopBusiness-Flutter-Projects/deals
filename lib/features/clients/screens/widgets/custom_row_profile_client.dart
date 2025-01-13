@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
+import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 
 import '../../../../core/utils/app_strings.dart';
@@ -76,7 +78,7 @@ class CustomROW extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("هل تريد تغيير الموقع؟"),
+                              Text("change_location".tr()),
                               SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment:
@@ -95,15 +97,14 @@ class CustomROW extends StatelessWidget {
                                             );
                                      
                                     },
-                                    child: Text("نعم"),
+                                    child: Text("yes".tr()),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
-                                      // إجراء عند الضغط على "لا"
                                       Navigator.pop(
-                                          context); // لإغلاق البوتوم شيت
+                                          context); 
                                     },
-                                    child: Text("لا"),
+                                    child: Text("no".tr()),
                                   ),
                                 ],
                               ),
