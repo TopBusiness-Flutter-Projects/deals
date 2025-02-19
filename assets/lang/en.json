@@ -221,6 +221,7 @@
   "search": "Search",
   "cannot_add_more": "Cannot add more than the available amount",
   "socket_limit": "Insufficient stock for one or more products",
+  "stock_limit_msg": "This stock limit has been reached for this products",
   "print_sale_order": "Print Sale Order",
   "print_delivery": "Print Delivery Order",
   "print_invoice": "Print Invoice",

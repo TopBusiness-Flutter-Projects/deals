@@ -152,30 +152,32 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       bool existsInBasket = basket.any((item) => item.id == product.id);
 
       if (!existsInBasket) {
-        // if (product.userOrderedQuantity < product.stockQuantity) {
+         if (product.userOrderedQuantity < product.stockQuantity) {
         product.userOrderedQuantity++;
         basket.add(product);
         emit(IncreaseTheQuantityCount());
         print(
             'Product added to basket: ${product.id}, Quantity: ${product.userOrderedQuantity}');
-        // } else {
-        //   print(
-        //       'Cannot add more. Stock limit reached for product: ${product.id}');
-        // }
+        } else {
+          errorGetBar("stock_limit_msg".tr());
+          print(
+              'Cannot add more. Stock limit reached for product: ${product.id}');
+        }
       } else {
         final existingProduct =
             basket.firstWhere((item) => item.id == product.id);
 
-        // if (existingProduct.userOrderedQuantity <
-        //     existingProduct.stockQuantity) {
+        if (existingProduct.userOrderedQuantity <
+            existingProduct.stockQuantity) {
         existingProduct.userOrderedQuantity++;
         emit(IncreaseTheQuantityCount());
         debugPrint(
             'Updated quantity for product ${existingProduct.id}: ${existingProduct.userOrderedQuantity}');
-        // } else {
-        //   print(
-        //       'Cannot add more. Stock limit reached for product: ${existingProduct.id}');
-        // }
+        } else {
+               errorGetBar("stock_limit_msg".tr());
+          print(
+              'Cannot add more. Stock limit reached for product: ${existingProduct.id}');
+        }
       }
     } else {
       // **Remove Product from Basket**
