@@ -21,13 +21,18 @@ import '../cubit/crm_cubit.dart';
 import 'widgets/bottom_sheet.dart';
 import 'widgets/crm_container.dart';
 
-class DealsDetails extends StatelessWidget {
+class DealsDetails extends StatefulWidget {
   const DealsDetails({super.key, });
-  
+
+  @override
+  State<DealsDetails> createState() => _DealsDetailsState();
+}
+
+class _DealsDetailsState extends State<DealsDetails> {
+      int status = 0;
 
   @override
   Widget build(BuildContext context) {
-    int status = 2;
      
 
     var cubit = context.read<CRMCubit>();
@@ -139,6 +144,9 @@ class DealsDetails extends StatelessWidget {
                       ,onTap: 
                       () {
                         if (status == 1) {
+                          setState(() {
+                            status = 2;
+                          });
                           showEndVisitSheet(
                            "1",
                             context,
@@ -148,6 +156,9 @@ class DealsDetails extends StatelessWidget {
                           //     id: cubit.dealId,
                           //     context: context);
                         } else {
+                          setState(() {
+                            status = 1;
+                          });
                           // cubit.updateStatus(
                           //     status: 1,
                           //     id: cubit.dealId,

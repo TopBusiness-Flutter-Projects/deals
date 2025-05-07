@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/app_strings.dart';
@@ -14,14 +15,19 @@ import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 class CustomCRMContainer extends StatelessWidget {
   const CustomCRMContainer({
     super.key,
+    this.isClickable = false,
   });
-
+final bool isClickable;
   @override
   Widget build(BuildContext context) {
     return Padding(
                                     padding: EdgeInsets.all(8.0.sp),
                                     child: GestureDetector(
                                       onTap: () {
+                                        if (isClickable) {
+                                          Navigator.pushNamed(
+                                              context, Routes.dealDetailsRoute);
+                                        }
                                            
                                       },
                                       child: Container(

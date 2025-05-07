@@ -243,7 +243,7 @@ class _ClientScreenState extends State<ClientScreen> {
                                           if (widget.clientsRouteEnum ==
                                               ClientsRouteEnum
                                                   .crm) {
-                                            Navigator.pushNamed(
+                                            Navigator.pushReplacementNamed(
                                               context,
                                               Routes.createDealRoute,
                                               arguments: cubit

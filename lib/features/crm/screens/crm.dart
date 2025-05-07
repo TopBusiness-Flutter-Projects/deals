@@ -86,7 +86,9 @@ class _CRMScreenState extends State<CRMScreen> {
                                 //         ?.length ??
                                 //     0,
                                 itemBuilder: (context, index) {
-                                  return CustomCRMContainer();
+                                  return CustomCRMContainer(
+                                    isClickable: true,
+                                  );
                                 }),
                           ),
                         ),
