@@ -31,7 +31,7 @@ import '../../../core/remote/service.dart';
 import '../../../core/utils/assets_manager.dart';
 import '../../../core/utils/dialogs.dart';
 
-enum ClientsRouteEnum { cart, receiptVoucher, details, dispensingBasket }
+enum ClientsRouteEnum { cart, receiptVoucher, details, dispensingBasket , crm }
 
 class ClientsCubit extends Cubit<ClientsState> {
   ClientsCubit(this.api) : super(ClientsInitial());

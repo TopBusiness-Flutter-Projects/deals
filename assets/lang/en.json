@@ -261,6 +261,14 @@
   "number:": "Number:",
   "individual": "Individual",
   "company": "Company",
+  "clients_deals": "Client Deals",
+  "chance": "Opportunity",
+  "create_deal": "Create Deal",
+  "enter": "Enter here",
+  "start_visit": "Start Visit",
+  "end_visit": "End Visit",
+  "visit_location": "Visit Location",
+  "visit_details": "Visit Details",
   "":"",
   "s":"s"
 }

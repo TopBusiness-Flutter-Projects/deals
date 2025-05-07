@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:top_sale/features/attendance_and_departure/cubit/attendance_and_departure_cubit.dart';
-import 'package:top_sale/features/home_screen/cubit/cubit.dart';
+import 'package:top_sale/features/crm/screens/crm.dart';
 import '../../../core/remote/service.dart';
 import '../../attendance_and_departure/screens/attendance_and_departure_screen.dart';
 import '../../clients/cubit/clients_cubit.dart';
@@ -19,7 +18,7 @@ class MainCubit extends Cubit<MainStates> {
     const HomeScreen(),
     ClientScreen(clientsRouteEnum: ClientsRouteEnum.cart),
      AttendanceAndDepartureScreen(),
-    const SizedBox()
+    const CRMScreen()
   ];
   void getHomePage() {
     currentIndex = 0;

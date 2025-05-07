@@ -261,6 +261,14 @@
   "number:":"عدد :",
   "individual":"فرد",
   "company":"شركة",
+  "clients_deals":"معاملات العملاء",
+  "chance":" الفرصة",
+  "create_deal":"انشاء معاملة",
+  "enter":"ادخل هنا",
+  "start_visit":"بدء الزيارة",
+  "end_visit":"انتهاء الزيارة", 
+  "visit_location":"موقع الزيارة",
+  "visit_details":"تفاصيل المعاملة",
   "":"",
   "s":"s"
 }

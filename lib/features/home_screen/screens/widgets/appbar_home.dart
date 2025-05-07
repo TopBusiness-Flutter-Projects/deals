@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/core/widgets/decode_image.dart';
+import 'package:top_sale/features/main/screens/main_screen.dart';
 import '../../../../config/routes/app_routes.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/get_size.dart';
@@ -55,6 +56,22 @@ class _AppbarHomeState extends State<AppbarHome> {
               ],
             ),
           ),
+         
+         GestureDetector(
+           onTap: () {
+              z.toggle!.call();
+           },
+           child: Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Image.asset(
+                                'assets/images/menu1.png',
+                                width: getSize(context) / 22,
+                                color: 
+                                     AppColors.primaryColor
+                                   ,
+                              ),
+           ),
+         ),
           // SizedBox(
           //   height: 20.sp,
           //   child: Stack(

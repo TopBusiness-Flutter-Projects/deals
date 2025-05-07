@@ -92,9 +92,11 @@ class _MainScreenState extends State<MainScreen> {
                     elevation: 50,
                     shadowColor: Colors.grey,
                     child: SalomonBottomBar(
+
                       items: [
                         /// Home
                         SalomonBottomBarItem(
+                          
                           icon: Image.asset(
                             'assets/images/home1.png',
                             width: getSize(context) / 22,
@@ -132,16 +134,26 @@ class _MainScreenState extends State<MainScreen> {
                           selectedColor: AppColors.primaryColor,
                         ),
 
-                        /// Profile
+                        // SalomonBottomBarItem(
+                        //   icon: Image.asset(
+                        //     'assets/images/menu1.png',
+                        //     width: getSize(context) / 22,
+                        //     color: cubit.currentIndex == 3
+                        //         ? AppColors.primaryColor
+                        //         : Colors.black,
+                        //   ),
+                        //   title: Text('menu'.tr()),
+                        //   selectedColor: AppColors.primaryColor,
+                        // ),
                         SalomonBottomBarItem(
                           icon: Image.asset(
-                            'assets/images/menu1.png',
+                            'assets/images/crm1.png',
                             width: getSize(context) / 22,
                             color: cubit.currentIndex == 3
                                 ? AppColors.primaryColor
                                 : Colors.black,
                           ),
-                          title: Text('menu'.tr()),
+                          title: Text('CRM'),
                           selectedColor: AppColors.primaryColor,
                         ),
                       ],
@@ -149,9 +161,10 @@ class _MainScreenState extends State<MainScreen> {
                       currentIndex: cubit.currentIndex,
                       onTap: (index) {
                         setState(() {
-                          if (index == 3) {
-                            z.toggle!.call();
-                          } else if (index == 2) {
+                          // if (index == 3) {
+                          //   z.toggle!.call();
+                          // } else
+                           if (index == 2) {
                             context.read<HomeCubit>().isEmployeeAdded
                                 ? cubit.changeNavigationBar(2)
                                 : showEmployeeBottomSheet(

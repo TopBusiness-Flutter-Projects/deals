@@ -240,6 +240,17 @@ class _ClientScreenState extends State<ClientScreen> {
                                                     .result![index]);
                                             Navigator.pop(context);
                                           }
+                                          if (widget.clientsRouteEnum ==
+                                              ClientsRouteEnum
+                                                  .crm) {
+                                            Navigator.pushNamed(
+                                              context,
+                                              Routes.createDealRoute,
+                                              arguments: cubit
+                                                  .allPartnersModel!
+                                                  .result![index],
+                                            );
+                                          }
                                         },
                                         child: Dismissible(
                                           key: Key(cubit.allPartnersModel!

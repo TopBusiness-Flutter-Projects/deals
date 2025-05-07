@@ -90,7 +90,6 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
-
   Future<Either<ServerFailure, AuthModel>> login(
       {required String phoneOrMail,
       required String password,
@@ -644,7 +643,7 @@ class ServiceApi {
         isUserOnly
             ? odooUrl +
                 EndPoints.getAllPartners +
-                '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page&filter=[["user_id", "=",$userId]]'
+                '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"],["user_id", "=",$userId]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page'
             : odooUrl +
                 EndPoints.getAllPartners +
                 '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page',
