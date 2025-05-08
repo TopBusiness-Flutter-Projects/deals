@@ -24,6 +24,7 @@ import 'package:top_sale/core/models/defaul_model.dart';
 import 'package:top_sale/core/models/get__my_expense_model.dart';
 import 'package:top_sale/core/models/get_all_attendance_model.dart';
 import 'package:top_sale/core/models/get_all_expenses_product_model.dart';
+import 'package:top_sale/core/models/get_all_leads.dart';
 import 'package:top_sale/core/models/get_all_promotions.dart';
 import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_car_ids_model.dart';
@@ -2020,4 +2021,77 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+
+  //// CRM
+  Future<Either<Failure, GetMyLeadsModel>> getMyLeads() async {
+     bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+
+    try {
+      final response = await dio.get(odooUrl + EndPoints.getLeads,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
+          queryParameters: {
+          
+             if (employeeId == null) "user_id": int.parse(userId),
+              if (employeeId != null) "employee_id": int.parse(employeeId)
+            
+          });
+      return Right(GetMyLeadsModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+  //// CRM
+  Future<Either<Failure, GetMyLeadsModel>> createLead({
+
+required String name,
+String? partnerName,
+String? phone,
+String? emailFrom,
+String? description,
+double? latitude,
+double? longitude,
+String? address
+
+  }) async {
+     bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+
+    try {
+      final response = await dio.post(odooUrl + EndPoints.getLeads,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
+          body: {
+           "name": name,
+  "partner_name": partnerName,
+  "phone": phone,
+  "email_from": emailFrom,
+ 
+  "description": description,
+  "latitude": latitude,
+  "longitude": longitude,
+  "address": address,
+              "user_id": int.parse(userId),
+              if (employeeId != null) "employee_id": int.parse(employeeId)
+            
+          });
+      return Right(GetMyLeadsModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
 }

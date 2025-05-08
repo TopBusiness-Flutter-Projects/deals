@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:top_sale/core/models/get_all_leads.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/attendance_and_departure_details_screen.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/holidays_screen.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/holidays_type_screen.dart';
@@ -337,8 +338,11 @@ class AppRoutes {
         
         
         case Routes.dealDetailsRoute:
+        LeadModel lead = settings.arguments as LeadModel;
+
         return MaterialPageRoute(
           builder: (context) =>    DealsDetails(
+            lead: lead,
           
           ),
         );

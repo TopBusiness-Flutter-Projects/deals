@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/all_partners_for_reports_model.dart';
+import 'package:top_sale/core/models/get_all_leads.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/app_strings.dart';
@@ -22,8 +23,8 @@ import 'widgets/bottom_sheet.dart';
 import 'widgets/crm_container.dart';
 
 class DealsDetails extends StatefulWidget {
-  const DealsDetails({super.key, });
-
+  const DealsDetails({super.key, this.lead, });
+final LeadModel? lead; 
   @override
   State<DealsDetails> createState() => _DealsDetailsState();
 }
@@ -57,7 +58,8 @@ class _DealsDetailsState extends State<DealsDetails> {
             child: Column(
               children: [
                 SizedBox(height: 20.h),
-                CustomCRMContainer(                                           
+                CustomCRMContainer(     
+                  lead: widget.lead,                                      
                                             ),
                 SizedBox(height: 20.h),
                status == 2 ? // completed
@@ -145,7 +147,7 @@ class _DealsDetailsState extends State<DealsDetails> {
                       () {
                         if (status == 1) {
                           setState(() {
-                            status = 2;
+                            // status = 2;
                           });
                           showEndVisitSheet(
                            "1",

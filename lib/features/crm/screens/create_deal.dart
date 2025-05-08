@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
 import 'package:top_sale/core/models/all_partners_for_reports_model.dart';
+import 'package:top_sale/core/models/get_all_leads.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/app_strings.dart';
@@ -80,9 +81,37 @@ GlobalKey<FormState>  _formKey = GlobalKey<FormState>();
                         () {
                           if (_formKey.currentState!.validate() ) {
                             log('chance: ${cubit.chanceController.text}');
+                               if (context
+                                        .read<ClientsCubit>()
+                                        .currentLocation ==
+                                    null) {
+                                  context
+                                      .read<ClientsCubit>()
+                                      .checkAndRequestLocationPermission(
+                                          context);
+                                } else {
+                                  cubit.createLead(context,  
+                                  partnerName: partner?.name,
+                                      partnerPhone:"${partner?.phone}",                                    
+                                          lat: context
+                                                  .read<ClientsCubit>()
+                                                  .currentLocation
+                                                  ?.latitude ??
+                                              0.0,
+                                          long: context
+                                                  .read<ClientsCubit>()
+                                                  .currentLocation
+                                                  ?.longitude ??
+                                              0,
+                                         
+                                          address: context
+                                              .read<ClientsCubit>()
+                                              .address);
+                                }
                             
                           }
-                          Navigator.pushReplacementNamed(context, Routes.dealDetailsRoute);
+                          Navigator.pushReplacementNamed(context, Routes.dealDetailsRoute ,
+                              arguments: LeadModel());
                           // cubit.createQuotation(
                           //     warehouseId: '1',
                           //     note: noteController.text,

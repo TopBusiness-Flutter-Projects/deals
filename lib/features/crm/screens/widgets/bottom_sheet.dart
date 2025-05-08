@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
@@ -44,9 +45,31 @@ void showEndVisitSheet(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 20.h,
+                //  SizedBox(
+                  //   height: 10.h,
+                  // ),
+                CustomTextFieldWithTitle(
+                    title: "expected_price".tr(),
+                    controller: cubit.priceController,
+inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],                      
+                
+                    hint:  "enter_price".tr(),
+                    keyboardType: TextInputType.number,
+
+
+
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "enter_price".tr();
+                      }
+                      return null;
+                    },
                   ),
+                  // SizedBox(
+                  //   height: 10.h,
+                  // ),
                 CustomTextFieldWithTitle(
                     title: "notes".tr(),
                     controller: cubit.noteController,

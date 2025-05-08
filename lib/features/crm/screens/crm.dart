@@ -6,6 +6,7 @@ import 'package:top_sale/config/routes/app_routes.dart';
 
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
+import 'package:top_sale/core/utils/circle_progress.dart';
 
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import 'package:top_sale/features/crm/cubit/crm_state.dart';
@@ -15,7 +16,6 @@ import 'widgets/crm_container.dart';
 
 class CRMScreen extends StatefulWidget {
   const CRMScreen({super.key});
-
   @override
   State<CRMScreen> createState() =>
       _CRMScreenState();
@@ -24,7 +24,7 @@ class CRMScreen extends StatefulWidget {
 class _CRMScreenState extends State<CRMScreen> {
   @override
   void initState() {
-    context.read<CRMCubit>().getExchangePermission();
+    context.read<CRMCubit>().getMyLeads();
     super.initState();
   }
 
@@ -68,26 +68,28 @@ class _CRMScreenState extends State<CRMScreen> {
           child: Column(
             children: [
               SizedBox(height: 20.h),
-              // cubit.getPickingsModel == null ||
-              //         cubit.getPickingsModel!.result == null
-              //     ? const Center(child: CustomLoadingIndicator())
-              //     : cubit.getPickingsModel!.result!.data!.isEmpty
-              //         ? Center(child: Text("no_data".tr()))
-              //         :
+                  cubit.getPickingsModel == null ||
+                          cubit.getPickingsModel!.leads == null
+                      ? const Center(child: CustomLoadingIndicator())
+                      : cubit.getPickingsModel!.leads!.isEmpty
+                          ? Center(child: Text("no_data".tr()))
+                          :
                        Expanded(
                           child: RefreshIndicator(
                             onRefresh: () async {
-                              cubit.getExchangePermission();
+                              cubit.getMyLeads();
                             },
                             child: ListView.builder(
                                 itemCount:
-                                    10,
+                                    cubit.getPickingsModel?.leads?.length ??
+                                        0,
                                 // itemCount: cubit.getPickingsModel?.result?.data
                                 //         ?.length ??
                                 //     0,
                                 itemBuilder: (context, index) {
                                   return CustomCRMContainer(
                                     isClickable: true,
+                                    lead: cubit.getPickingsModel?.leads?[index],
                                   );
                                 }),
                           ),

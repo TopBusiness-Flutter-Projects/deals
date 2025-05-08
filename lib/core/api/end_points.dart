@@ -58,6 +58,7 @@ class EndPoints {
   static String expense = '/api/expense/products';
   static String updatePartnerLocation = '/api/res.partner';
   static String getTasks = '/api/project/tasks/by_user';
+  static String getLeads = '/api/crm/leads';
 
   ///////
   // static String authWithSession = "$baseUrl/web/session/authenticate";

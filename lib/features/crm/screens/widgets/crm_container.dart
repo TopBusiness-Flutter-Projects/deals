@@ -4,20 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
+import 'package:top_sale/core/models/get_all_leads.dart';
 import 'package:top_sale/core/utils/app_colors.dart';
 import 'package:top_sale/core/utils/app_fonts.dart';
 import 'package:top_sale/core/utils/app_strings.dart';
 import 'package:top_sale/core/utils/assets_manager.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
+import 'package:top_sale/features/contact_us/cubit/contact_us_cubit.dart';
 
 
 class CustomCRMContainer extends StatelessWidget {
   const CustomCRMContainer({
     super.key,
-    this.isClickable = false,
+    this.isClickable = false, this.lead,
   });
 final bool isClickable;
+final LeadModel? lead;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +29,8 @@ final bool isClickable;
                                       onTap: () {
                                         if (isClickable) {
                                           Navigator.pushNamed(
-                                              context, Routes.dealDetailsRoute);
+                                              context, Routes.dealDetailsRoute ,
+                                              arguments: lead);
                                         }
                                            
                                       },
@@ -89,7 +93,7 @@ final bool isClickable;
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      // partner?.name.toString() ??
+                       lead?.partnerName.toString() ??
                        'name',
                       style: TextStyle(
                           fontFamily: AppStrings.fontFamily,
@@ -97,9 +101,9 @@ final bool isClickable;
                           fontSize: getSize(context) / 30),
                     ),
                     Text(
-                      // partner?.phone.toString() == 'false'
-                      //     ? '_'
-                      //     : partner?.phone.toString() ??
+                      lead?.phone.toString() == 'false'
+                          ? '_'
+                          : lead?.phone.toString() ??
                            '000000000',
                       style: TextStyle(
                           fontFamily: AppStrings.fontFamily,
@@ -110,12 +114,12 @@ final bool isClickable;
                   ],
                 ),
               ),
-              // if (partner?.phone.toString() != 'false')
+               if (lead?.phone.toString() != 'false')
                 GestureDetector(
                   onTap: () {
-                    // context
-                    //     .read<ContactUsCubit>()
-                    //     .launchURL('tel:${partner?.phone}');
+                    context
+                        .read<ContactUsCubit>()
+                        .launchURL('tel:${lead?.phone}');
                   },
                   child: Center(
                     child: Icon(
@@ -132,45 +136,58 @@ final bool isClickable;
       ],
     ),
     10.h.verticalSpace,
-                                               GestureDetector(
-                          onTap: () {
-                            context
-                                .read<ClientsCubit>()
-                                .openGoogleMapsRoute(
-                                  context
-                                          .read<ClientsCubit>()
-                                          .currentLocation
-                                          ?.latitude ??
-                                      0.0,
-                                  context
-                                          .read<ClientsCubit>()
-                                          .currentLocation
-                                          ?.longitude ??
-                                      0.0,
-                                 0.0,
-                                  0.0,
-                                );
-                          },
-                                                child: Row(
-                                                  children: [
-                                                     Image.asset(
-                                                       ImageAssets.addressIcon,
-                                                       width: 25.w,
-                                                     ),
-                                                     10.w.horizontalSpace,
-                                                    Expanded(
-                                                      child: Text(
-                                                          
-                                                              "موقع العميل",
-                                                          style: getBoldStyle(
-                                                              color: AppColors
-                                                                  .secondry,
-                                                              fontSize: 14.sp),
-                                                        ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                               Row(
+                                                 children: [
+                                                   Expanded(
+                                                     child: GestureDetector(
+                                                                               onTap: () {
+                                                                                 context
+                                                                                     .read<ClientsCubit>()
+                                                                                     .openGoogleMapsRoute(
+                                                                                       context
+                                                                                               .read<ClientsCubit>()
+                                                                                               .currentLocation
+                                                                                               ?.latitude ??
+                                                                                           0.0,
+                                                                                       context
+                                                                                               .read<ClientsCubit>()
+                                                                                               .currentLocation
+                                                                                               ?.longitude ??
+                                                                                           0.0,
+                                                                                      0.0,
+                                                                                       0.0,
+                                                                                     );
+                                                                               },
+                                                      child: Row(
+                                                        children: [
+                                                           Image.asset(
+                                                             ImageAssets.addressIcon,
+                                                             width: 25.w,
+                                                           ),
+                                                           10.w.horizontalSpace,
+                                                          Expanded(
+                                                            child: Text(
+                                                                
+                                                                    "موقع العميل",
+                                                                style: getBoldStyle(
+                                                                    color: AppColors
+                                                                        .secondry,
+                                                                    fontSize: 14.sp),
+                                                              ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                                                                   ),
+                                                   ),
+                                                Text(
+                                                  "${lead?.stage}",
+                                                  style: getMediumStyle(
+                                                      // color: AppColors.primary,
+                                                      fontSize: 14.sp),
+                                                )
+                                                
+                                                 ],
+                                               ),
                                               SizedBox(height: 10.sp),
                                               Row(
                                                 
@@ -184,7 +201,7 @@ final bool isClickable;
                                                   ),
                                                 Flexible(
                                                     child: Text(
-                                                      " الفرصة",
+                                                      "${lead?.name}",
                                                       style: getMediumStyle(
                                                          
                                                               
