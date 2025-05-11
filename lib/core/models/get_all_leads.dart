@@ -36,6 +36,7 @@ class LeadModel {
     dynamic? employeeName;
     dynamic? stage;
     dynamic? createDate;
+     dynamic? status;
 
     LeadModel({
         this.id,
@@ -49,6 +50,7 @@ class LeadModel {
         this.employeeName,
         this.stage,
         this.createDate,
+        this.status,
     });
 
     factory LeadModel.fromJson(Map<String, dynamic> json) => LeadModel(
@@ -63,6 +65,7 @@ class LeadModel {
         employeeName: json["employee_name"],
         stage: json["stage"],
         createDate: json["create_date"] ,
+        status: json["status"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -77,5 +80,6 @@ class LeadModel {
         "employee_name": employeeName,
         "stage": stage,
         "create_date": createDate,
+        "status": status,
     };
 }

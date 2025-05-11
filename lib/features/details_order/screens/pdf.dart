@@ -62,6 +62,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
         print("Base64 PDF: $base64Pdf"); // Use this for debugging/logging
 
         setState(() {
+          pdfBytes = response.data;
           isLoading = false;
         });
 
@@ -70,23 +71,11 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
         final file = File('${tempDir.path}/base64pdf.txt');
         await file.writeAsString(base64Pdf);
       } else {
-        print('Invalid hex string received: $responseData');
-        setState(() {
-          isLoading = false; // Stop loading if the format is invalid
-        });
+        print('Failed to load PDF');
       }
-    } else {
-      print('Failed to load PDF: ${response.statusCode}');
-      print('Response body: ${response.data}'); // Log the response body
-      setState(() {
-        isLoading = false; // Stop loading if there's an error
-      });
+    } catch (e) {
+      print('Error fetching PDF: $e');
     }
-  } catch (e) {
-    print('Error fetching PDF: $e');
-    setState(() {
-      isLoading = false; // Stop loading if there's an error
-    });
   }
   // Future<void> fetchPdfWithSession() async {
   //   String? sessionId = "49f72366ca27868282a587d439e63da44d9771a3";

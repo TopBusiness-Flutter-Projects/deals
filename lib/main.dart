@@ -89,8 +89,7 @@ Future<void> showNotification(
       .show(id++, title, body, notificationDetails, payload: payload);
 }
 
-Future<void> scheduleDailyTenAMNotification() async {
-  
+Future<void> scheduleDailyTenAMNotification() async {  
   Preferences.instance.getNewTasks().then((value) async {
     if (value.tasks != null) {
       for (int i = 0; i < value.tasks!.length; i++) {
@@ -100,10 +99,8 @@ Future<void> scheduleDailyTenAMNotification() async {
         int day = taskDeadline.day; // Extract the day from the task's deadline
         int month = taskDeadline.month;
         int year =
-            taskDeadline.year; // Extract the month from the task's deadline
-       
+            taskDeadline.year; // Extract the month from the task's deadline       
                    if (taskDeadline.day == tz.TZDateTime.now(tz.local).day && taskDeadline.month == tz.TZDateTime.now(tz.local).month && taskDeadline.year == tz.TZDateTime.now(tz.local).year) {
-
         await flutterLocalNotificationsPlugin.zonedSchedule(
           i, // Use the index as the unique ID
           "new_task".tr(),

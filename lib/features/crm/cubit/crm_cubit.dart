@@ -1,5 +1,3 @@
-
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,45 +12,40 @@ class CRMCubit extends Cubit<CRMState> {
   CRMCubit(this.api) : super(CRmInitial());
   ServiceApi api;
   TextEditingController chanceController = TextEditingController();
-   TextEditingController noteController = TextEditingController();
-   TextEditingController priceController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   GetMyLeadsModel? getPickingsModel;
   void getMyLeads() async {
     emit(GetExchangePermissionLoadingState());
     final result = await api.getMyLeads();
     result.fold(
-          (failure) =>
-          emit(GetExchangePermissionErrorState()),
-          (r) {
-            getPickingsModel = r;
+      (failure) => emit(GetExchangePermissionErrorState()),
+      (r) {
+        getPickingsModel = r;
         emit(GetExchangePermissionLoadedState());
       },
     );
   }
-  
+
   createLead(
     BuildContext context, {
     required double lat,
-    required double long,   
+    required double long,
     required String address,
-     String? partnerName,
-     String? partnerPhone,
+    String? partnerId,
   }) async {
     // getIp();
     AppWidget.createProgressDialog(context);
     emit(CheckInOutLoading());
-   
     final result = await api.createLead(
       name: chanceController.text,
+      description: descriptionController.text,
+      price: priceController.text,
       address: address,
-      partnerName: partnerName,
-      phone: partnerPhone,
-
-
-      
+      partnerId: partnerId,
       latitude: lat,
       longitude: long,
-     
     );
     result.fold(
       (failure) {
@@ -62,28 +55,66 @@ class CRMCubit extends Cubit<CRMState> {
       },
       (r) {
         Navigator.pop(context);
-        // if (r.result != null) {
-        //   if (r.result!.message != null) {
-        //     if (getLastAttendanceModel!.lastAttendance != null){
-        //       getLastAttendanceModel!.lastAttendance!.status =
-        //         isChechIn ? "check-in" : "check-out";}
-            
-        //     successGetBar(r.result!.message!);
-        //     getMyLeads();
-        //   } else {
-        //     // if (r.result!.error != null) {
-        //     //   errorGetBar(r.result!.error!.message ?? "error".tr());
-        //     // } else {
-        //       errorGetBar("error".tr());
-        //     //}
-        //   }
-        // } else {
-        //   errorGetBar("error".tr());
-        // }
+        if (r.result != null) {
+          if (r.result!.message != null) {
+            Navigator.pop(context);
+            successGetBar(r.result!.message!);
+            chanceController.clear();
+            descriptionController.clear();
+            priceController.clear();
+            getMyLeads();
+          }
+        } else {
+          errorGetBar("error".tr());
+        }
 
         emit(CheckInOutLoaded());
       },
     );
   }
 
+  updateLead(
+    BuildContext context, {
+    required double lat,
+    required double long,
+    required String address,
+    required bool isStart,
+    required String leadId,
+  }) async {
+    // getIp();
+    AppWidget.createProgressDialog(context);
+    emit(CheckInOutLoading());
+    final result = await api.updateLead(
+      description: noteController.text,
+      price: priceController.text,
+      address: address,
+      isStart: isStart,
+      leadId: leadId,
+      latitude: lat,
+      longitude: long,
+    );
+    result.fold(
+      (failure) {
+        Navigator.pop(context);
+        errorGetBar("error".tr());
+        emit(CheckInOutError());
+      },
+      (r) {
+        Navigator.pop(context);
+        if (r.result != null) {
+          if (r.result!.message != null) {
+            if (!isStart) {
+              Navigator.pop(context);
+            }
+            successGetBar(r.result!.message!);
+            getMyLeads();
+          }
+        } else {
+          errorGetBar("error".tr());
+        }
+
+        emit(CheckInOutLoaded());
+      },
+    );
+  }
 }

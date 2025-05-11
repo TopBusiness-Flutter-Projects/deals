@@ -47,6 +47,7 @@ import '../api/base_api_consumer.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import '../models/all_salary_model.dart';
 import '../models/car_details_model.dart';
+import '../models/create_lead_model.dart';
 import '../models/holidays_model.dart';
 import '../models/holidays_type_model.dart';
 import '../models/update_state.dart';
@@ -78,8 +79,9 @@ class ServiceApi {
 
       String? sessionId = await Preferences.instance.getSessionId();
       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl + EndPoints.getTasks + '?user_id=$userId&state=$state',
         options: Options(
@@ -91,6 +93,7 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+
   Future<Either<ServerFailure, AuthModel>> login(
       {required String phoneOrMail,
       required String password,
@@ -133,8 +136,9 @@ class ServiceApi {
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String userId = await Preferences.instance.getUserId() ?? "1";
     try {
       final response = await dio.put(odooUrl + EndPoints.resUsers,
@@ -170,9 +174,10 @@ class ServiceApi {
     required double long,
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String partnerId = await Preferences.instance.getEmployeePartnerId() ?? "1";
     try {
       final response = await dio.put(odooUrl + EndPoints.resPartner,
@@ -192,6 +197,7 @@ class ServiceApi {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
   Future<Either<Failure, DefaultModel>> tracking({
     required double lat,
     required double long,
@@ -201,8 +207,9 @@ class ServiceApi {
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String partnerId = await Preferences.instance.getEmployeePartnerId() ?? "1";
     try {
       final response = await dio.post(
@@ -229,6 +236,7 @@ class ServiceApi {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
   Future<Either<Failure, DefaultModel>> updateEmployeeData({
     required dynamic image,
     required String name,
@@ -237,8 +245,9 @@ class ServiceApi {
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
     try {
       final response = await dio.put(odooUrl + EndPoints.checkEmployee,
@@ -269,8 +278,9 @@ class ServiceApi {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl +
             EndPoints.checkEmployee +
@@ -290,8 +300,9 @@ class ServiceApi {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl +
             EndPoints.checkEmployee +
@@ -309,9 +320,10 @@ class ServiceApi {
   Future<Either<Failure, GetUserDataModel>> getUserData() async {
     try {
       String userId = await Preferences.instance.getUserId() ?? "1";
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
       String? sessionId = await Preferences.instance.getSessionId();
       final response = await dio.get(
@@ -331,9 +343,10 @@ class ServiceApi {
   Future<Either<Failure, CarDetails>> getCarDetails(
       {required int carId}) async {
     try {
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
       String? sessionId = await Preferences.instance.getSessionId();
       final response = await dio.get(
@@ -354,8 +367,9 @@ class ServiceApi {
       String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
       String? sessionId = await Preferences.instance.getSessionId();
       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
       final response = await dio.get(
         odooUrl +
@@ -377,9 +391,10 @@ class ServiceApi {
           await Preferences.instance.getEmployeeIdNumber() ??
           "1";
       String? sessionId = await Preferences.instance.getSessionId();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
       final response = await dio.get(
         odooUrl +
@@ -398,9 +413,10 @@ class ServiceApi {
   Future<Either<Failure, CategoriesModel>> getAllCategories() async {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
       final response = await dio.get(
         odooUrl + EndPoints.allCategoriesUrl,
@@ -423,9 +439,10 @@ class ServiceApi {
       String? sessionId = await Preferences.instance.getSessionId();
       AuthModel? authModel = await Preferences.instance.getUserModel();
       int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.post(
         odooUrl + EndPoints.products,
         // '?filter=[["detailed_type","=","product"]]&query={id,name,image_1920,list_price,taxes_id,uom_name,uom_id,qty_available,categ_id,currency_id{name}}&page_size=10&limit=10&page=$page',
@@ -458,9 +475,10 @@ class ServiceApi {
       String? sessionId = await Preferences.instance.getSessionId();
       int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
       AuthModel? authModel = await Preferences.instance.getUserModel();
-    bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.post(
         odooUrl + EndPoints.products,
         // '?filter=[["detailed_type","=","product"]]&query={id,name,image_1920,list_price,taxes_id,uom_name,uom_id,qty_available,categ_id,currency_id{name}}&page_size=10&limit=10&page=$page',
@@ -495,8 +513,9 @@ class ServiceApi {
       AuthModel? authModel = await Preferences.instance.getUserModel();
       int? wareHouseId = await Preferences.instance.getEmployeeWareHouse();
       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.post(
         odooUrl + EndPoints.productSearch,
         // '?filter=[["detailed_type","=","product"]]&query={id,name,image_1920,list_price,taxes_id,uom_name,uom_id,qty_available,categ_id,currency_id{name}}&page_size=10&limit=10&page=$page',
@@ -604,9 +623,10 @@ class ServiceApi {
       int page, int pageSize,
       {required bool isUserOnly}) async {
     try {
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       String? sessionId = await Preferences.instance.getSessionId();
       String userId = await Preferences.instance.getUserId() ?? "1";
       final response = await dio.get(
@@ -634,9 +654,10 @@ class ServiceApi {
       required String name,
       required bool isUserOnly}) async {
     try {
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       String? sessionId = await Preferences.instance.getSessionId();
       String userId = await Preferences.instance.getUserId() ?? "1";
 
@@ -661,9 +682,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetOrdersModel>> getOrders() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String userId = await Preferences.instance.getUserId() ?? "1";
 
@@ -688,9 +710,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetOrdersModel>> getDraftOrders() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String userId = await Preferences.instance.getUserId() ?? "1";
 
@@ -715,9 +738,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetOrdersModel>> getOrderFromId(int id) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio.get(
@@ -739,9 +763,10 @@ class ServiceApi {
 
   Future<Either<Failure, PartnerModel>> getPartnerDetails(
       {required int partnerId}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio.get(
@@ -762,9 +787,10 @@ class ServiceApi {
 
   Future<Either<Failure, OrderDetailsModel>> getOrderDetails(
       {required int orderId}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio.get(
@@ -786,9 +812,10 @@ class ServiceApi {
     required double long,
     required String address,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
     String? sessionId = await Preferences.instance.getSessionId();
     try {
@@ -824,9 +851,10 @@ class ServiceApi {
     required double long,
     required String address,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
     String? sessionId = await Preferences.instance.getSessionId();
     try {
@@ -871,9 +899,10 @@ class ServiceApi {
       required String promotionId,
       required String shippingPrice,
       String? note}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber();
@@ -930,9 +959,10 @@ class ServiceApi {
 
   Future<Either<Failure, ReturnOrderModel>> returnOrder(
       {required int pickingId, required List<OrderLine> products}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId();
     String userId = await Preferences.instance.getUserId() ?? "1";
@@ -968,9 +998,10 @@ class ServiceApi {
     required int orderId,
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String userId = await Preferences.instance.getUserId() ?? "1";
     try {
       final response = await dio.put(odooUrl + EndPoints.saleOrder,
@@ -998,9 +1029,10 @@ class ServiceApi {
     required double partnerLangitude,
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String userId = await Preferences.instance.getUserId() ?? "1";
     try {
       final response = await dio.put(odooUrl + EndPoints.updatePartnerLocation,
@@ -1032,9 +1064,10 @@ class ServiceApi {
     required String phone,
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String userId = await Preferences.instance.getUserId() ?? "1";
     try {
       final response = await dio.put(odooUrl + EndPoints.updatePartnerLocation,
@@ -1068,9 +1101,10 @@ class ServiceApi {
       required double long,
       required String address,
       required List<dynamic> listOfremovedItems}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId();
     String userId = await Preferences.instance.getUserId() ?? "1";
@@ -1137,13 +1171,14 @@ class ServiceApi {
     }
   }
 
-  //confirm delivery  
+  //confirm delivery
   Future<Either<Failure, CreateOrderModel>> confirmDelivery({
     required int pickingId,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
     String? sessionId = await Preferences.instance.getSessionId();
     try {
@@ -1163,9 +1198,10 @@ class ServiceApi {
   Future<Either<Failure, CreateOrderModel>> createAndValidateInvoice({
     required int orderId,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
     String? sessionId = await Preferences.instance.getSessionId();
     try {
@@ -1188,9 +1224,10 @@ class ServiceApi {
       required String amount,
       required String imagePath,
       required String image}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio
@@ -1216,9 +1253,10 @@ class ServiceApi {
 
 // returned order
   Future<Either<Failure, ReturnedOrderModel>> returnedOrder() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
 
     String? employeeId = await Preferences.instance.getEmployeeId();
@@ -1252,9 +1290,10 @@ class ServiceApi {
       required String amount,
       required String imagePath,
       required String image}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
 
     String? employeeId = await Preferences.instance.getEmployeeId();
@@ -1294,9 +1333,10 @@ class ServiceApi {
       required String date,
       required String imagePath,
       required String image}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
 
     String? sessionId = await Preferences.instance.getSessionId();
     try {
@@ -1330,9 +1370,10 @@ class ServiceApi {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       String userId = await Preferences.instance.getUserId() ?? "1";
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.post(
         odooUrl + '/api/payments/customer',
         body: {
@@ -1358,9 +1399,10 @@ class ServiceApi {
       String? sessionId = await Preferences.instance.getSessionId();
       String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
       String userId = await Preferences.instance.getUserId() ?? "1";
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl +
             EndPoints.getAllJournals +
@@ -1380,9 +1422,10 @@ class ServiceApi {
       String? sessionId = await Preferences.instance.getSessionId();
       String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
       String userId = await Preferences.instance.getUserId() ?? "1";
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl + EndPoints.getAllShipping,
         options: Options(
@@ -1400,9 +1443,10 @@ class ServiceApi {
       String? sessionId = await Preferences.instance.getSessionId();
       String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
       String userId = await Preferences.instance.getUserId() ?? "1";
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl + EndPoints.getAllPromotions,
         options: Options(
@@ -1420,9 +1464,10 @@ class ServiceApi {
       String? sessionId = await Preferences.instance.getSessionId();
       String employeeId = await Preferences.instance.getEmployeeId() ?? "1";
       String userId = await Preferences.instance.getUserId() ?? "1";
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl + EndPoints.getAllPricelists,
         options: Options(
@@ -1440,9 +1485,10 @@ class ServiceApi {
     required String state,
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String userId = await Preferences.instance.getUserId() ?? "1";
     try {
       final response = await dio.put(odooUrl + EndPoints.updateState,
@@ -1459,8 +1505,8 @@ class ServiceApi {
   Future<Either<Failure, CreateOrderModel>> createPartner({
     required String name,
     required String mobile,
-      required String image,
-      required String imagePath,
+    required String image,
+    required String imagePath,
     required String email,
     required String street,
     required bool isCompany,
@@ -1470,9 +1516,10 @@ class ServiceApi {
     required double long,
   }) async {
     String? sessionId = await Preferences.instance.getSessionId();
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
@@ -1496,7 +1543,7 @@ class ServiceApi {
                 "latitude": lat,
                 "longitude": long,
                 "image": profileImage,
-                  if (image.isNotEmpty) "attachment": image,
+                if (image.isNotEmpty) "attachment": image,
                 if (image.isNotEmpty) "filename": imagePath,
                 "user_id": int.parse(userId),
                 if (employeeId != null) "employee_id": employeeId,
@@ -1513,9 +1560,10 @@ class ServiceApi {
   /// Contract ///
 
   Future<Either<Failure, GetContractModel>> getContract() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber() ??
@@ -1536,9 +1584,10 @@ class ServiceApi {
   /// attendance ///
 
   Future<Either<Failure, GetAllAttendanceModel>> getAllAttendance() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber() ??
@@ -1558,9 +1607,10 @@ class ServiceApi {
 
   /// holidays ///
   Future<Either<Failure, HolidaysModel>> getHolidays() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber() ??
@@ -1579,9 +1629,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetLastAttendanceModel>> getLastAttendance() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber() ??
@@ -1600,9 +1651,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, HolidaysTypeModel>> getTypeHolidays() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber() ??
@@ -1628,9 +1680,10 @@ class ServiceApi {
     required String country,
     required String city,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber() ??
@@ -1664,9 +1717,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetMyExpensesModel>> getMyExpenses() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String userId = await Preferences.instance.getUserId() ?? "1";
     String employeeId = await Preferences.instance.getEmployeeId() ??
@@ -1690,9 +1744,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, AllSalaryModel>> getMySalary() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String userId = await Preferences.instance.getUserId() ?? "1";
     String employeeId = await Preferences.instance.getEmployeeId() ??
@@ -1713,9 +1768,10 @@ class ServiceApi {
 
   Future<Either<Failure, GetAllExpensesProductModel>>
       getAllExpensesProduct() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     // String employeeId = await Preferences.instance.getEmployeeId() ??
     //     await Preferences.instance.getEmployeeIdNumber() ??
@@ -1740,9 +1796,10 @@ class ServiceApi {
     required String dateTo,
     required String dateFrom,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber() ??
@@ -1782,9 +1839,10 @@ class ServiceApi {
     required int productId,
     required String description,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String userId = await Preferences.instance.getUserId() ?? "1";
 
@@ -1822,9 +1880,10 @@ class ServiceApi {
     required int journalId,
     required int expenseId,
   }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     // String employeeId = await Preferences.instance.getEmployeeId() ??
     //     await Preferences.instance.getEmployeeIdNumber() ??
@@ -1853,9 +1912,10 @@ class ServiceApi {
       required String imagePath,
       required List<UserModel> users,
       required List<ProductModelData> products}) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber();
@@ -1904,9 +1964,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, GetPickingsModel>> getPicking() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber();
@@ -1932,9 +1993,10 @@ class ServiceApi {
   }
 
   Future<Either<Failure, AllWareHouseModel>> getWareHouses() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio.get(
@@ -1956,9 +2018,10 @@ class ServiceApi {
   }) async {
     String userId = await Preferences.instance.getUserId() ?? "1";
 
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio.post(
@@ -1986,9 +2049,10 @@ class ServiceApi {
     int id = await Preferences.instance.getEmployeeWareHouse() ??
         authModel.result?.propertyWarehouseId ??
         1;
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     try {
       final response = await dio.get(
@@ -2007,9 +2071,10 @@ class ServiceApi {
     try {
       String? sessionId = await Preferences.instance.getSessionId();
       // String userId = await Preferences.instance.getUserId() ?? "1";
-       bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-          await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+      bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl = isVisitor
+          ? AppStrings.demoBaseUrl
+          : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
       final response = await dio.get(
         odooUrl + '/api/res.users/?query={id,name}',
         options: Options(
@@ -2024,9 +2089,10 @@ class ServiceApi {
 
   //// CRM
   Future<Either<Failure, GetMyLeadsModel>> getMyLeads() async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber();
@@ -2038,60 +2104,104 @@ class ServiceApi {
             headers: {"Cookie": "session_id=$sessionId"},
           ),
           queryParameters: {
-          
-             if (employeeId == null) "user_id": int.parse(userId),
-              if (employeeId != null) "employee_id": int.parse(employeeId)
-            
+            'stage_id': 1,
+            if (employeeId == null) "user_id": int.parse(userId),
+            if (employeeId != null) "employee_id": int.parse(employeeId)
           });
       return Right(GetMyLeadsModel.fromJson(response));
     } on ServerException {
       return Left(ServerFailure());
     }
   }
+
   //// CRM
-  Future<Either<Failure, GetMyLeadsModel>> createLead({
-
-required String name,
-String? partnerName,
-String? phone,
-String? emailFrom,
-String? description,
-double? latitude,
-double? longitude,
-String? address
-
-  }) async {
-     bool isVisitor = await Preferences.instance.getIsVisitor();
-      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
-        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+  Future<Either<Failure, CreateLeadModel>> createLead(
+      {required String name,
+      String? partnerId,
+      String? description,
+      double? latitude,
+      double? longitude,
+      String? price,
+      String? address}) async {
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
     String? sessionId = await Preferences.instance.getSessionId();
     String? employeeId = await Preferences.instance.getEmployeeId() ??
         await Preferences.instance.getEmployeeIdNumber();
     String userId = await Preferences.instance.getUserId() ?? "1";
 
     try {
-      final response = await dio.post(odooUrl + EndPoints.getLeads,
+      final response = await dio.post(odooUrl + EndPoints.createLead,
           options: Options(
             headers: {"Cookie": "session_id=$sessionId"},
           ),
           body: {
-           "name": name,
-  "partner_name": partnerName,
-  "phone": phone,
-  "email_from": emailFrom,
- 
-  "description": description,
-  "latitude": latitude,
-  "longitude": longitude,
-  "address": address,
-              "user_id": int.parse(userId),
-              if (employeeId != null) "employee_id": int.parse(employeeId)
-            
+            "params": {
+              "data": {
+                "name": name,
+                "partner_id": int.parse(partnerId!),
+                "description": description,
+                "latitude": latitude,
+                "longitude": longitude,
+                "address": address,
+                "expected_revenue": price,
+                "user_id": int.parse(userId),
+                if (employeeId != null) "employee_id": int.parse(employeeId)
+              }
+            }
           });
-      return Right(GetMyLeadsModel.fromJson(response));
+      return Right(CreateLeadModel.fromJson(response));
     } on ServerException {
       return Left(ServerFailure());
     }
   }
 
+  Future<Either<Failure, CreateLeadModel>> updateLead(
+      {String? leadId,
+      String? description,
+      double? latitude,
+      double? longitude,
+      String? price,
+      String? address,
+      required bool isStart}) async {
+    bool isVisitor = await Preferences.instance.getIsVisitor();
+    String odooUrl = isVisitor
+        ? AppStrings.demoBaseUrl
+        : await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+
+    try {
+      final response = await dio.post(odooUrl + EndPoints.updateLead,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
+          body: {
+            "params": {
+              "data": {
+                // "name": name,
+                "lead_id": int.parse(leadId!), // leadId,
+                "description": description,
+                "latitude": latitude,
+                "longitude": longitude,
+                "expected_revenue": price,
+                "address": isStart
+                    ? 'موقع البدء : $address'
+                    : 'موقع الانتهاء : $address',
+                "stage_id": 2,
+                "status": isStart ? "start" : "end",
+                // "user_id": int.parse(userId),
+                // if (employeeId != null) "employee_id": int.parse(employeeId)
+              }
+            }
+          });
+      return Right(CreateLeadModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }
