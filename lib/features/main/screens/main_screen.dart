@@ -14,10 +14,8 @@ import '../../../core/utils/app_colors.dart';
 import '../cubit/main_cubit.dart';
 
 ZoomDrawerController z = ZoomDrawerController();
-
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
-
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -26,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    print('zz:: ${z.isOpen}');
     super.initState();
   }
 
@@ -34,27 +31,25 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     MainCubit cubit = context.read<MainCubit>();
     HomeCubit cubitHome = context.read<HomeCubit>();
-    Future<void> _showExitDialog(BuildContext context) async {
+    Future<void> showExitDialog(BuildContext context) async {
       return showDialog<void>(
         context: context,
-        barrierDismissible: false, // يمنع الخروج عند الضغط في الخلفية
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('هل أنت متأكد من الخروج؟'),
-            content: Text('سيتم إغلاق التطبيق.'),
+            title: Text("are_you_sure".tr()),
+            content: Text("app_will_close".tr()),
             actions: <Widget>[
               TextButton(
-                child: Text('إلغاء'),
+                child: Text("cancel".tr()),
                 onPressed: () {
-                  Navigator.of(context).pop(); // إغلاق نافذة الحوار
+                  Navigator.of(context).pop(); 
                 },
               ),
               TextButton(
-                child: Text('خروج'),
+                child: Text("exit".tr()),
                 onPressed: () {
-                  // هنا يمكنك إضافة كود الخروج من التطبيق
-                  Navigator.of(context).pop(); // إغلاق نافذة الحوار
-                  // يمكن أن تستخدم SystemNavigator.pop() للخروج
+                  Navigator.of(context).pop(); 
                   SystemNavigator.pop();
                 },
               ),
@@ -66,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        await _showExitDialog(context);
+        await showExitDialog(context);
         return false;
       },
       child: SafeArea(
@@ -97,9 +92,11 @@ class _MainScreenState extends State<MainScreen> {
                     elevation: 50,
                     shadowColor: Colors.grey,
                     child: SalomonBottomBar(
+
                       items: [
                         /// Home
                         SalomonBottomBarItem(
+                          
                           icon: Image.asset(
                             'assets/images/home1.png',
                             width: getSize(context) / 22,
@@ -137,16 +134,26 @@ class _MainScreenState extends State<MainScreen> {
                           selectedColor: AppColors.primaryColor,
                         ),
 
-                        /// Profile
+                        // SalomonBottomBarItem(
+                        //   icon: Image.asset(
+                        //     'assets/images/menu1.png',
+                        //     width: getSize(context) / 22,
+                        //     color: cubit.currentIndex == 3
+                        //         ? AppColors.primaryColor
+                        //         : Colors.black,
+                        //   ),
+                        //   title: Text('menu'.tr()),
+                        //   selectedColor: AppColors.primaryColor,
+                        // ),
                         SalomonBottomBarItem(
                           icon: Image.asset(
-                            'assets/images/menu1.png',
+                            'assets/images/crm1.png',
                             width: getSize(context) / 22,
                             color: cubit.currentIndex == 3
                                 ? AppColors.primaryColor
                                 : Colors.black,
                           ),
-                          title: Text('menu'.tr()),
+                          title: Text('CRM'),
                           selectedColor: AppColors.primaryColor,
                         ),
                       ],
@@ -154,9 +161,10 @@ class _MainScreenState extends State<MainScreen> {
                       currentIndex: cubit.currentIndex,
                       onTap: (index) {
                         setState(() {
-                          if (index == 3) {
-                            z.toggle!.call();
-                          } else if (index == 2) {
+                          // if (index == 3) {
+                          //   z.toggle!.call();
+                          // } else
+                           if (index == 2) {
                             context.read<HomeCubit>().isEmployeeAdded
                                 ? cubit.changeNavigationBar(2)
                                 : showEmployeeBottomSheet(

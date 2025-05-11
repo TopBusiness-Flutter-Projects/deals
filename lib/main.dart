@@ -106,7 +106,7 @@ Future<void> scheduleDailyTenAMNotification() async {
 
         await flutterLocalNotificationsPlugin.zonedSchedule(
           i, // Use the index as the unique ID
-          'هناك مهمة جديدة',
+          "new_task".tr(),
           '${value.tasks![i].taskName}',
           tz.TZDateTime(tz.local, year, month, day),
           const NotificationDetails(
@@ -139,7 +139,7 @@ Future<void> scheduleOrdersNotification() async {
                       if (orderDead.day == tz.TZDateTime.now(tz.local).day && orderDead.month == tz.TZDateTime.now(tz.local).month && orderDead.year == tz.TZDateTime.now(tz.local).year) {
           await flutterLocalNotificationsPlugin.zonedSchedule(
             i, // Use the index as the unique ID
-            'هناك طلب جديد',
+            "new_order".tr(),
             '${value.result![i].displayName}',
             tz.TZDateTime(tz.local, year, month, day), // Schedule the notification at the extracted time
             const NotificationDetails(

@@ -55,7 +55,7 @@ class _ExchangePermissionScreenState extends State<ExchangePermissionScreen> {
           onPressed: () {
             context.read<DirectSellCubit>().changeProductsStockType("nonStock");
             Navigator.pushNamed(context, Routes.productsRoute,
-                arguments: ["انشاء اذن الصرف", '0']);
+                arguments: ["create_expense".tr(), '0']);
           },
           child: Icon(
             Icons.add,

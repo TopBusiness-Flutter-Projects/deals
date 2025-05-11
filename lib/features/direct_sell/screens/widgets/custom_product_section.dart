@@ -79,20 +79,7 @@ class _CustomProductSectionState extends State<CustomProductSection> {
                 ),
               ),
             ))
-        // SizedBox(
-        //   height: getheightSize(context) / 8,
-        //   child: ListView.separated(
-        //       scrollDirection: Axis.horizontal,
-        //       itemBuilder: (context, index) => CustomProductWidget(
-        //             image: testImage,
-        //             // image: "false",
-        //             title: "لحوم لحوم  لحوم",
-        //           ),
-        //       separatorBuilder: (context, index) => SizedBox(
-        //             width: 8,
-        //           ),
-        //       itemCount: 10),
-        // )
+       
       ],
     );
   }

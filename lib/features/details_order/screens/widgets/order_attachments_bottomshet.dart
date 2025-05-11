@@ -72,9 +72,9 @@ void showCancelAttachmentBottomSheet(
                                       Icon(Icons.cloud_upload_outlined,
                                           size: 40, color: AppColors.primary),
                                       SizedBox(height: 5.sp),
-                                      const Text(
-                                        '  ارفع الصورة أو الملف',
-                                        style: TextStyle(color: Colors.grey),
+                                     Text(
+                                        "upload_pic_or_file".tr(),
+                                        style: const TextStyle(color: Colors.grey),
                                       ),
                                     ],
                                   ),
@@ -115,10 +115,10 @@ void showCancelAttachmentBottomSheet(
                   ),
                 ),
                 CustomTextFieldWithTitle(
-                  title: "الملاحظات",
+                  title: "notes".tr(),
                   controller: noteController,
                   maxLines: 5,
-                  hint: "ادخل الملاحظات",
+                  hint: "enter_notes".tr(),
                   keyboardType: TextInputType.text,
                 ),
                 SizedBox(
@@ -132,16 +132,12 @@ void showCancelAttachmentBottomSheet(
                     backgroundColor: AppColors.primaryColor,
                     text: 'confirm'.tr(),
                     onPressed: () {
-                      print(cubit.profileImage!.path.split('/').last);
-                      // if (cubit.selectedBase64String.isNotEmpty) {
                       cubit.cancelOrder(
                           orderId: orderId,
                           orderModel: orderModel,
                           note: noteController.text,
                           context: context);
-                      // } else {
-                      //   errorGetBar('يرجى ملء جميع الحقول المطلوبة');
-                      // }
+                    
                     },
                   ),
                 )
@@ -208,9 +204,9 @@ void showCreateAttachmentBottomSheet(
                                       Icon(Icons.cloud_upload_outlined,
                                           size: 40, color: AppColors.primary),
                                       SizedBox(height: 5.sp),
-                                      const Text(
-                                        '  ارفع الصورة أو الملف',
-                                        style: TextStyle(color: Colors.grey),
+                                       Text(
+                                        "upload_pic_or_file".tr(),
+                                        style: const TextStyle(color: Colors.grey),
                                       ),
                                     ],
                                   ),
@@ -251,10 +247,10 @@ void showCreateAttachmentBottomSheet(
                   ),
                 ),
                 CustomTextFieldWithTitle(
-                  title: "الملاحظات",
+                  title: "notes".tr(),
                   controller: noteController,
                   maxLines: 5,
-                  hint: "ادخل الملاحظات",
+                  hint:  "enter_notes".tr(),
                   keyboardType: TextInputType.text,
                 ),
                 SizedBox(
@@ -268,20 +264,12 @@ void showCreateAttachmentBottomSheet(
                     backgroundColor: AppColors.primaryColor,
                     text: 'confirm'.tr(),
                     onPressed: () {
-                      // if (cubit.selectedBase64String.isNotEmpty) {
                       cubit.createQuotation(
                           warehouseId: '1',
                           note: noteController.text,
                           context: context,
                           partnerId: partnerId);
-                      // } else {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     SnackBar(
-                      //       content: Text('يرجى ملء جميع الحقول المطلوبة'.tr()),
-                      //       backgroundColor: Colors.red,
-                      //     ),
-                      //   );
-                      // }
+                      
                     },
                   ),
                 )

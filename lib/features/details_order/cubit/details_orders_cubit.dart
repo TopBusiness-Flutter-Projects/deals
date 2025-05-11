@@ -34,8 +34,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   ServiceApi api;
   OrderDetailsModel? getDetailsOrdersModel;
   OrderDetailsModel? getDetailsOrdersModelReturned;
-  List list = [0, 1, 2, 3]; // 0 عرض سعر
-  // جديدة
+  List list = [0, 1, 2, 3]; // 0 show price
+  // new
 
   int page = 1;
   void changePage(int index) {
@@ -102,7 +102,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   CreateOrderModel? createOrderModel;
   void confirmDelivery(BuildContext context,
       {required int pickingId, required int orderId}) async {
-    AppWidget.createProgressDialog(context, "جاري التحميل");
+        AppWidget.createProgressDialog(context);
+
     emit(ConfirmDeliveryLoadingState());
     final result = await api.confirmDelivery(pickingId: pickingId);
     result.fold((failure) {
@@ -163,20 +164,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
             TextButton(
               onPressed: () async {
                 pickImage(context, false);
-                // var status = await Permission.camera.status;
-                // if (status.isDenied ||
-                //     status.isRestricted ||
-                //     status.isPermanentlyDenied) {
-                //   if (await Permission.camera.request().isGranted) {
-                //     pickImage(context, false);
-                //   } else {
-                //     errorGetBar(
-                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
-                //   }
-                //   await Permission.camera.request();
-                // } else {
-                //   pickImage(context, false);
-                // }
+            
               },
               child: Text(
                 "camera".tr(),
@@ -232,7 +220,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
       required int invoiceId,
       required int orderId}) async {
     emit(RegisterPaymentLoadingState());
-    AppWidget.createProgressDialog(context, "جاري التحميل");
+          AppWidget.createProgressDialog(context);
+
     final result = await api.registerPayment(
         image: selectedBase64String,
         imagePath:
@@ -281,7 +270,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
     required int journalId,
   }) async {
     emit(RegisterPaymentLoadingState());
-    AppWidget.createProgressDialog(context, "جاري التحميل");
+      AppWidget.createProgressDialog(context);
+
     final result = await api.registerPaymentReturn(
         image: selectedBase64String,
         imagePath:
@@ -326,7 +316,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   void createAndValidateInvoice(BuildContext context,
       {required int orderId}) async {
     emit(CreateAndValidateInvoiceLoadingState());
-    AppWidget.createProgressDialog(context, "جاري التحميل");
+          AppWidget.createProgressDialog(context);
+
 
     final result = await api.createAndValidateInvoice(orderId: orderId);
     result.fold(
@@ -425,17 +416,17 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
   addAndRemoveToBasket({
     required bool isAdd,
     required OrderLine product,
-    bool isReturned = false, // لتحديد اذا كانت عملية إرجاع
+    bool isReturned = false,
   }) {
     emit(LoadingTheQuantityCount());
 
-    // الحد الأقصى المسموح به بناءً على الحالة
+  
     final int maxQuantityAllowed = isReturned
-        ? product.oldQty // في حالة الإرجاع، نستخدم الكمية المتاحة الأصلية
-        : 9999; // رقم تعسفي يسمح بإضافة غير محدودة عند عدم وجود إرجاع
+        ? product.oldQty
+        : 9999;
 
     if (isAdd) {
-      // منطق إضافة الكمية مع التأكد من عدم تجاوز الحد الأقصى عند الإرجاع
+    
       bool existsInBasket = getDetailsOrdersModel!.orderLines!
           .any((item) => item.id == product.id);
       final existingProduct = existsInBasket
@@ -448,7 +439,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
           existingProduct.productUomQty++;
           emit(IncreaseTheQuantityCount());
         } else {
-          errorGetBar("لا يمكن إضافة أكثر من المتاح");
+          errorGetBar("cannot_add_more".tr());
         }
       } else {
         if (product.productUomQty < maxQuantityAllowed) {
@@ -456,11 +447,10 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
           getDetailsOrdersModel!.orderLines?.add(product);
           emit(IncreaseTheQuantityCount());
         } else {
-          errorGetBar("لا يمكن إضافة أكثر من المتاح");
+          errorGetBar("cannot_add_more".tr());
         }
       }
     } else {
-      // السماح بالنقصان بدون تجاوز الحد الأدنى، مع الحفاظ على الحد الأقصى المسموح به
       bool existsInBasket = getDetailsOrdersModel!.orderLines!
           .any((item) => item.id == product.id);
       if (existsInBasket) {
@@ -478,7 +468,6 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
       }
     }
 
-    // تحديث إجمالي السلة
     totalBasket();
   }
 
@@ -596,7 +585,7 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
       emit(ErrorConfirmQuotation());
     }, (r) {
       if (r.result?.message == null) {
-        errorGetBar('عدم كفاية المخزون لمنتج واحد أو أكثر');
+        errorGetBar("socket_limit".tr());
       } else {
         getDetailsOrdersModel!.orderLines?.clear();
         context.read<DeleveryOrdersCubit>().getOrders();
@@ -615,7 +604,8 @@ class DetailsOrdersCubit extends Cubit<DetailsOrdersState> {
       required OrderModel orderModel,
       required BuildContext context,
       String? note}) async {
-    AppWidget.createProgressDialog(context, "جاري التحميل");
+      AppWidget.createProgressDialog(context);
+
     emit(LoadingCancel());
     final result = await api.cancelOrder(
         imagePath:

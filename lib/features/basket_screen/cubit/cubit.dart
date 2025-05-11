@@ -122,20 +122,7 @@ class BasketCubit extends Cubit<BasketState> {
             TextButton(
               onPressed: () async {
                 pickImage(context, false);
-                // var status = await Permission.camera.status;
-                // if (status.isDenied ||
-                //     status.isRestricted ||
-                //     status.isPermanentlyDenied) {
-                //   if (await Permission.camera.request().isGranted) {
-                //     pickImage(context, false);
-                //   } else {
-                //     errorGetBar(
-                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
-                //   }
-                //   await Permission.camera.request();
-                // } else {
-                //   pickImage(context, false);
-                // }
+            
               },
               child: Text(
                 "camera".tr(),

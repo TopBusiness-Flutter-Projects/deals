@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:top_sale/core/models/all_tasks_model.dart';
 import 'package:top_sale/core/models/get_orders_model.dart';
+import 'package:top_sale/core/utils/app_strings.dart';
 
 import '../models/login_model.dart';
 
@@ -286,5 +287,14 @@ Future<String?> getEmployeePartnerId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setBool('isVisitor', isVisitor);
     print("isVisitor = $isVisitor");
+  }
+    Future<String> getSavedLang() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString(AppStrings.locale) ?? 'ar';
+  }
+
+  Future<void> savedLang(String local) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString(AppStrings.locale, local);
   }
 }

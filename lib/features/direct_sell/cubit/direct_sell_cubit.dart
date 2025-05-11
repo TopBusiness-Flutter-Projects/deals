@@ -152,30 +152,32 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       bool existsInBasket = basket.any((item) => item.id == product.id);
 
       if (!existsInBasket) {
-        // if (product.userOrderedQuantity < product.stockQuantity) {
+         if (product.userOrderedQuantity < product.stockQuantity) {
         product.userOrderedQuantity++;
         basket.add(product);
         emit(IncreaseTheQuantityCount());
         print(
             'Product added to basket: ${product.id}, Quantity: ${product.userOrderedQuantity}');
-        // } else {
-        //   print(
-        //       'Cannot add more. Stock limit reached for product: ${product.id}');
-        // }
+        } else {
+          errorGetBar("stock_limit_msg".tr());
+          print(
+              'Cannot add more. Stock limit reached for product: ${product.id}');
+        }
       } else {
         final existingProduct =
             basket.firstWhere((item) => item.id == product.id);
 
-        // if (existingProduct.userOrderedQuantity <
-        //     existingProduct.stockQuantity) {
+        if (existingProduct.userOrderedQuantity <
+            existingProduct.stockQuantity) {
         existingProduct.userOrderedQuantity++;
         emit(IncreaseTheQuantityCount());
         debugPrint(
             'Updated quantity for product ${existingProduct.id}: ${existingProduct.userOrderedQuantity}');
-        // } else {
-        //   print(
-        //       'Cannot add more. Stock limit reached for product: ${existingProduct.id}');
-        // }
+        } else {
+               errorGetBar("stock_limit_msg".tr());
+          print(
+              'Cannot add more. Stock limit reached for product: ${existingProduct.id}');
+        }
       }
     } else {
       // **Remove Product from Basket**
@@ -353,21 +355,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
             TextButton(
               onPressed: () async {
                 pickattachImage(context, false);
-                // var status = await Permission.camera.status;
-                // if (status.isDenied ||
-                //     status.isRestricted ||
-                //     status.isPermanentlyDenied) {
-                //   if (await Permission.camera.request().isGranted) {
-                //     pickImage(context, false);
-                //   } else {
-                //     errorGetBar(
-                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
-                //   }
-
-                //   await Permission.camera.request();
-                // } else {
-                //   pickImage(context, false);
-                // }
+               
               },
               child: Text(
                 "camera".tr(),
@@ -422,7 +410,8 @@ class DirectSellCubit extends Cubit<DirectSellState> {
       required BuildContext context,
       required String warehouseId,
       String? note}) async {
-    AppWidget.createProgressDialog(context, "جاري التحميل ..");
+         AppWidget.createProgressDialog(context);
+
     emit(LoadingCreateQuotation());
     final result = await api.createQuotation(
         note: note,
@@ -448,7 +437,7 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     }, (r) {
       Navigator.pop(context);
       if (r.result?.message == null) {
-        errorGetBar('عدم كفاية المخزون لمنتج واحد أو أكثر');
+        errorGetBar("socket_limit".tr());
       } else if (r.result?.error != null) {
         errorGetBar(r.result!.error!.toString(), seconds: 4);
       } else {
@@ -606,7 +595,8 @@ class DirectSellCubit extends Cubit<DirectSellState> {
     required String imagePath,
     required BuildContext context,
   }) async {
-    AppWidget.createProgressDialog(context, "جاري التحميل ..");
+      AppWidget.createProgressDialog(context);
+
     emit(LoadingCreatePicking());
     final result = await api.createPicking(
         sourceWarehouseId: sourceWarehouseId,

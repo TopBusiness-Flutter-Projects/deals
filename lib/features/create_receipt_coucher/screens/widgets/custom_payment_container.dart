@@ -41,10 +41,10 @@ class CustomPaymentContainer extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color:
-                    Colors.black.withOpacity(0.1), // لون الظل مع تقليل الشفافية
-                spreadRadius: 1, // مدى انتشار الظل
-                blurRadius: 1, // مدى نعومة الظل
-                offset: const Offset(0, 1), // الاتجاه الأفقي والرأسي للظل
+                    Colors.black.withOpacity(0.1),
+                spreadRadius: 1, 
+                blurRadius: 1,
+                offset: const Offset(0, 1), 
               ),
             ],
           ),
@@ -58,7 +58,7 @@ class CustomPaymentContainer extends StatelessWidget {
                     Flexible(
                       child: Text(
                         paymentModel.name.toString(),
-                        //  "اسم العميل رقم 1".tr(),
+                     
                         style: TextStyle(
                             fontFamily: AppStrings.fontFamily,
                             fontWeight: FontWeight.bold,

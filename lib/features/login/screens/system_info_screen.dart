@@ -97,7 +97,7 @@ Preferences.instance.setIsVisitor(false);
                           baseUrl: cubit.odooLinkController.text,
                           database: cubit.dbNumberController.text);
                     } else {
-                      errorGetBar("من فضلك املأ الحقول");
+                      errorGetBar( "please_enter_fields".tr());
                       print('Form is Not valid');
                     }
                   }),

@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
+import 'package:top_sale/core/utils/dialogs.dart';
 import 'package:top_sale/core/utils/get_size.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/models/get_orders_model.dart';
@@ -60,7 +62,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: getSize(context) / 50),
-                        Text('عدد : $number',
+                        Text('${"number:".tr()} $number',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.secondry,

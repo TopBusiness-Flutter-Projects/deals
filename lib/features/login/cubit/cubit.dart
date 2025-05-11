@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:top_sale/config/routes/app_routes.dart';
@@ -48,7 +49,8 @@ class LoginCubit extends Cubit<LoginState> {
       required bool isVisitor}) async {
     emit(LoadingLoginState());
     if (!isSplash) {
-      AppWidget.createProgressDialog(context, 'انتظر');
+          AppWidget.createProgressDialog(context);
+
     }
     final response = isVisitor
         ? await api.login(
@@ -120,7 +122,7 @@ class LoginCubit extends Cubit<LoginState> {
               context, Routes.mainRoute, (route) => false);
         }
       } else {
-        errorGetBar("حدث خطأ ما");
+        errorGetBar("error".tr());
         Navigator.pop(context);
       }
     });
@@ -177,17 +179,18 @@ class LoginCubit extends Cubit<LoginState> {
   }) async {
     if (await Preferences.instance.getMasterUserName() == null ||
         await Preferences.instance.getOdooUrl() == null) {
-      errorGetBar("من فضلك أدخل معلومات الشركة أولا");
+      errorGetBar("enter_company_data".tr());
     } else {
       emit(LoadingCheckEmployeeState());
-      AppWidget.createProgressDialog(context, 'انتظر');
+            AppWidget.createProgressDialog(context);
+
       final response = await api.checkEmployee(
         employeeId: employeeId,
         password: password,
       );
       response.fold((l) {
         Navigator.pop(context);
-        errorGetBar("حدث خطأ ما");
+        errorGetBar("error".tr());
         emit(FailureCheckEmployeeState());
       }, (r) async {
         Navigator.pop(context);
@@ -196,7 +199,7 @@ class LoginCubit extends Cubit<LoginState> {
           if (r.result!.isNotEmpty) {
             await Preferences.instance
                 .setEmployeeId(r.result!.first.id.toString());
-            successGetBar("تم بنجاح");
+            successGetBar("success".tr());
             Navigator.pushNamedAndRemoveUntil(
                 context, Routes.mainRoute, (route) => false);
             if (r.result!.first.workId != null) {
@@ -208,11 +211,11 @@ class LoginCubit extends Cubit<LoginState> {
             //         r.result!.first.messagePartnerIds!.first.id.toString());
             //   }
           } else {
-            errorGetBar("حدث خطأ ما");
+            errorGetBar('error'.tr());
           }
           //  employeeModel = r;
         } else {
-          errorGetBar("حدث خطأ ما");
+          errorGetBar("error".tr());
         }
       });
     }

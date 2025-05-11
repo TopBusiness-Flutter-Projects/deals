@@ -77,16 +77,14 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
 
     if (picked != null) {
       if (isStartDate) {
-        // التأكد أن تاريخ البداية هو قبل تاريخ النهاية (إذا كان موجودًا)
         if (selectedEndDate != null && picked.isAfter(selectedEndDate!)) {
-          errorGetBar("تاريخ البداية يجب أن يكون قبل تاريخ النهاية".tr());
+          errorGetBar("start_end_date".tr());
           return;
         }
         selectedStartDate = picked;
       } else {
-        // التأكد أن تاريخ النهاية هو بعد تاريخ البداية (إذا كان موجودًا)
         if (selectedStartDate != null && picked.isBefore(selectedStartDate!)) {
-          errorGetBar("تاريخ النهاية يجب أن يكون بعد تاريخ البداية".tr());
+          errorGetBar("start_end_date".tr());
           return;
         }
         selectedEndDate = picked;
@@ -100,12 +98,12 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
     fromDate = selectedStartDate != null
         ? DateFormat('yyyy-MM-dd', 'en').format(selectedStartDate!)
         : DateFormat('yyyy-MM-dd', 'en')
-            .format(DateTime.now()); // تاريخ اليوم كقيمة افتراضية
+            .format(DateTime.now()); 
 
     toDate = selectedEndDate != null
         ? DateFormat('yyyy-MM-dd', 'en').format(selectedEndDate!)
         : DateFormat('yyyy-MM-dd', 'en')
-            .format(DateTime.now()); // تاريخ اليوم كقيمة افتراضية
+            .format(DateTime.now()); 
 
     print('From date: $fromDate, To date: $toDate');
   }
@@ -181,7 +179,7 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
     required String city,
   }) async {
     // getIp();
-    AppWidget.createProgressDialog(context, "جاري التحميل ..");
+    AppWidget.createProgressDialog(context);
     emit(CheckInOutLoading());
     print("laat : $lat");
     print("long : $long");
@@ -330,21 +328,7 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
             ),
             TextButton(
               onPressed: () async {pickImage(context, false);
-                // var status = await Permission.camera.status;
-                // if (status.isDenied ||
-                //     status.isRestricted ||
-                //     status.isPermanentlyDenied) {
-                //   if (await Permission.camera.request().isGranted) {
-                //     pickImage(context, false);
-                //   } else {
-                //     errorGetBar(
-                //         'يرجى السماح بإذن الكاميرا لاستخدام هذه الميزة');
-                //   }
-
-                //   await Permission.camera.request();
-                // } else {
-                //   pickImage(context, false);
-                // }
+              
               },
               child: Text(
                 "camera".tr(),
@@ -379,10 +363,10 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
 
   void createExpense(BuildContext context, {required int productId}) async {
     if (selectedPaymentMethod == null) {
-      errorGetBar("من فضلك اختر طريقة الدفع");
+      errorGetBar("please_select_pay");
     } else {
       emit(UpdateProfileUserLoading());
-      AppWidget.createProgressDialog(context, "جاري التحميل ..");
+      AppWidget.createProgressDialog(context);
       final result = await api.createExpense(
           path: profileImage != null ? profileImage!.path : "",
           amount: amountController.text,
@@ -410,7 +394,7 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
       Navigator.pop(context);
       Navigator.pop(context);
       Navigator.pop(context);
-      successGetBar("تمت الاضافة بنجاح");
+      successGetBar("added".tr());
       getMyExpenses();
       emit(UpdateProfileUserLoaded());
     }
@@ -456,12 +440,12 @@ class AttendanceAndDepartureCubit extends Cubit<AttendanceAndDepartureState> {
     required String timeOffTypeId,
   }) async {
     if (fromDate == null || toDate == null) {
-      errorGetBar("يرجى اختيار التواريخ".tr());
+      errorGetBar("please_select_date".tr());
       return;
     }
 
     if (selectedEndDate!.isBefore(selectedStartDate!)) {
-      errorGetBar("تاريخ النهاية يجب أن يكون بعد تاريخ البداية".tr());
+      errorGetBar("start_end_date".tr());
       return;
     }
 

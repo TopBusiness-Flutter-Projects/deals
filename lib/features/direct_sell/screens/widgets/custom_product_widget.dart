@@ -153,17 +153,10 @@ class CustomProductWidget extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  // Navigator.pop(context);
-
-//! add
-                                  // if (product.userOrderedQuantity <
-                                  //     product.stockQuantity) {
+                                
                                   cubit.addAndRemoveToBasket(
                                       product: product, isAdd: true);
-                                  // } else {
-                                  //   errorGetBar(
-                                  //       "الكمية المطلوبة غير متاحة في المخزن");
-                                  // }
+                                 
                                 },
                                 child: Icon(
                                   Icons.add,

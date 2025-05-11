@@ -24,6 +24,7 @@ import 'package:top_sale/core/models/defaul_model.dart';
 import 'package:top_sale/core/models/get__my_expense_model.dart';
 import 'package:top_sale/core/models/get_all_attendance_model.dart';
 import 'package:top_sale/core/models/get_all_expenses_product_model.dart';
+import 'package:top_sale/core/models/get_all_leads.dart';
 import 'package:top_sale/core/models/get_all_promotions.dart';
 import 'package:top_sale/core/models/get_all_users_model.dart';
 import 'package:top_sale/core/models/get_car_ids_model.dart';
@@ -90,7 +91,6 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
-
   Future<Either<ServerFailure, AuthModel>> login(
       {required String phoneOrMail,
       required String password,
@@ -644,7 +644,7 @@ class ServiceApi {
         isUserOnly
             ? odooUrl +
                 EndPoints.getAllPartners +
-                '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page&filter=[["user_id", "=",$userId]]'
+                '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"],["user_id", "=",$userId]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page'
             : odooUrl +
                 EndPoints.getAllPartners +
                 '?filter=[["name", "=like", "%$name%"],["state", "=", "approved"]]&query={name,id,phone,image_1920,property_product_pricelist}&page_size=20&page=$page',
@@ -1137,7 +1137,7 @@ class ServiceApi {
     }
   }
 
-  //confirm delivery  تاكيد الاستلام اللي جاي من جديدة
+  //confirm delivery  
   Future<Either<Failure, CreateOrderModel>> confirmDelivery({
     required int pickingId,
   }) async {
@@ -1159,7 +1159,7 @@ class ServiceApi {
     }
   }
 
-  //create and validate invoice انشاء فاتورة
+  //create and validate invoice
   Future<Either<Failure, CreateOrderModel>> createAndValidateInvoice({
     required int orderId,
   }) async {
@@ -1181,7 +1181,7 @@ class ServiceApi {
     }
   }
 
-  // الدفع
+  // payment
   Future<Either<Failure, CreateOrderModel>> registerPayment(
       {required int invoiceId,
       required int journalId,
@@ -1204,7 +1204,7 @@ class ServiceApi {
               if (image.isNotEmpty) "attachment": image,
               if (image.isNotEmpty) "filename": imagePath,
 
-              "payment_method_id": 1, // ثابت
+              "payment_method_id": 1, // default
               "amount": amount
             }
           });
@@ -1285,7 +1285,7 @@ class ServiceApi {
     }
   }
 
-  // الدفع
+  // payment
   Future<Either<Failure, CreateOrderModel>> partnerPayment(
       {required int partnerId,
       required int journalId,
@@ -2021,4 +2021,77 @@ class ServiceApi {
       return Left(ServerFailure());
     }
   }
+
+  //// CRM
+  Future<Either<Failure, GetMyLeadsModel>> getMyLeads() async {
+     bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+
+    try {
+      final response = await dio.get(odooUrl + EndPoints.getLeads,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
+          queryParameters: {
+          
+             if (employeeId == null) "user_id": int.parse(userId),
+              if (employeeId != null) "employee_id": int.parse(employeeId)
+            
+          });
+      return Right(GetMyLeadsModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+  //// CRM
+  Future<Either<Failure, GetMyLeadsModel>> createLead({
+
+required String name,
+String? partnerName,
+String? phone,
+String? emailFrom,
+String? description,
+double? latitude,
+double? longitude,
+String? address
+
+  }) async {
+     bool isVisitor = await Preferences.instance.getIsVisitor();
+      String odooUrl =  isVisitor ? AppStrings.demoBaseUrl :
+        await Preferences.instance.getOdooUrl() ?? AppStrings.demoBaseUrl;
+    String? sessionId = await Preferences.instance.getSessionId();
+    String? employeeId = await Preferences.instance.getEmployeeId() ??
+        await Preferences.instance.getEmployeeIdNumber();
+    String userId = await Preferences.instance.getUserId() ?? "1";
+
+    try {
+      final response = await dio.post(odooUrl + EndPoints.getLeads,
+          options: Options(
+            headers: {"Cookie": "session_id=$sessionId"},
+          ),
+          body: {
+           "name": name,
+  "partner_name": partnerName,
+  "phone": phone,
+  "email_from": emailFrom,
+ 
+  "description": description,
+  "latitude": latitude,
+  "longitude": longitude,
+  "address": address,
+              "user_id": int.parse(userId),
+              if (employeeId != null) "employee_id": int.parse(employeeId)
+            
+          });
+      return Right(GetMyLeadsModel.fromJson(response));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
 }

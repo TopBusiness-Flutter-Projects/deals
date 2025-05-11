@@ -452,9 +452,9 @@ void customQtyShowBottomSheet(
                   }
                   return null;
                 },
-                title: "العدد".tr(),
+                title: "number".tr(),
                 controller: controller,
-                hint: "ادخل العدد".tr(),
+                hint: "enter_number".tr(),
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: getSize(context) / 30),

@@ -33,18 +33,16 @@ class HomeCubit extends Cubit<HomeState> {
       {required String employeeId, bool isHR = true
       // required String password,
       }) async {
-    // if (await Preferences.instance.getMasterUserName() == null ||
-    //     await Preferences.instance.getOdooUrl() == null) {
-    //   errorGetBar("من فضلك أدخل معلومات الشركة أولا");
-    // } else {
+  
     emit(LoadingCheckEmployeeState());
-    AppWidget.createProgressDialog(context, 'انتظر');
+          AppWidget.createProgressDialog(context);
+
     final response = await api.checkEmployeeNumber(
       employeeId: employeeId,
     );
     response.fold((l) {
       Navigator.pop(context);
-      errorGetBar("حدث خطأ ما");
+      errorGetBar("error".tr());
       emit(FailureCheckEmployeeState());
     }, (r) async {
       Navigator.pop(context);
@@ -59,22 +57,18 @@ class HomeCubit extends Cubit<HomeState> {
             await Preferences.instance
                 .setEmployeePartnerId(r.result!.first.workId.toString());
           }
-          // if (r.result!.first.messagePartnerIds!.isNotEmpty) {
-          //   await Preferences.instance.setEmployeePartnerId(
-          //       r.result!.first.messagePartnerIds!.first.id.toString());
-          // }
+        
           if (isHR) {
             context.read<MainCubit>().changeNavigationBar(2);
           }
-          successGetBar("تم بنجاح");
-          // Navigator.pushNamedAndRemoveUntil(
-          //     context, Routes.mainRoute, (route) => false);
+          successGetBar("success".tr());
+      
         } else {
-          errorGetBar("لا يوجد موظف بهذا الرقم");
+          errorGetBar("not_employee".tr());
         }
-        //  employeeModel = r;
+     
       } else {
-        errorGetBar("حدث خطأ ما");
+        errorGetBar("error".tr());
       }
     });
     // }
@@ -180,8 +174,8 @@ class HomeCubit extends Cubit<HomeState> {
       Navigator.pushNamedAndRemoveUntil(
           context, Routes.loginRoute, (route) => false);
       isLogout
-          ? successGetBar("تم تسجل الخروج بنجاح")
-          : successGetBar("تم حذف لاحساب بنجاح");
+          ? successGetBar("logout_success".tr())
+          : successGetBar( "delete_success".tr());
       // Navigator.pushNamedAndRemoveUntil(context, Routes.loginRoute, );
       emit(checkClearLoaded());
     });

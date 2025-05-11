@@ -95,7 +95,7 @@ loadingDialog() {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'جارى التحميل'.tr,
+              'loading'.tr,
               // style: Get.textTheme.bodyText1!.copyWith(
               //   color: Get.theme.primaryColor,
               // ),

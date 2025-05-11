@@ -123,46 +123,46 @@ class _ClientScreenState extends State<ClientScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
                 children: [
-                    if ( context.read<HomeCubit>().isAdmin)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ListTile(
-                          title: Text('عملائي'.tr()),
-                          leading: Radio<String>(
-                            value: 'stock',
-                            groupValue: cubit.selectedProducsStockType,
-                            onChanged: (value) {
-                              // setState(() {
-                              cubit.changeProductsStockType(value!);
-                              context
-                                  .read<ClientsCubit>()
-                                  .getAllPartnersForReport(isUserOnly: true);
-                              // });
-                            },
+                  if (context.read<HomeCubit>().isAdmin)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            title: Text('my_clients'.tr()),
+                            leading: Radio<String>(
+                              value: 'stock',
+                              groupValue: cubit.selectedProducsStockType,
+                              onChanged: (value) {
+                                // setState(() {
+                                cubit.changeProductsStockType(value!);
+                                context
+                                    .read<ClientsCubit>()
+                                    .getAllPartnersForReport(isUserOnly: true);
+                                // });
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: ListTile(
-                          title: Text('الكل'.tr()),
-                          leading: Radio<String>(
-                            value: 'nonStock',
-                            groupValue: cubit.selectedProducsStockType,
-                            onChanged: (value) {
-                              // setState(() {
-                              cubit.changeProductsStockType(value!);
-                              context
-                                  .read<ClientsCubit>()
-                                  .getAllPartnersForReport(isUserOnly: false);
+                        Expanded(
+                          child: ListTile(
+                            title: Text('all'.tr()),
+                            leading: Radio<String>(
+                              value: 'nonStock',
+                              groupValue: cubit.selectedProducsStockType,
+                              onChanged: (value) {
+                                // setState(() {
+                                cubit.changeProductsStockType(value!);
+                                context
+                                    .read<ClientsCubit>()
+                                    .getAllPartnersForReport(isUserOnly: false);
 
-                              // });
-                            },
+                                // });
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   CustomTextField(
                     controller: cubit.searchController,
                     onChanged: cubit.onChangeSearch,
@@ -240,6 +240,17 @@ class _ClientScreenState extends State<ClientScreen> {
                                                     .result![index]);
                                             Navigator.pop(context);
                                           }
+                                          if (widget.clientsRouteEnum ==
+                                              ClientsRouteEnum
+                                                  .crm) {
+                                            Navigator.pushReplacementNamed(
+                                              context,
+                                              Routes.createDealRoute,
+                                              arguments: cubit
+                                                  .allPartnersModel!
+                                                  .result![index],
+                                            );
+                                          }
                                         },
                                         child: Dismissible(
                                           key: Key(cubit.allPartnersModel!
@@ -269,7 +280,7 @@ class _ClientScreenState extends State<ClientScreen> {
                                                   .launchURL(
                                                       'tel:${cubit.allPartnersModel!.result![index].phone}');
                                             } else {
-                                              errorGetBar('الرقم خطأ');
+                                              errorGetBar( "wrong_number".tr());
                                             }
                                             return false;
                                           },
@@ -370,7 +381,7 @@ class _ClientScreenState extends State<ClientScreen> {
                             children: [
                               Expanded(
                                 child: ListTile(
-                                  title: Text('شركة'.tr()),
+                                  title: Text("company".tr()),
                                   leading: Radio<String>(
                                     value: 'Company',
                                     groupValue: cubit.selectedClientType,
@@ -384,7 +395,7 @@ class _ClientScreenState extends State<ClientScreen> {
                               ),
                               Expanded(
                                 child: ListTile(
-                                  title: Text('فرد'.tr()),
+                                  title: Text("individual".tr()),
                                   leading: Radio<String>(
                                     value: 'Indivalal',
                                     groupValue: cubit.selectedClientType,
@@ -411,10 +422,7 @@ class _ClientScreenState extends State<ClientScreen> {
                               if (value == null || value.isEmpty) {
                                 return "enter_name".tr();
                               }
-                              // else if (!RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
-                              //   // Adjust the regex as needed for language-specific characters
-                              //   return "ادخل اسم حقيقي";
-                              // }
+                             
                               return null;
                             },
                           ),
@@ -431,10 +439,7 @@ class _ClientScreenState extends State<ClientScreen> {
                               if (value == null || value.isEmpty) {
                                 return "enter_phone".tr();
                               }
-                              //  else if (!RegExp(r'^\d{10,15}$').hasMatch(value)) {
-                              //   // Adjust the regex as needed for the desired phone format
-                              //   return "من فضلك ادخل رقم صالح";
-                              // }
+                             
                               return null;
                             },
                           ),
@@ -451,13 +456,9 @@ class _ClientScreenState extends State<ClientScreen> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return null;
-                                // return "Please enter your email.";
+                               
                               }
-                              //  else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
-                              //     .hasMatch(value)) {
-                              //   // Adjust the regex as needed for stricter validation
-                              //   return "من فضلك ادخل بريد صالح";
-                              // }
+                           
                               return null;
                             },
                           ),
@@ -479,19 +480,16 @@ class _ClientScreenState extends State<ClientScreen> {
 
                           cubit.selectedClientType == 'Company'
                               ? CustomTextFieldWithTitle(
-                                  title: "الرقم الضريبي".tr(),
+                                  title:  "vat".tr(),
                                   controller: cubit.vatController,
-                                  hint: "الرقم الضريبي".tr(),
+                                  hint:  "vat".tr(),
                                   keyboardType: TextInputType.number,
                                   textInputAction: TextInputAction.done,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "ادخل الرقم الضريبي";
+                                      return "enter_vat".tr();
                                     }
-                                    //  else if (!RegExp(r'^\d+$').hasMatch(value)) {
-                                    //   // Adjust this regex to enforce length or other specific rules if needed
-                                    //   return "ادخل رقم صالح";
-                                    // }
+                                    
                                     return null;
                                   },
                                 )
@@ -502,7 +500,7 @@ class _ClientScreenState extends State<ClientScreen> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 12.0),
                               child: Text(
-                                "مرفقات",
+                                "facilities".tr(),
                                 style: TextStyle(
                                   fontFamily: AppStrings.fontFamily,
                                   color: AppColors.black,
@@ -538,11 +536,10 @@ class _ClientScreenState extends State<ClientScreen> {
                                                     size: 40,
                                                     color: AppColors.primary),
                                                 SizedBox(height: 5.sp),
-                                                const Text(
-                                                  '  ارفع الصورة أو الملف',
-                                                  style: TextStyle(
-                                                      color: Colors.grey),
-                                                ),
+                                                Text(
+                                        "upload_pic_or_file".tr(),
+                                        style: const TextStyle(color: Colors.grey),
+                                      ),
                                               ],
                                             ),
                                           )
@@ -575,8 +572,7 @@ class _ClientScreenState extends State<ClientScreen> {
                                       cubit.removeAttachImage();
                                     },
                                     icon: CircleAvatar(
-                                        backgroundColor:
-                                            AppColors.primary,
+                                        backgroundColor: AppColors.primary,
                                         child: Icon(
                                           Icons.close_rounded,
                                           color: Colors.white,

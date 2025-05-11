@@ -47,7 +47,8 @@ class TasksCubit extends Cubit<TasksState> {
   Future<void> createTask({
     required BuildContext context,
   }) async {
-    AppWidget.createProgressDialog(context, "loading".tr());
+         AppWidget.createProgressDialog(context);
+
     emit(LoadingCreateTaskState());
     final result = await api.createTask(
       deadline: formattedDate,

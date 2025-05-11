@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:top_sale/core/models/get_all_leads.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/attendance_and_departure_details_screen.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/holidays_screen.dart';
 import 'package:top_sale/features/attendance_and_departure/screens/holidays_type_screen.dart';
@@ -8,6 +9,9 @@ import 'package:top_sale/features/clients/cubit/clients_cubit.dart';
 import 'package:top_sale/features/clients/screens/edit_account.dart';
 import 'package:top_sale/features/contact_us/screens/contact_us_screen.dart';
 import 'package:top_sale/features/create_receipt_coucher/screens/create_receipt_coucher_screen.dart';
+import 'package:top_sale/features/crm/screens/create_deal.dart';
+import 'package:top_sale/features/crm/screens/crm.dart';
+import 'package:top_sale/features/crm/screens/deal_details.dart';
 import 'package:top_sale/features/details_order/screens/details_order_returned.dart';
 import 'package:top_sale/features/details_order/screens/details_order_show_price_returned%20.dart';
 import 'package:top_sale/features/direct_sell/cubit/direct_sell_cubit.dart';
@@ -88,6 +92,9 @@ class Routes {
   static const String editProfileRoute = '/editProfileRoute';
   static const String tasksRoute = '/tasksRoute';
   static const String exchangePermissionRoute = '/exchangePermissionRoute';
+  static const String clientsDealsRoute = '/clientsDealsRoute';
+  static const String createDealRoute = '/clreateDealRoute';
+  static const String dealDetailsRoute = '/dealDetailsRoute';
 
 }
 
@@ -218,7 +225,7 @@ class AppRoutes {
         List<String> categoryName = settings.arguments as List<String>;
         // if catId = -1 or 0 get all products
         // else get products by cat id
-        // if catId = 0 the basket icon go to اذن الصرف screen , else go to client screen
+        // if catId = 0 the basket icon go to expenses screen , else go to client screen
         // categoryName  => AppBar title
         return MaterialPageRoute(
           builder: (context) => ProductsScreen(
@@ -321,16 +328,27 @@ class AppRoutes {
             id: id,
           ),
         );
-      //
-      // case Routes.resultOfLessonExam:
-      //   ResponseOfApplyLessonExmamData model =
-      //       settings.arguments as ResponseOfApplyLessonExmamData;
-      //   return PageTransition(
-      //     child: ResultExamLessonScreen(model: model),
-      //     type: PageTransitionType.fade,
-      //     alignment: Alignment.center,
-      //     duration: const Duration(milliseconds: 800),
-      //   );
+        case Routes.createDealRoute:
+        AllPartnerResults? partner = settings.arguments as AllPartnerResults?;
+        return MaterialPageRoute(
+          builder: (context) =>    CreateDealScreen(
+            partner: partner,
+          ),
+        );
+        
+        
+        case Routes.dealDetailsRoute:
+        LeadModel lead = settings.arguments as LeadModel;
+
+        return MaterialPageRoute(
+          builder: (context) =>    DealsDetails(
+            lead: lead,
+          
+          ),
+        );
+        
+        
+
 
       default:
         return undefinedRoute();

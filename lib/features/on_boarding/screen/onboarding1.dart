@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,7 @@ class OnBoarding1 extends StatelessWidget {
                 padding:
                     EdgeInsets.symmetric(horizontal: getSize(context) / 44),
                 child: Text(
-                  'نجاحك في البيع يبدأ هنا',
+                  "onBoarding1title".tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: 'cairo',
@@ -57,7 +58,7 @@ class OnBoarding1 extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(getSize(context) / 44),
                 child: Text(
-                  'أطلق إمكانياتك كمندوب مبيعات، وتابع فرصك وصفقاتك بكل سهولة.',
+                  "onBoarding1desc".tr(),
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontFamily: 'cairo',

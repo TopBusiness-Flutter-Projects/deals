@@ -104,7 +104,7 @@ class _ReceiptVoucherScreenState extends State<ReceiptVoucherScreen> {
                         );
                   }
                 },
-                labelText: "ابحث",
+                labelText: "search".tr(),
                 prefixIcon: Icon(
                   Icons.search_rounded,
                   size: 35,

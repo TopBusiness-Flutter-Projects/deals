@@ -77,10 +77,10 @@ class CustomSlalesCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color:
-              Colors.black.withOpacity(0.1), // لون الظل مع تقليل الشفافية
-              spreadRadius: 1, // مدى انتشار الظل
-              blurRadius: 1, // مدى نعومة الظل
-              offset: const Offset(0, 1), // الاتجاه الأفقي والرأسي للظل
+              Colors.black.withOpacity(0.1),
+              spreadRadius: 1, 
+              blurRadius: 1, 
+              offset: const Offset(0, 1),
             ),
           ],
           color: AppColors.white,
@@ -244,49 +244,7 @@ class CustomSlalesCard extends StatelessWidget {
                 ),
               ],
             ),
-   //          SizedBox(
-   //            height: getSize(context) / 20,
-   //          ),
-   //          Row(
-   //            children: [
-   //              Center(
-   //                  child: Image.asset(
-   //                    ImageAssets.user,
-   //                    width: getSize(context) / 12,
-   //                    height: getSize(context) / 12,
-   //                  )),
-   //              SizedBox(width: getSize(context) / 60),
-   //              Expanded(
-   //                child: Column(
-   //                  crossAxisAlignment: CrossAxisAlignment.start,
-   //                  mainAxisAlignment: MainAxisAlignment.start,
-   //                  children: [
-   //                    AutoSizeText(
-   //                      'اسم العميل',
-   //                      maxLines: 1,
-   //                      style: TextStyle(
-   //                          fontSize: getSize(context) / 25,
-   //                          color: AppColors.black,
-   //                          fontWeight: FontWeight.bold),
-   //                    ),
-   //                    AutoSizeText(
-   //                      // (salesOrder?.id?.toString() == "false")
-   //                      //     ?
-   // salesOrder?.amountTotal.toString()??"",
-   //                       //   : salesOrder?.partnerId?.phone ?? '',
-   //                      maxLines: 1,
-   //                      overflow: TextOverflow.ellipsis,
-   //                      style: TextStyle(
-   //                        fontFamily: "cairo",
-   //                        color: AppColors.black.withOpacity(0.8),
-   //                        fontSize: getSize(context) / 28,
-   //                      ),
-   //                    )
-   //                  ],
-   //                ),
-   //              )
-   //            ],
-   //          )
+   
           ]),
         ),
       ),

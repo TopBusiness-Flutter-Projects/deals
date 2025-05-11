@@ -86,11 +86,11 @@ class _SalariesScreenState extends State<SalariesScreen> {
                                           BoxShadow(
                                             blurStyle: BlurStyle.outer,
                                             color: Colors.black.withOpacity(
-                                                0.1), // لون الظل مع تقليل الشفافية
-                                            spreadRadius: 1, // مدى انتشار الظل
-                                            blurRadius: 4, // مدى نعومة الظل
+                                                0.1),
+                                            spreadRadius: 1,
+                                            blurRadius: 4,
                                             offset: const Offset(0,
-                                                1), // الاتجاه الأفقي والرأسي للظل
+                                                1),
                                           ),
                                         ],
                                         color: AppColors.white,

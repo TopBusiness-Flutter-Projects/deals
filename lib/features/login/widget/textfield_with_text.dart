@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/get_size.dart';
@@ -17,7 +18,7 @@ class CustomTextFieldWithTitle extends StatefulWidget {
     this.textInputAction,
     this.isRequired = true,
     this.withPadding = true,
-    this.validator,
+    this.validator, this.inputFormatters,
   });
 
  final TextEditingController controller;
@@ -31,6 +32,7 @@ class CustomTextFieldWithTitle extends StatefulWidget {
  final bool isRequired;
  final bool withPadding;
  final String? Function(String?)? validator;
+ final List<TextInputFormatter>? inputFormatters;
   @override
   _CustomTextFieldWithTitleState createState() =>
       _CustomTextFieldWithTitleState();
@@ -62,6 +64,7 @@ class _CustomTextFieldWithTitleState extends State<CustomTextFieldWithTitle> {
           TextFormField(
             maxLines: widget.maxLines ?? 1,
             validator: widget.validator,
+            inputFormatters:  widget.inputFormatters,
             // textDirection: TextDirection.ltr,
             textInputAction: widget.textInputAction,
             readOnly: widget.readonly ?? false,

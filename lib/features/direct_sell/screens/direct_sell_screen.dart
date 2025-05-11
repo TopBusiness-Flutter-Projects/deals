@@ -122,7 +122,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                                   value: cubit
                                                       .selectedPriceList, // This will store the ID (not the name)
                                                   hint: Text(
-                                                    'قائمة الأسعار'.tr(),
+                                                   "price_list".tr(),
                                                     style: const TextStyle(
                                                         color: Colors.grey),
                                                   ),
@@ -156,11 +156,14 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                                             int>(
                                                           value: resultItem
                                                               .pricelistId,
-                                                          child: Text(resultItem
-                                                                  .pricelistName ??
-                                                              '',
-                                                      style: TextStyle(
-                                                          fontSize: 16.sp),), // Display the name
+                                                          child: Text(
+                                                            resultItem
+                                                                    .pricelistName ??
+                                                                '',
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    16.sp),
+                                                          ), // Display the name
                                                         );
                                                       }).toList() ??
                                                       [],
@@ -214,7 +217,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                                 value: cubit
                                                     .selectedProducsStockType, // This will store the ID (not the name)
                                                 hint: Text(
-                                                  'اختر المخزن '.tr(),
+                                                  "select_warehouse".tr(),
                                                   style: const TextStyle(
                                                       color: Colors.grey),
                                                 ),
@@ -234,7 +237,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                                   DropdownMenuItem<String>(
                                                     value: 'stock',
                                                     child: Text(
-                                                      'المخزن '.tr(),
+                                                     "warehouse".tr(),
                                                       style: TextStyle(
                                                           fontSize: 16.sp),
                                                     ),
@@ -242,7 +245,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                                   DropdownMenuItem<String>(
                                                     value: 'nonStock',
                                                     child: Text(
-                                                      'الكل'.tr(),
+                                                      'all'.tr(),
                                                       style: TextStyle(
                                                           fontSize: 16.sp),
                                                     ),
@@ -258,49 +261,7 @@ class _DirectSellScreenState extends State<DirectSellScreen> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  // Row(
-                                  //   children: [
-                                  //     Expanded(
-                                  //       child: ListTile(
-                                  //         title: Text('المخزون'.tr()),
-                                  //         leading: Radio<String>(
-                                  //           value: 'stock',
-                                  //           groupValue:
-                                  //               cubit.selectedProducsStockType,
-                                  //           onChanged: (value) {
-                                  //             // setState(() {
-                                  //             cubit.changeProductsStockType(
-                                  //                 value!);
-                                  //             context
-                                  //                 .read<DirectSellCubit>()
-                                  //                 .getAllProducts(isHome: true);
-                                  //             // });
-                                  //           },
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //     Expanded(
-                                  //       child: ListTile(
-                                  //         title: Text('الكل'.tr()),
-                                  //         leading: Radio<String>(
-                                  //           value: 'nonStock',
-                                  //           groupValue:
-                                  //               cubit.selectedProducsStockType,
-                                  //           onChanged: (value) {
-                                  //             // setState(() {
-                                  //             cubit.changeProductsStockType(
-                                  //                 value!);
-                                  //             context
-                                  //                 .read<DirectSellCubit>()
-                                  //                 .getAllProducts(isHome: true);
-                                  //             // });
-                                  //           },
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //   ],
-                                  // ),
-
+                                 
                                   state == LoadingCatogries
                                       ? Center(
                                           child: CustomLoadingIndicator(

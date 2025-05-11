@@ -55,6 +55,7 @@ class ImageAssets {
   static const String evaluate = '$iconsPath/evaluate.svg';
   static const String contactIcon = '$iconsPath/contatctUs.svg';
   static const String editIcon = '$iconsPath/edit.svg';
+static const String languageIcon = '$iconsPath/language.svg';
   static const String deleteIcon = '$iconsPath/delete.svg';
   static const String logoutIcon = '$iconsPath/logout.svg';
   static const String callIcon = '$iconsPath/phoneIcon.png';

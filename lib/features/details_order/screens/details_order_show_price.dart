@@ -273,7 +273,7 @@ class _DetailsOrderShowPriceState extends State<DetailsOrderShowPrice> {
                                                         width: 5.w,
                                                       ),
                                                       AutoSizeText(
-                                                        'عرض السعر',
+                                                        "show_price".tr(),
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,

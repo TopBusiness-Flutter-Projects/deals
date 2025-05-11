@@ -68,9 +68,9 @@ void showAttachmentBottomSheet(
                                       Icon(Icons.cloud_upload_outlined,
                                           size: 40, color: AppColors.primary),
                                       SizedBox(height: 5.sp),
-                                      const Text(
-                                        '  ارفع الصورة أو الملف',
-                                        style: TextStyle(color: Colors.grey),
+                                       Text(
+                                        "upload_pic_or_file".tr(),
+                                        style: const TextStyle(color: Colors.grey),
                                       ),
                                     ],
                                   ),
@@ -112,10 +112,10 @@ void showAttachmentBottomSheet(
                 ),
                 if (cubit.getAllUsersModel != null) UsersWidget(cubit: cubit),
                 CustomTextFieldWithTitle(
-                  title: "الملاحظات",
+                  title: "notes".tr(),
                   controller: noteController,
                   maxLines: 5,
-                  hint: "ادخل الملاحظات",
+                  hint: "enter_notes".tr(),
                   keyboardType: TextInputType.text,
                 ),
                 SizedBox(
@@ -176,7 +176,7 @@ class _UsersWidgetState extends State<UsersWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 10.sp),
-            Text('إشارة الي'.tr(), style: TextStyle(fontSize: 16.sp)),
+            Text("refer_to".tr(), style: TextStyle(fontSize: 16.sp)),
             SizedBox(height: 10.sp),
             Wrap(
                 children: widget.cubit.selectedUsers
@@ -211,7 +211,7 @@ class _UsersWidgetState extends State<UsersWidget> {
                     if (newValue != null) {
                       if (widget.cubit.selectedUsers
                           .any((user) => user.id == newValue)) {
-                        errorGetBar("المستخدم موجود بالفعل");
+                        errorGetBar("user_exist".tr());
                       } else {
                         widget.cubit.addOrRemoveUser(widget
                                 .cubit.getAllUsersModel?.result

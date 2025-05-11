@@ -115,7 +115,7 @@ class _ItineraryScreenState extends State<ItineraryScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("خط السير".tr()),
+        title: Text("itinerary".tr()),
         centerTitle: false,
         // leading:
         // GestureDetector(
@@ -182,8 +182,8 @@ class _ToggleSwitchWithLabelState extends State<ToggleSwitchWithLabel> {
                 children: [
                   Text(
                     cubit.isTracking
-                        ? "نهاية خط السير"
-                        : "بداية خط السير", // التبديل بين النصين
+                        ?  "end_itinerary".tr()
+                        : "start_itinerary".tr(), 
                     style: TextStyle(
                       fontSize: 18.0.sp,
                       fontWeight: FontWeight.bold,
