@@ -10,7 +10,6 @@ import 'package:timezone/data/latest.dart' as tz_data;
 import 'app_bloc_observer.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'core/utils/restart_app_class.dart';
-
 /// flutter local notification
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -30,7 +29,6 @@ void main() async {
     requestBadgePermission: true,
     requestSoundPermission: true,
   );
-
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
     iOS: initializationSettingsIOS,
@@ -41,7 +39,6 @@ void main() async {
       print('Notification clicked: ${details.payload}');
     },
   );
-
   if (Platform.isAndroid) {
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<

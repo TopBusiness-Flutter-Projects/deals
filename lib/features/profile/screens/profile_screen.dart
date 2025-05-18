@@ -23,9 +23,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     // TODO: implement initState
     context.read<ProfileCubit>().nameController.text =
-        context.read<HomeCubit>().nameOfUser.toString() ?? "";
+        context.read<HomeCubit>().nameOfUser ?? "";
     context.read<ProfileCubit>().phoneController.text =
-        context.read<HomeCubit>().phoneOfUser.toString() ?? "";
+        context.read<HomeCubit>().phoneOfUser ?? "";
 
     super.initState();
   }
